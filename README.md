@@ -2,7 +2,7 @@
 
 Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) Lua script mods**, collected while building a large gameplay mod (tuning, wear, used market, leasing, multiplayer) – with tools and a mod template.
 
-**Keywords:** Farming Simulator 25 modding, FS25 Lua scripting, LS25 Mod erstellen, GIANTS Engine 10, modDesc, specialization, `ConfigurationUtil.getConfigurationsFromXML`, `ShopConfigScreen`, `VehicleMotor`, `SpeedMeterDisplay`, `VehicleSaleSystem`, `EconomyManager`, multiplayer events, dedicated server, ModHub.
+**Keywords:** Farming Simulator 25 modding, FS25 Lua scripting, LS25 Mod erstellen, GIANTS Engine 10, modDesc, specialization, `ConfigurationUtil.getConfigurationsFromXML`, `ShopConfigScreen`, `VehicleMotor`, `SpeedMeterDisplay`, `VehicleSaleSystem`, `EconomyManager`, multiplayer events, dedicated server, AutoDrive and Courseplay interop, `AIMessage`, `DashboardValueType`, `XMLFile.initInheritance`, input actions, console commands, ModHub.
 
 **Using an AI assistant?** Point it to [`llms.txt`](llms.txt) or [`CLAUDE.md`](CLAUDE.md): look up a game function in the [API index](knowledge/INDEX.md), then read only the one topic file you need.
 
@@ -14,16 +14,19 @@ Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) L
 |---|---|
 | [1. Sources and tools](knowledge/01-sources-and-tools.md) | game source repos, reference mods, log, testing without the game, graphics |
 | [2. Mod skeleton](knowledge/02-mod-skeleton.md) | modDesc, hooks, specializations, texts (l10n), help pages |
-| [3. Settings and menu](knowledge/03-settings-and-menu.md) | savegame file, modSettings, own settings tab, presets |
-| [4. Configurations and shop](knowledge/04-configurations-and-shop.md) | own configuration types, shop configurator, leasing, workshop buttons |
+| [3. Settings and menu](knowledge/03-settings-and-menu.md) | savegame file, modSettings, own settings tab, menu pages, own dialogs, presets |
+| [4. Configurations and shop](knowledge/04-configurations-and-shop.md) | own configuration types, XML injection, shop configurator, buying in code, leasing, money bookings, workshop buttons |
 | [5. Motor and gearbox](knowledge/05-motor-and-gearbox.md) | torque, top speed, gear groups, automatic, pedals |
 | [6. Consumption, wear, value](knowledge/06-consumption-wear-value.md) | fuel, wear, repair, sell value |
 | [7. HUD and display](knowledge/07-hud-and-display.md) | speedometer, icons, notifications |
-| [8. Helpers (AI)](knowledge/08-helpers-ai.md) | stopping helpers, messages, Courseplay/AutoDrive |
+| [8. Helpers (AI)](knowledge/08-helpers-ai.md) | stopping helpers, own AI messages, detecting and stopping AutoDrive and Courseplay |
 | [9. Used vehicle market](knowledge/09-used-vehicle-market.md) | `VehicleSaleSystem`, own offers, shop cells |
-| [10. Multiplayer](knowledge/10-multiplayer.md) | roles, events, admin, per-player values, dirty flags |
-| [11. Pitfalls](knowledge/11-pitfalls.md) | short list of mistakes we made |
-| [12. Learned from other mods](knowledge/12-learned-from-other-mods.md) | techniques from published mods |
+| [10. Multiplayer](knowledge/10-multiplayer.md) | roles, events, relay pattern, admin, per-player values, dirty flags, server-authoritative blueprint |
+| [11. Pitfalls](knowledge/11-pitfalls.md) | short list of mistakes we made and ones seen in other mods |
+| [12. Learned from other mods](knowledge/12-learned-from-other-mods.md) | one section per published mod we read: license, link, notable techniques |
+| [13. Input and player](knowledge/13-input-and-player.md) | actions and bindings, vehicle/global/on-foot input, clicks on 3D points, player, attaching implements |
+| [14. Development and debugging](knowledge/14-development-and-debugging.md) | console commands, restart into the savegame, time scale, table dumps, debug drawing, debug builds |
+| [15. Dashboards and vehicle data](knowledge/15-dashboards-and-vehicle-data.md) | live vehicle values, server-only motor values, vanilla dashboard value types |
 | [API index](knowledge/INDEX.md) | game function / class / global → topic file |
 | [Workflow](workflow.md) | versions, checks before delivery, log discipline, in-game testing |
 | [Tools](tools/) | translation check, run-all script, index builder |

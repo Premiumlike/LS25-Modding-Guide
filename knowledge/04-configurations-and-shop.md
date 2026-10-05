@@ -11,6 +11,12 @@
 - Way 2 lets you change **prices and selectability later without a restart**: remember the store items, look them up with `g_storeManager:getItemByXMLFilename` and update `item.price` / `item.isSelectable`. 🔎
 - The function builds **all** configuration types of a vehicle: `configurations[type] = { item1, item2 … }` with `item.index`, `item.configKey`, `item.saveId`, `item.isSelectable`, `item.price`.
 - Yes/No display: the flag is stored per entry as `storeItem.configurations[name][i].isYesNoOption`. ✅
+- The FS25 call form is 4 arguments: `addConfigurationType(name, title, xmlKey, VehicleConfigurationItem)`; selected index in `vehicle.configurations[name]` (1-based). 🔎 (interactiveControl)
+- **Injection at XML level (any key, any vehicle):** hook `XMLFile.initInheritance` (prepended to remember `parentFile#xmlFilename`, appended to write). After the game opens an XML file, match `xmlFile.filename` (and the parent filename) and write typed values with `xmlFile:setBool/setInt/setFloat/setString(key, value)`. 🔎 (interactiveControl)
+  - Target filenames may use `$pdlcdir$…`, resolved with `NetworkUtil.convertFromNetworkFilename`.
+  - Can add whole blocks the vehicle never had, e.g. new `animations.animation(N)` entries for doors. Unnamed nodes are addressed by **index paths** like `0>0|9|3|0` (component, then child indices).
+  - **Fragile:** index paths and hard-coded indices (`animation(5)`) break silently when a DLC update changes the XML or i3d – validate at load (`getAnimationExists`, node exists) and log. Merged meshes or wrong pivots cannot be fixed by XML.
+  - ❓ A superset of the `getConfigurationsFromXML` hook above (wheels, colours, lights); timing for store items is unverified.
 
 ## Reading vehicle XML correctly
 
@@ -22,6 +28,8 @@
 - **Wheels and crawlers:** type `"wheel"`, key `vehicle.wheels.wheelConfigurations.wheelConfiguration(i)`, crawlers under `….crawlers.crawler(n)`, inheritance via `….wheels#baseConfig` (= saveId). **The game generates extra entries from base configurations with tyre dimensions** (`VehicleConfigurationItemWheel.generateConfigurations`): the base becomes non-selectable, generated items carry `baseConfigItem`. **Never** treat the list index as the XML index – go via `item.baseConfigItem.configKey` / `item.configKey`. ✅
 - Many tractors have crawlers only as an **option** (NH T8 SmartTrax, JD 9R, Case Magnum, Claas Xerion, combines, forestry, Can-Am quads). "Some configuration has X" is not a vehicle property.
 - **Store data:** `storeItem.specs.fuel.consumers` is built once and does not see later XML changes.
+- **Configuration sets:** `storeItem.configurationSets[i].configurations` / `.name`; the set matching a vehicle = best match against `vehicle.configurations`. 🔎 (UniversalAutoload)
+- **Per-vehicle data outside the vehicle XML** (no XML editing): an own XML keyed by the vehicle filename. Normalise `vehicle.configFileName` by stripping `g_modsDirectory` or any `g_dlcsDirectories[i].path` prefix → keys like `data/vehicles/…` or `<modOrDlcFolder>/….xml`, independent of the install path; check back with `g_storeManager:getItemByXMLFilename`. 🔎 (UniversalAutoload)
 - **Decals:** `objectChange#node` is not resolved for injected entries – set visibility yourself in `onLoad` (`i3dMappings[name].nodeId`, `setVisibility`).
 
 ## Selected configuration on a vehicle
@@ -29,6 +37,7 @@
 - `vehicle.configurations[type]` = id; the item: `ConfigurationUtil.getConfigItemByConfigId(vehicle.configFileName, type, id)`.
 - A **workshop rebuild creates a new object**: the old one is saved (`getReloadXML` → `saveToXMLFile`) and reloaded; the new configuration is already set before saving. ✅
 - Correcting a bought configuration on the server: `ConfigurationUtil.addBoughtConfiguration(manager, object, configName, configId)`. 🔎
+- **Shop preview vehicles** have `propertyState == VehiclePropertyState.SHOP_CONFIG` (others: `OWNED`, `LEASED`, `MISSION`). Courseplay prepends `Vehicle.load` and removes its event listeners for such vehicles – useful when your spec must not run in the shop. 🔎 (Courseplay, UniversalAutoload)
 
 ## Shop configurator (`ShopConfigScreen`)
 
@@ -40,6 +49,17 @@
 - **Displayed values:** the spec `getValueFunc`s (`power`, `maxSpeed`) feed only the shop **list**. The configurator uses `processStoreItemPowerOutput` (hp as number) and `processAttributeData` (texts after the preview vehicle loaded). The km/h value is a fixed value per vehicle/variant (`#maxSpeed` on the motor variant, else `storeData.specs.maxSpeed`), not the real top speed. ✅
 - **Shop list cells:** `ShopItemsFrame.populateCellForItemInSection(self, superFunc, list, section, index, cell)`, `self.displayItems[index].saleItem`, cell attribute `priceTag`. Cells are **reused** – always set or hide your own elements. When drawing yourself in `draw`, respect the clip rectangle `draw(clipX1, clipY1, clipX2, clipY2)`, otherwise scrolled-out cells show above/below the list. ✅
 - **Buy price:** `g_currentMission.economyManager:getBuyPrice(storeItem, configurations, saleItem)`.
+- Shop hooks seen: `ShopConfigScreen.setStoreItem`, `updateButtons(storeItem, vehicle, saleItem)` (appended: swap `buyButton.onClickCallback` / `leaseButton.onClickCallback` for own dialogs, restore vanilla where not wanted), `inputEvent`, `onYesNoBuy` / `onYesNoLease` (prepended: act on purchase), `processAttributeData` (clone `self.attributeItem` into `self.attributesLayout` for an extra attribute row). Extra buttons: `buyButton:clone(parent)`, `setInputAction`, `parent:invalidateLayout()`. Colour/plate data: `g_shopConfigScreen.configurationData`, `.licensePlateData`. 🔎 (UsedPlus, UniversalAutoload)
+- Own shop pack: `g_storeManager:addModStorePack(name, title, icon, modDir)`, `g_storeManager:getPackItems(name)`. 🔎 (UniversalAutoload)
+- Prices: `StoreItemUtil.getDefaultPrice(storeItem, {})`, `StoreItemUtil.getCosts(storeItem, configurations)`. 🔎 (UsedPlus)
+
+## Buying a vehicle in code
+
+🔎 (UsedPlus)
+- Do not build vehicles yourself – send the vanilla `BuyVehicleEvent.new(data)` with `BuyVehicleData.new()` and `setOwnerFarmId`, `setPrice` (0 if you booked the money yourself), `setStoreItem`, `setConfigurations`, `setConfigurationData` (colour/material – otherwise custom colours revert), `setLicensePlateData`, and for a vanilla used offer `setSaleItem(saleItem)` (see [9](09-used-vehicle-market.md)).
+- Sent via `g_client:getServerConnection():sendEvent(...)` even in single player (`BuyVehicleEvent` expects a real connection). ❓ That path fails on a dedicated server, where `g_client` is nil.
+- After the purchase: append `BuyVehicleData.onBought(self, vehicles, loadingState, args)` (check `VehicleLoadingState.OK`), or `FSBaseMission.onVehicleBought(self, vehicle, price, farmId)`, or `g_messageCenter:subscribe(BuyVehicleEvent, cb, target)` with `BuyVehicleEvent.STATE_SUCCESS`. 🔎 (UsedPlus, UniversalAutoload)
+- New vehicle vs. loaded: `Vehicle.onLoadFinished(self, savegame)` with `savegame == nil`.
 - Dialogs: `YesNoDialog.show(callback, target, text)` → `callback(target, yes)`, `InfoDialog.show(text)`.
 
 ## Leasing
@@ -53,8 +73,19 @@
 - **Buying out** (model: FS25_LeaseToOwn): `g_currentMission:addMoney(-price, farmId, MoneyType.SHOP_VEHICLE_BUY, true, true)`, then `vehicle.propertyState = VehiclePropertyState.OWNED`, `g_currentMission:removeLeasedItem(vehicle)`, `g_currentMission:addOwnedItem(vehicle)`. In multiplayer via an event to the server (check `getHasPlayerPermission("farmManager", …)`). ✅ single player
 - **Workshop with leased vehicles:** "Configure" is visible but greyed out – leased vehicles can only be painted, repaired and returned (tested without mods). ✅
 - Shop lease button: `ShopConfigScreen.leaseButton`; disable it with `setDisabled(true)` in appended `updateButtons` / `updateData`.
+- **Returning a leased vehicle** goes through `SellVehicleEvent` – ExtendedLeasing overrides `SellVehicleEvent.run` (installed in a `Mission00.load` prepend), calls the original, then on the server (`not connection:getIsServer()`) checks `getHasPlayerPermission(Farm.PERMISSION.SELL_VEHICLE, connection, farmId)` and `propertyState ~= OWNED`, refunds the deposit and charges washing. The vehicle is already removed at that point. 🔎 (ExtendedLeasing)
+- UsedPlus does not use vanilla leasing: its "leases" are **owned** vehicles with a Lua flag plus a monthly charge; it also blocks selling leased vehicles from its sell buttons ❓. Mods that work with `propertyState` do not see them. 🔎 (UsedPlus)
+
+## Money bookings
+
+- `g_currentMission:addMoney(amount, farmId, MoneyType.X, addChange, forceShow)` on the server. Alternative: `g_farmManager:getFarmById(farmId):changeBalance(amount, MoneyType.X)` **plus** `g_currentMission:addMoneyChange(amount, farmId, MoneyType.X, true)` to show the change. Bookings made this way **bypass** a wrapper around `g_currentMission.addMoney`. 🔎 (ExtendedLeasing, UsedPlus)
+- `addMoney` from nested dialog callbacks crashed ("attempt to index nil with id"); UsedPlus switched to `changeBalance` there. 🔎 (UsedPlus)
+- **`MoneyType.VEHICLE_SELL` does not exist** (nil) – `changeBalance` with it silently did nothing. Types used: `SHOP_VEHICLE_BUY`, `LEASING_COSTS`, `VEHICLE_REPAIR`, `VEHICLE_RUNNING_COSTS`, `PURCHASE_LAND`, `OTHER`. 🔎 (UsedPlus)
+- Own money type (row in the finance statistics): `MoneyType.register(category, statName, modName)` at file load, then raise `MoneyType.LAST_ID` by the number added; l10n key = `statName`. 🔎 (ExtendedLeasing)
+- Balance: `farm.money` or `g_currentMission:getMoney(farmId)`. Difficulty factor: `EconomyManager.COST_MULTIPLIER[difficulty]`. 🔎 (UsedPlus)
 
 ## Vehicle list (pause menu) and workshop buttons
 
 - Vehicle list: `g_inGameMenu.pageStatistics`, tab 2 (`subCategoryPaging:getState()`), list `g_inGameMenu.vehiclesList`, entry `list.dataSource.vehicles[list.selectedIndex].vehicle`. Own buttons: override `getMenuButtonInfo` on the instance, return a copy; `list:addIndexChangeObserver(target, fn)` → `setMenuButtonInfoDirty()`. ✅
+- Replacing a workshop button's `onClickCallback` by direct assignment works; `setCallback` "broke the button". 🔎 (UsedPlus)
 - **Workshop button:** hook `WorkshopScreen.setVehicle` / `onOpen` (appended), vehicle in `screen.vehicle`; clone an existing button (`sellButton` …) with `button:clone(button.parent)` and set the key **with `button:setInputAction(name)`** – only setting `inputActionName` shows no key glyph and only the mouse works. ✅ The action must be free (workshop: X = MENU_EXTRA_1 paint, C = MENU_EXTRA_2 repair, space = configure; MENU_ACCEPT/Enter is free ✅) and bound (`g_inputBinding.nameActions[InputAction[name]]:getNumActiveBindings() > 0`). Key presses go through `ScreenElement:inputEvent` → `callButtonsWithAction`; additionally overriding `WorkshopScreen.inputEvent` is safer.
