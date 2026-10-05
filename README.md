@@ -1,6 +1,10 @@
 # LS25 / FS25 Modding Guide
 
-Practical knowledge for **Farming Simulator 25 script mods**, collected while building a large gameplay mod (tuning, wear, used market, leasing, multiplayer) – with tools and a mod template.
+Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) Lua script mods**, collected while building a large gameplay mod (tuning, wear, used market, leasing, multiplayer) – with tools and a mod template.
+
+**Keywords:** Farming Simulator 25 modding, FS25 Lua scripting, LS25 Mod erstellen, GIANTS Engine 10, modDesc, specialization, `ConfigurationUtil.getConfigurationsFromXML`, `ShopConfigScreen`, `VehicleMotor`, `SpeedMeterDisplay`, `VehicleSaleSystem`, `EconomyManager`, multiplayer events, dedicated server, ModHub.
+
+**Using an AI assistant?** Point it to [`llms.txt`](llms.txt) or [`CLAUDE.md`](CLAUDE.md): look up a game function in the [API index](knowledge/INDEX.md), then read only the one topic file you need.
 
 > 🇩🇪 **Kurz auf Deutsch:** Gesammeltes Wissen zum Bau von LS25-Skript-Mods aus der Entwicklung eines großen Gameplay-Mods: Motor und Getriebe, Shop-Konfigurationen, Einstellungsmenü, HUD, Gebrauchtmarkt, Mieten, Mehrspieler. Dazu Werkzeuge (Übersetzungs-Check, Testskript) und eine Mod-Vorlage. Alles auf Englisch, damit es möglichst viele nutzen können.
 
@@ -20,8 +24,9 @@ Practical knowledge for **Farming Simulator 25 script mods**, collected while bu
 | [10. Multiplayer](knowledge/10-multiplayer.md) | roles, events, admin, per-player values, dirty flags |
 | [11. Pitfalls](knowledge/11-pitfalls.md) | short list of mistakes we made |
 | [12. Learned from other mods](knowledge/12-learned-from-other-mods.md) | techniques from published mods |
+| [API index](knowledge/INDEX.md) | game function / class / global → topic file |
 | [Workflow](workflow.md) | versions, checks before delivery, log discipline, in-game testing |
-| [Tools](tools/) | translation check, run-all script |
+| [Tools](tools/) | translation check, run-all script, index builder |
 | [Mod template](template/) | log + debug switch, savegame settings, multiplayer sync |
 
 ## Status markers

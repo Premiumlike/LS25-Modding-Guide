@@ -1,0 +1,25 @@
+# LS25 / FS25 Modding Guide
+
+> Practical, verified knowledge for writing Farming Simulator 25 (LS25, FS25, GIANTS Engine 10) Lua script mods: shop configurations, motor/gearbox changes, settings menus, HUD, wear and repair, used vehicle market, leasing, helpers (AI workers) and multiplayer events. Every statement is marked as confirmed in game, read from the game source, learned from another mod, or assumption. Includes a translation checker, a test runner and a small mod template.
+
+Read `knowledge/INDEX.md` first to find the file for a game function or class name, then read only that file. Status markers: ✅ confirmed in game, 📖 game source, 🔎 other mod, ❓ assumption.
+
+## Knowledge
+- [API index](knowledge/INDEX.md): game function/class/global name -> file
+- [1. Sources and tools](knowledge/01-sources-and-tools.md): game source repos, reference mods, log.txt, mock tests, DDS icons
+- [2. Mod skeleton](knowledge/02-mod-skeleton.md): modDesc descVersion 113, hooks (Utils.overwrittenFunction), specializations, l10n translation files, help pages
+- [3. Settings and menu](knowledge/03-settings-and-menu.md): savegame settings file, modSettings, own tab in InGameMenuSettingsFrame, focus, presets
+- [4. Configurations and shop](knowledge/04-configurations-and-shop.md): addConfigurationType, getConfigurationsFromXML, ShopConfigScreen, wheels/crawlers, leasing costs, buying out, workshop buttons
+- [5. Motor and gearbox](knowledge/05-motor-and-gearbox.md): torqueScale before loadMotor, updateMotorProperties, gear groups, automatic shifting, pedals
+- [6. Consumption, wear, value](knowledge/06-consumption-wear-value.md): fuel usage, Wearable damage, repair price, calculateSellPrice
+- [7. HUD and display](knowledge/07-hud-and-display.md): SpeedMeterDisplay, own bars and icons, notifications
+- [8. Helpers (AI)](knowledge/08-helpers-ai.md): stopCurrentAIJob, messages, Courseplay/AutoDrive
+- [9. Used vehicle market](knowledge/09-used-vehicle-market.md): VehicleSaleSystem fields, constants, addSale, shop cells
+- [10. Multiplayer](knowledge/10-multiplayer.md): roles, events, admin check, per-player values, dirty flags, dedicated server
+- [11. Pitfalls](knowledge/11-pitfalls.md): common mistakes
+- [12. Learned from other mods](knowledge/12-learned-from-other-mods.md): techniques from FS25_AdjustSuite, UsedPlus, LeaseToOwn and others
+
+## Practice
+- [Workflow](workflow.md): versioning, checks before every build, log discipline, in-game testing
+- [Tools](tools/README.md): check_translations.py, run_all.sh, build_index.py
+- [Mod template](template/README.md): log with debug switch, savegame settings, multiplayer settings sync, example mock test
