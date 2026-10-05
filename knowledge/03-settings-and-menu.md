@@ -15,6 +15,10 @@
 - Folder: `g_modSettingsDirectory` (or `getUserProfileAppPath() .. "modSettings"` + `createFolder(...)`). ✅
 - Good for things that belong to the **player, not the savegame**: a debug-log switch, personal display options. Works on multiplayer clients and on a dedicated server (which uses the profile of the Windows user it runs under). ✅
 - Pattern: if the file is missing, create it with defaults; if it exists, only read it. ✅
+- Engine-provided per-mod folder: `g_currentModSettingsDirectory` (only valid while your files load – store it). 🔎 (DashboardLive, interactiveControl)
+- XML API with schema: `XMLSchema.new(name)`, `schema:register(XMLValueType.X, key)`, `XMLFile.loadIfExists(name, path, schema)` / `XMLFile.create(name, path, rootName, schema)`, `getValue`/`setValue`, `save()`, `delete()`. 🔎 (Courseplay, UniversalAutoload)
+- Shipping defaults: copy a defaults XML from the mod into `modSettings` on first run (`copyFile`) and read both. 🔎 (UniversalAutoload)
+- Skip personal config files on a dedicated server. 🔎 (EnhancedVehicle)
 
 ## Own tab in ESC › Settings
 
@@ -26,6 +30,22 @@ Model: Additional Game Settings (AGS). ✅
 - Compatible with AGS: AGS hooks *before* `Mission00.setMissionInfo`, your tab *after*. ✅
 - Own buttons in the bottom bar: override `getMenuButtonInfo` on the frame **instance** and return a **copy** with an extra `{inputAction, text, callback}`; call `setMenuButtonInfoDirty()` when the tab changes. Use a free action (`MENU_EXTRA_1/2/3`). ✅
 
+## Other ways into the menus
+
+- **Options built in Lua into the vanilla settings page:** append `InGameMenuSettingsFrame.onFrameOpen` (once-guard), create `TextElement` / `MultiTextOptionElement` / `BinaryOptionElement` with `.new()` + `loadProfile(g_gui:getProfile("fs25_settingsMultiTextOption"), true)` (also `fs25_settingsSectionHeader`, `fs25_settingsBinaryOption`, `fs25_multiTextOptionContainer`, `fs25_settingsMultiTextOptionTitle`), set `.target`, `setCallback("onClickCallback", name)`, `onGuiSetupFinished()`, add to `frame.gameSettingsLayout`, then `invalidateLayout`, `updateAlternatingElements`, `updateGeneralSettings`. 🔎 (UsedPlus)
+- Variant: clone the existing header and option rows into `generalSettingsLayout`; save with an appended `GameSettings.saveToXMLFile`. 🔎 (interactiveControl)
+- **Own page in the pause menu:** `m = g_gui.screenControllers[InGameMenu]`, `g_gui:loadGui(xml, name, frame, true)` (4th arg = frame), `m.pagingElement:addElement(frame)`, `m:registerPage(frame, pos, predicate)`, `m:addPageTab(frame, iconFile, GuiUtils.getUVs(uvs))`, `pagingElement:updatePageMapping()`. Same idea for the shop with `g_shopMenu:rebuildTabList()`. 🔎 (UsedPlus)
+- Own tabbed menu: `Class(MyMenu, TabbedMenu)` with frames as pages; own message types `MessageType.X = nextMessageTypeId()`. 🔎 (Courseplay)
+
+## Own dialogs
+
+- Load once: `g_gui:loadProfiles(dir .. "gui/guiProfiles.xml")` (or a `<GUIProfiles>` block inside the dialog XML), `g_gui:loadGui(xml, name, instance)`. **Check success** with `g_gui.guis[name] ~= nil` – `loadGui` fails silently. Open `g_gui:showDialog(name)`, close `g_gui:closeDialogByName(name)`. 🔎 (UsedPlus, EnhancedVehicle, AutoDrive)
+- Base class `MessageDialog` (`Class(X, MessageDialog)`, `MessageDialog.new(target, mt)`); `DialogElement` as base was reported broken. 🔎 (UsedPlus) EnhancedVehicle uses `Class(X, ScreenElement)` with `DialogElement.new(target, mt)`. 🔎
+- Do not name your own callbacks `onOpen`/`onClose` (lifecycle names → stack overflow). Missing control assignment leaves all element fields nil silently. Profiles that exist: `fs25_dialogBg`, `fs25_dialogContentContainer`, `fs25_dialogButtonBox`, `buttonOK`, `buttonBack`; `fs25_button` does not. 🔎 (UsedPlus)
+- Images from the mod zip: `element:setImageFilename(modDir .. "x.png")` at runtime. Non-ASCII characters (±, ×, ☐) in a GUI XML gave "Failed to open xml file". `setPosition()` at runtime hid elements in some dialogs – toggle pre-placed elements with `setVisible`. 🔎 (UsedPlus)
+- Vanilla dialogs: `InfoDialog.show(text)`, `YesNoDialog.show(cb, target, text)`, `TextInputDialog.show(cb, target, default, title, …)`, `OptionDialog.createFromExistingGui(...)`. `OptionDialog` remembers the last selection and `TextInputDialog` its `maxCharacters` – reset them before reuse. 🔎 (PowerTools)
+- Do not open dialogs from hour/period handlers while sleeping (`g_sleepManager.isSleeping`) – the game froze; also check `g_currentMission.isSynchronizingWithPlayers`. Block HUD/menus with `g_gui:getIsGuiVisible()`. 🔎 (UsedPlus, EnhancedVehicle)
+
 ## Menu elements
 
 - `element.target` must be the **menu page**, otherwise `FocusManager:setFocus` refuses focus: mouse works, keyboard and controller do not. ✅
@@ -34,7 +54,7 @@ Model: Additional Game Settings (AGS). ✅
 - **Scrolling along:** `ScrollingLayoutElement` registers children only in `onGuiSetupFinished` via `addFocusListener` – rows inserted later must be registered by you. ✅
 - **Greying out:** `element:setDisabled(true)`. Remove greyed-out rows from the focus chain (re-link). ✅
 - **Enter/A does not toggle options in the settings** – that is game default, no own handling needed. ✅
-- `MultiTextOptionElement`: `setTexts(list)`, `setState(index, forceEvent)`. `BinaryOptionElement`: `setIsChecked(bool, …)`, state `STATE_RIGHT` = on.
+- `MultiTextOptionElement`: `setTexts(list)`, `setState(index, forceEvent)`. `BinaryOptionElement`: `setIsChecked(bool, …)`, state `STATE_RIGHT` = on. Slider widgets were unreliable. 🔎 (UsedPlus)
 
 ## Reading game settings
 

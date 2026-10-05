@@ -16,11 +16,13 @@
 
 - **Constants:** simply set the class field (`VehicleSaleSystem.MAX_GENERATED_ITEMS = 10`), remember the original values and write them back when your feature is switched off. 🔎 ✅
 - **Own offer:** `vehicleSaleSystem:addSale({ xmlFilename, boughtConfigurations = { <configName> = { [<index>] = true } }, price, age (months), operatingTime (ms), damage, wear, timeLeft (h), isGenerated })`; the game assigns `id`. For the exact equipment of a vehicle convert all `vehicle.configurations` (number per name) to this format. Leaving out the wheel configuration on random offers avoids unfitting tyres. ✅
-- **Sold vehicles:** `VehicleSaleSystem:onVehicleWillSell(vehicle)` is called on every sale, also in single player – but in single player **no** offer is created. Good hook to put sold vehicles on the market yourself. ✅ `SellVehicleEvent` (server): fields `vehicle, isDirectSell, isOwned, multiplier`, no price; `run` is called a second time without `vehicle` (answer).
+- **Sold vehicles:** `VehicleSaleSystem:onVehicleWillSell(vehicle)` is called on every sale, also in single player – but in single player **no** offer is created. Good hook to put sold vehicles on the market yourself. ✅ `SellVehicleEvent` (server): fields `vehicle, isDirectSell, isOwned, multiplier`, no price; `run` is called a second time without `vehicle` (answer). Overriding `SellVehicleEvent.run` also catches returns of leased vehicles. 🔎 (ExtendedLeasing)
 - **New savegame:** `generateInitialSales` (3–4 start offers) runs **inside** `loadFromXMLFile` – a load guard around `loadFromXMLFile` must make an exception for it. ✅
 - **Adjust offers, but not while loading:** `addSale` also runs in `loadFromXMLFile`; use a counter around `loadFromXMLFile` instead of hooking `onHourChanged` (the game may register `onHourChanged` as a function reference early, a later hook would not apply). ✅
 - The game rolls some configurations itself for generated offers (wheel, rim colour, `cylindered` …) – **including configurations from mods**. Remove them in your `addSale` hook if you do not want that. ✅
-- Purchase: `BuyVehicleData:setSaleItem`, price `economyManager:getBuyPrice(storeItem, configurations, saleItem)`.
+- Purchase: `BuyVehicleData:setSaleItem`, price `economyManager:getBuyPrice(storeItem, configurations, saleItem)`. With `setSaleItem(saleItem)` on a `BuyVehicleEvent` **the game itself removes the offer** on the server – also when you buy an offer from your own dialog. A client cannot serialise the `saleItem` into an own event, so let the vanilla event carry it. 🔎 (UsedPlus) Details in [4](04-configurations-and-shop.md).
+- Condition after spawning a used vehicle yourself: it starts at 0 damage → `addDamageAmount(damage, true)`, `setOperatingTime(hours * 3600000)`, wear via `Wearable`; dirt was applied with a short delay (`addTimer(ms, "method", target)`). 🔎 (UsedPlus)
+- UsedPlus runs its own used-vehicle search and does **not** use `VehicleSaleSystem` for its offers (and hooks nothing in it). 🔎 (UsedPlus)
 - Observe hours: `g_messageCenter:subscribe(MessageType.HOUR_CHANGED, fn, self)` and `unsubscribeAll(self)` in `deleteMap`.
 
 ## Showing something in a shop cell

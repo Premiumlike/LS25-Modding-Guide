@@ -11,6 +11,8 @@
 - Colours: fuel `{1, 0.4287, 0.0006}`, below 10 % red blinking `{1, 0.1233, 0}` with `|cos(g_time/300)|`; damage blue `{0.0097, 0.4287, 0.6445}`, below 20 % red.
 - **Adding your own column or bar:** for the duration of `draw` increase `gearBarScaleWidth` – the background grows to the left and the game elements stay in place. For a slot between two bars also shift `gearOffsetX`. Reset afterwards and draw into the free area. ✅
 - Use `display:scalePixelToScreenWidth/Height` or `scalePixelValuesToScreenVector` for all sizes – then they follow the HUD scale.
+- **Other mods next to the speedometer:** EnhancedVehicle draws boxes relative to `g_currentMission.hud.speedMeter.speedBg` (x, y, width, height): a track box directly **above** the gauge starting at `speedBg.x`, small boxes at its top-left corner, texts inside the gauge, damage/fuel under `hud.gameInfoDisplay`. It also **moves `hud.fillLevelsDisplay.y` permanently**. A bar above the speedometer collides with it; check for the mod (`g_modIsLoaded`) and offset. ❓ 🔎 (EnhancedVehicle)
+- EnhancedVehicle computes positions **once** on the first draw – after a HUD scale change they are stale until reload. Compute from the current scale each time. 🔎 (EnhancedVehicle)
 
 ## Other HUD elements
 
@@ -21,6 +23,12 @@
 - Draw your own icons with a margin, otherwise they look too big next to the game icons. ✅
 - **Text:** `renderText(x, y, size, text)` in screen fractions, `setTextColor/Bold/Alignment`, `getTextWidth`. Reset afterwards (white, not bold, left).
 - Help lines in the F1 box: in `onDraw` with `isActiveForInputIgnoreSelection` → `g_currentMission:addExtraPrintText(text)`. 🔎
+- **Where to draw:** vehicle event `onDrawUIInfo` (only when the vehicle is the current one) 🔎 (Courseplay); append to `BaseMission.draw` for a global HUD 🔎 (AutoDrive); append to the **instance** functions `g_currentMission.hud.drawControlledEntityHUD` (runs only when the vehicle HUD is drawn) and `hud.setControlledVehicle` (to learn the vehicle); guard with `speedMeter.isVehicleDrawSafe` 🔎 (EnhancedVehicle).
+- Hide with `g_gui:getIsGuiVisible()`, `g_noHudModeEnabled`, `hud:getIsVisible()`; skip on a dedicated server. 🔎
+- **Overlays:** `Overlay.new(filename, x, y, w, h)` (e.g. `g_baseUIFilename` with `setUVs(g_colorBgUVs)` for a plain box), `setUVs(GuiUtils.getUVs({x, y, w, h}))` for pixel UVs in an own atlas, `setAlignment(Overlay.ALIGN_VERTICAL_*, Overlay.ALIGN_HORIZONTAL_*)`, `render()`; `HUDElement.new(overlay)` for child trees. 🔎 (AutoDrive, EnhancedVehicle)
+- More text API: `setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_*)`, `getCorrectTextSize`. 🔎
+- Vehicle info box (look at a vehicle): append `Vehicle.showInfo(self, box)` and `box:addLine(label, value)` – install the hook after mission load. 🔎 (UsedPlus)
+- Space taken by the side notifications: `hud.sideNotifications` (`notificationQueue`, `markProgressBarForDrawing`). 🔎 (EnhancedVehicle)
 
 ## Vehicle name
 
@@ -32,6 +40,9 @@
 - `g_currentMission:addIngameNotification(colour, text)`.
 - FS25 types: `FSBaseMission.INGAME_NOTIFICATION_INFO` = `{1,1,1,1}` (white), `_CRITICAL` = `{1,0.305,0,1}` (**orange**). ✅
 - For red or the fuel orange, pass your own colour table. The text is coloured, the background stays `HUD.COLOR.BACKGROUND`. ✅
+- Also `FSBaseMission.INGAME_NOTIFICATION_OK`; `g_currentMission:addGameNotification(title, text, info, nil, durationMs)`; `g_currentMission:showBlinkingWarning(text, ms)` (centre of the screen). Guard all UI calls with `g_dedicatedServer == nil`. 🔎 (UsedPlus, Courseplay, PowerTools)
+- Money sound: `g_soundManager:playSample(SoundManager.SOUND_SAMPLES.NOTIFICATION_MONEY)`. 🔎 (UsedPlus)
+- Dashboards in the cab: see [15](15-dashboards-and-vehicle-data.md).
 
 ## Exhaust effects
 

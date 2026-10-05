@@ -1,23 +1,26 @@
 # LS25 / FS25 Modding Guide
 
-> Practical, verified knowledge for writing Farming Simulator 25 (LS25, FS25, GIANTS Engine 10) Lua script mods: shop configurations, motor/gearbox changes, settings menus, HUD, wear and repair, used vehicle market, leasing, helpers (AI workers) and multiplayer events. Every statement is marked as confirmed in game, read from the game source, learned from another mod, or assumption. Includes a translation checker, a test runner and a small mod template.
+> Practical, verified knowledge for writing Farming Simulator 25 (LS25, FS25, GIANTS Engine 10) Lua script mods: shop configurations, motor/gearbox changes, settings menus, HUD, wear and repair, used vehicle market, leasing, helpers (AI workers), AutoDrive/Courseplay interop, input, dashboards, debugging and multiplayer events. Every statement is marked as confirmed in game, read from the game source, learned from another mod, or assumption. Includes a translation checker, a test runner and a small mod template.
 
 Read `knowledge/INDEX.md` first to find the file for a game function or class name, then read only that file. Status markers: ✅ confirmed in game, 📖 game source, 🔎 other mod, ❓ assumption.
 
 ## Knowledge
 - [API index](knowledge/INDEX.md): game function/class/global name -> file
 - [1. Sources and tools](knowledge/01-sources-and-tools.md): game source repos, reference mods, log.txt, mock tests, DDS icons
-- [2. Mod skeleton](knowledge/02-mod-skeleton.md): modDesc descVersion 113, hooks (Utils.overwrittenFunction), specializations, l10n translation files, help pages
-- [3. Settings and menu](knowledge/03-settings-and-menu.md): savegame settings file, modSettings, own tab in InGameMenuSettingsFrame, focus, presets
-- [4. Configurations and shop](knowledge/04-configurations-and-shop.md): addConfigurationType, getConfigurationsFromXML, ShopConfigScreen, wheels/crawlers, leasing costs, buying out, workshop buttons
-- [5. Motor and gearbox](knowledge/05-motor-and-gearbox.md): torqueScale before loadMotor, updateMotorProperties, gear groups, automatic shifting, pedals
-- [6. Consumption, wear, value](knowledge/06-consumption-wear-value.md): fuel usage, Wearable damage, repair price, calculateSellPrice
-- [7. HUD and display](knowledge/07-hud-and-display.md): SpeedMeterDisplay, own bars and icons, notifications
-- [8. Helpers (AI)](knowledge/08-helpers-ai.md): stopCurrentAIJob, messages, Courseplay/AutoDrive
-- [9. Used vehicle market](knowledge/09-used-vehicle-market.md): VehicleSaleSystem fields, constants, addSale, shop cells
-- [10. Multiplayer](knowledge/10-multiplayer.md): roles, events, admin check, per-player values, dirty flags, dedicated server
-- [11. Pitfalls](knowledge/11-pitfalls.md): common mistakes
-- [12. Learned from other mods](knowledge/12-learned-from-other-mods.md): techniques from FS25_AdjustSuite, UsedPlus, LeaseToOwn and others
+- [2. Mod skeleton](knowledge/02-mod-skeleton.md): modDesc descVersion 113, loader with source(), lifecycle hooks (Mission00.load, FSBaseMission.delete), Utils.overwrittenFunction, specialization injection via TypeManager.validateTypes, spec table alias, removeEventListener, savegame keys vehicles.vehicle(?).modName.specName, l10n and global g_i18n, help pages
+- [3. Settings and menu](knowledge/03-settings-and-menu.md): savegame settings file, modSettings, g_currentModSettingsDirectory, XMLFile/XMLSchema, own tab in InGameMenuSettingsFrame, options built in Lua, InGameMenu page, MessageDialog, g_gui:loadGui, focus, presets
+- [4. Configurations and shop](knowledge/04-configurations-and-shop.md): addConfigurationType, getConfigurationsFromXML, XMLFile.initInheritance injection ($pdlcdir$), DLC vehicle keys, SHOP_CONFIG, ShopConfigScreen hooks, BuyVehicleEvent/BuyVehicleData, SellVehicleEvent, leasing costs, buying out, addMoney vs changeBalance, MoneyType.register, workshop buttons
+- [5. Motor and gearbox](knowledge/05-motor-and-gearbox.md): torqueScale before loadMotor, updateMotorProperties, gear groups, automatic shifting, pedals, getCanMotorRun chain, updateVehiclePhysics, braking and parking brake from code
+- [6. Consumption, wear, value](knowledge/06-consumption-wear-value.md): fuel usage, Wearable damage and wear setters, repair price (static calculateRepairPrice), calculateSellPrice, getSellPrice composition
+- [7. HUD and display](knowledge/07-hud-and-display.md): SpeedMeterDisplay, speedBg, drawControlledEntityHUD, onDrawUIInfo, Overlay/HUDElement, own bars and icons, Vehicle.showInfo, notifications, showBlinkingWarning, EnhancedVehicle overlap
+- [8. Helpers (AI)](knowledge/08-helpers-ai.md): getIsAIActive, getJob, stopCurrentAIJob, own AIMessage + aiMessageManager, AutoDrive detection and stopAutoDrive (no AIJob), Courseplay getIsCpActive, onAIJobFinished, stop message follow-ups
+- [9. Used vehicle market](knowledge/09-used-vehicle-market.md): VehicleSaleSystem fields, constants, addSale, setSaleItem removes the offer, used condition after spawn, shop cells
+- [10. Multiplayer](knowledge/10-multiplayer.md): roles, events, relay with noEventSend and ghost object, admin and farm permission checks, server-authoritative blueprint (validation, response, full resync, join sync, bounded reads), dirty flags, server-only motor values, dedicated server (g_client nil)
+- [11. Pitfalls](knowledge/11-pitfalls.md): common mistakes, own and seen in other mods
+- [12. Learned from other mods](knowledge/12-learned-from-other-mods.md): per mod (license, link, techniques): AdjustSuite, AutoDrive, Courseplay, UsedPlus, ExtendedLeasing, UniversalAutoload, interactiveControl, EnhancedVehicle, DashboardLive, manualAttach, PowerTools
+- [13. Input and player](knowledge/13-input-and-player.md): modDesc actions/inputBinding, axis actions, onRegisterActionEvents, addActionEvent, registerActionEvent, PlayerInputComponent context, short/long press, mouse clicks via project(), g_localPlayer, triggers, attachImplement, PTO, hoses
+- [14. Development and debugging](knowledge/14-development-and-debugging.md): addConsoleCommand, consoleCommand* from Lua, restart into savegame (doRestart -autoStartSavegameId), setTimeScale, printTableRecursively, call logger, debug drawing, debug build by file presence, Luau syntax
+- [15. Dashboards and vehicle data](knowledge/15-dashboards-and-vehicle-data.md): speed, rpm, temperature, fill units, damage, mass, odometer, differentials, server-only lastFuelUsage, DashboardValueType, onRegisterDashboardValueTypes, DashboardLive forDBL
 
 ## Practice
 - [Workflow](workflow.md): versioning, checks before every build, log discipline, in-game testing

@@ -22,6 +22,12 @@ Look at how they are built, do not copy their code (check each mod's license). U
 | FS25_IncomeMod | in-game help pages |
 | FS25_LeaseToOwn | buying out leased vehicles |
 | FS25_AdjustSuite | shop configurations built in code, dynamic shop rows → [12](12-learned-from-other-mods.md) |
+| FS25_AutoDrive, Courseplay_FS25 | helper interop, AI jobs and messages → [8](08-helpers-ai.md) |
+| FS25_ExtendedLeasing | returning leased vehicles, own money types |
+| FS25_UniversalAutoload, FS25_interactiveControl | specs on foreign vehicles, XML injection, triggers |
+| FS25_EnhancedVehicle, FS25_DashboardLive | HUD next to the speedometer, dashboard value types, server-only motor values |
+| manualAttach | attaching, PTO, hoses, on-foot input |
+| FS25_PowerTools | console commands, restart into the savegame → [14](14-development-and-debugging.md) |
 
 ## Log
 

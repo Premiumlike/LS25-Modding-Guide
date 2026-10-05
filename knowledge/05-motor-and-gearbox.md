@@ -29,7 +29,21 @@
 ## Engine state and data
 
 - Prevent starting: override `getCanMotorRun`; stop: `stopMotor()`. ✅
+  - **Many mods override `getCanMotorRun`** (AutoDrive, Courseplay, UsedPlus as a stall/governor) – always call `superFunc` when you do not block. 🔎 (AutoDrive, Courseplay, UsedPlus)
+  - AutoDrive restarts the motor only if `getCanMotorRun()` allows; Courseplay's fuel-save controller calls `startMotor()` without asking ❓ – see [8](08-helpers-ai.md). 🔎
+- `getMotorState()` / `MotorState.OFF`, `spec_motorized.stopMotorOnLeave`, `g_currentMission.missionInfo.automaticMotorStartEnabled`, `motor:setGearShiftMode(VehicleMotor.SHIFT_MODE_AUTOMATIC)`, `spec_motorized.gearShiftMode`. 🔎 (AutoDrive, Courseplay)
 - `spec_motorized.smoothedLoadPercentage` (load 0–1, freezes when the engine is off), `motor:getLastRealMotorRpm()`, `motor.minRpm/maxRpm`, `motor:getMaximumForwardSpeed()` (m/s).
+- More values (RPM, temperature, fuel usage – partly server-only) in [15](15-dashboards-and-vehicle-data.md).
+
+## Driving and braking from code
+
+All 🔎 (AutoDrive, Courseplay, EnhancedVehicle) – not tested by us.
+- Low level: `vehicle:updateVehiclePhysics(axisForward, axisSide, doHandbrake, dt)`; a tiny positive acceleration plus handbrake holds the vehicle. `WheelsUtil.updateWheelsPhysics(vehicle, 0, 0, 0, true, true)` hard-stops on the server.
+- `vehicle:brake(1)`, `stopVehicle()`, `setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true)`.
+- Brake to standstill like the player: set `spec_drivable.lastInputValues.targetSpeed` (small value) and `targetDirection` until `getLastSpeed() < 1`, then reset both to nil. 🔎 (Courseplay)
+- `forceIsActive = true` keeps an unentered vehicle updating; `vehicle:raiseActive()` does it for one frame. 🔎 (AutoDrive, interactiveControl)
+- **Parking brake:** override `WheelsUtil.updateWheelsPhysics` (acceleration 0, handbrake, brake lights via `setBrakeLightsVisibility`) **and** `WheelsUtil.getSmoothedAcceleratorAndBrakePedals` (needed for manual transmission). Only while `getIsVehicleControlledByPlayer()`. 🔎 (EnhancedVehicle)
+- Own steering: override `Drivable.updateVehiclePhysics` and replace `axisSide`; or override `setSteeringInput` in a specialization. Keep the original in a `pcall` so driving survives an error in your code. 🔎 (EnhancedVehicle, UsedPlus)
 
 ## Automatic gearbox (`VehicleMotor:updateGear`)
 
