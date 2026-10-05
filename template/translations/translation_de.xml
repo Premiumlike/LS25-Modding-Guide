@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+    <elements>
+        <e k="mymod_opt_feature" v="Funktion aktiv" />
+        <e k="mymod_opt_cost" v="Kosten: %d %%" />
+    </elements>
+</l10n>
