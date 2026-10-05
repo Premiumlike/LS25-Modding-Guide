@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<modDesc descVersion="113">
+    <author>Your name</author>
+    <version>0.1.0</version>
+    <title>
+        <en>Mod Template</en>
+        <de>Mod-Vorlage</de>
+    </title>
+    <description>
+        <en><![CDATA[Starting point for an FS25 script mod: log with debug switch, settings saved in the savegame, settings synced in multiplayer.]]></en>
+        <de><![CDATA[Ausgangspunkt für einen LS25-Skript-Mod: Log mit Diagnose-Schalter, Einstellungen im Spielstand, Abgleich im Mehrspieler.]]></de>
+    </description>
+    <iconFilename>icon_mod.dds</iconFilename>
+    <multiplayer supported="false" />
+
+    <extraSourceFiles>
+        <!-- load order = file order: shared tables first -->
+        <sourceFile filename="scripts/mtLog.lua" />
+        <sourceFile filename="scripts/mtSettings.lua" />
+        <sourceFile filename="scripts/mtSync.lua" />
+    </extraSourceFiles>
+
+    <l10n filenamePrefix="translations/translation">
+        <!-- texts identical in all languages: only <en> here -->
+        <text name="mymod_brand"><en>Mod Template</en></text>
+    </l10n>
+</modDesc>
