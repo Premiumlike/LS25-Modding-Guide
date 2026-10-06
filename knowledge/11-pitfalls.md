@@ -41,4 +41,19 @@
 32. Detecting vanilla dialogs by their text → works only in the languages you check. 🔎
 33. XML injection by index (`animation(5)`, node path `0>0|9|3`) → breaks silently on a DLC update; validate and log ([4](04-configurations-and-shop.md)). 🔎
 34. Dialogs opened from hourly handlers while sleeping → game froze ([3](03-settings-and-menu.md)). 🔎
+35. Override that replaces instead of chaining (`getSellPrice`, `updateMotorTemperature`, `startThreshing` without `superFunc`) → every override below it is silently dead; also the reason two such mods "randomly" win ([12](12-learned-from-other-mods.md#compatibility-notes)). 🔎
+36. Per-instance replacement (`vehicle.startMotor = …`) or snapshot-and-restore of motor fields → bypasses the override chain / undoes other mods' changes ([5](05-motor-and-gearbox.md)). 🔎
+37. Runtime writes to `maxForwardSpeed`, `motorLimitSpeed`, `gearRatio`, `lastMotorRpm`, `accelerationLimit` → overwritten every tick on CVT vehicles with CVT Addon; change at XML level / from `*Origin` ([5](05-motor-and-gearbox.md)). 🔎
+38. `g_currentMission.addMoney` restored to a value cached at load (or `FSBaseMission.addMoney`) → removes other mods' wrappers; own costs as `MoneyType.AI` or to farm 0 → silently swallowed ([4](04-configurations-and-shop.md)). 🔎
+39. Capacity applied after fill levels loaded → saved fill clamped and lost; shovels need `defaultCapacity` too ([16](16-economy-missions-and-placeables.md)). 🔎
+40. Settings tab inserted mid-list → all later `SUB_CATEGORY` ids shift; cached numbers break. Injected rows without focus registration or the `MENU_ACCEPT` fix → keyboard/controller dead ([3](03-settings-and-menu.md)). 🔎
+41. Error in an appended `InGameMenuSettingsFrame.onFrameOpen` → the whole ESC menu fails to open; `pcall` and inject once ([3](03-settings-and-menu.md)). 🔎
+42. `registerActionEvent` in vehicle context returns `false` although it worked → check the event id ([13](13-input-and-player.md)). 🔎
+43. `massPerLiter` read as kg/l → it is t/l ([16](16-economy-missions-and-placeables.md)). 🔎
+44. `FSBaseMission.update` `dt` used as game time → it is real time ❓; Float32 for game-time ms loses precision, Int32 wraps above 2^31 ([10](10-multiplayer.md), [14](14-development-and-debugging.md)). 🔎
+45. Hooking both `sellFillType` and `addFillLevelFromTool` → sales counted twice; `getEffectiveFillTypePrice` for an unaccepted fill type → error ([16](16-economy-missions-and-placeables.md)). 🔎
+46. Saving from `delete` → "quit without saving" still writes your file ([3](03-settings-and-menu.md)). 🔎
+47. `getFarmlandIdAtWorldPosition` shown as field number → it is the farmland id ([15](15-dashboards-and-vehicle-data.md)). 🔎
+48. `forDBL_*` values compared as numbers → some are strings; `tonumber()` ([15](15-dashboards-and-vehicle-data.md)). 🔎
+49. A damage mod active → `getDamageAmount()` may read 0 and `setOperatingTime` may be blocked ([6](06-consumption-wear-value.md)). 🔎
 

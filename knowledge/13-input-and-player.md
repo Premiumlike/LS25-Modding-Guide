@@ -26,8 +26,23 @@
 - **On foot:** wrap the registration in `g_inputBinding:beginActionEventsModification(PlayerInputComponent.INPUT_CONTEXT_NAME)` … `endActionEventsModification()` (e.g. inside a wrapped `PlayerInputComponent.registerActionEvents`). Registering without the wrapper produced duplicate binds. Alternative: append to `PlayerInputComponent.registerGlobalPlayerActionEvents`. Remove inside the same context. 🔎 (manualAttach, UsedPlus, PowerTools)
 - **Short/long press on one key:** callback with `triggerUp` and `triggerDown`, measure time with `g_currentDt` while `inputValue == 1` (e.g. < 150 ms short, ≥ 350 ms long, fire on release). 🔎 (manualAttach)
 - **Re-using a vanilla action:** `g_inputBinding.nameActions[InputAction.X]`, `g_inputBinding.actionEvents[action][1]`; swap its `callback`/`targetObject`. Only after `Player.onStartMission` – the events do not exist earlier. 🔎 (PowerTools)
+- **`registerActionEvent` in vehicle context returns `success = false` although it worked** – check the returned event id instead. Keys that should work in the vehicle: append `PlayerInputComponent.registerGlobalPlayerActionEvents(self, controlling)` and register when `controlling == "VEHICLE"`. 🔎 (HideHelpTexts, AdjustStorageCapacity)
+- On-foot actions must be re-registered on every `PlayerInputComponent.registerActionEvents` (only for `inputComponent.player.isOwner`) – the player context is rebuilt and old ids go stale. 🔎 (FarmTablet, MarketDynamics)
 - Raw key fallback while a GUI blocks input: mod listener `keyEvent(unicode, sym, modifier, isDown)`, `Input.isKeyPressed(key)`. 🔎 (PowerTools)
 - Choose keys that do not collide with vanilla bindings (a mod's F12 clashed with refill and input dialogs); pass `disableConflictingBindings` and keep priorities low. 🔎 (PowerTools)
+
+## F1 help entries
+
+🔎 (HideHelpTexts)
+- What is shown right now: `g_inputBinding:getDisplayActionEvents()`; per event `event.action.name`, `action.activeBindings[1].axisNames` (e.g. `{"KEY_lshift", "KEY_h"}`), `action.displayNamePositive` / `displayNameNegative`.
+- **Single choke point:** override `InputDisplayManager.makeHelpElement(self, action1, action2, …)` and return `InputDisplayManager.NO_HELP_ELEMENT` to hide an entry – works for foreign actions. For your own action `g_inputBinding:setActionEventTextVisibility(id, false)` is enough.
+
+## Using the driver's own actions
+
+- **Easy start:** Additional Game Settings overrides `Drivable.actionEventAccelerate` – accelerating starts the motor if `getIsPowered()` and `getCanMotorRun()` allow (`startMotor`, `setAccelerationPedalInput`, `showBlinkingWarning` with the warning). 🔎 (AdditionalGameSettings)
+- Detecting "starter held": own events on `InputAction.TOGGLE_MOTOR_STATE` / `MOTOR_STATE_ON` with triggerUp/Down/Always in `onRegisterActionEvents`. 🔎 (AdvancedDamageSystem)
+- Some mods append `Vehicle.onRegisterActionEvents` globally so that a vehicle without their spec in a combination (e.g. a tractor carrying a combine) also gets the events. 🔎 (RealisticHarvesting)
+- Multi-press action (tap once/twice/three times for different functions). 🔎 ❓ (guidanceSteering, FS22 code)
 
 ## Mouse and clicks on 3D points
 

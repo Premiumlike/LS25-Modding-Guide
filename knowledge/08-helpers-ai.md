@@ -15,6 +15,9 @@
 - Own job types: `aiJobTypeManager:registerJobType(name, title, class)` with a subclass of `AIJob`. 🔎 (Courseplay)
 - Helper pool: `g_helperManager:getRandomHelper()`, `useHelper`, `releaseHelper`, `getHelperByIndex`. 🔎 (AutoDrive)
 - Keep the game from resuming a helper after loading a savegame: Courseplay forces `#isActive=false` in an `AIFieldWorker.saveToXMLFile` override. 🔎 (Courseplay)
+- Running jobs: `g_currentMission.aiSystem:getActiveJobs()`; per job `job.isRunning` (not `isActive`), `job.startedFarmId`, `job.vehicleParameter:getVehicle()`, `job:getHelperName()`. 🔎 (WorkerCosts)
+- **Job messages (server only):** `MessageType.AI_JOB_STARTED` (job, startFarmId) and `MessageType.AI_JOB_STOPPED` (job, aiMessage). Stop reason: `aiMessage:getType() == AIMessageType.ERROR` (also `OK`, `INFO`), `aiMessage:isa(AIMessageSuccessStoppedByUser)`. A helper-cost mod records an `ERROR`-type stop as "failed", others as "stopped by user" – give an own stop message the error type ❓. 🔎 (WorkerCosts)
+- **Vanilla wages** (as the WorkerCosts authors read it from the game source, unverified by us ❓): `AIJob:updateCost()` collects `pendingCost` and books it above ~25 with `addMoney(-cost, startedFarmId, MoneyType.AI, true)`; `AIJob:stop()` books the rest. WorkerCosts replaces `g_currentMission.addMoney` on every peer to drop these and books its own wages as `MoneyType.OTHER` at the day change – see [4](04-configurations-and-shop.md) for chaining. It never stops jobs. 🔎 (WorkerCosts)
 - Driving helpers: `AIVehicleUtil.driveInDirection(...)` and `AIVehicleUtil.driveToPoint(vehicle, dt, acc, allowedToDrive, moveForwards, lx, lz, maxSpeed)`, target from `worldToLocal(vehicle:getAISteeringNode(), …)`. 🔎 (AutoDrive, Courseplay)
 
 ## Own AI message
@@ -55,6 +58,22 @@ The cleanest way to stop any job with your own text in the game's helper notific
 - CP stops jobs itself on low fuel (`AIMessageErrorOutOfFuel`) and high damage (`AIMessageErrorVehicleBroken`). 🔎
 - Vehicle events for other mods: `onCpFinished`, `onCpEmpty`, `onCpFull`, `onCpFuelEmpty`, `onCpBroken`, `onCpADStartedByPlayer`, `onCpADRestarted`. 🔎
 - **Courseplay** reads working widths itself; if you change widths at runtime, Courseplay has to be updated, too. 🔎 (AdjustSuite)
+
+## Detecting who drives (all helper kinds)
+
+🔎 (SimpleInspector, RealisticHarvesting) – status priority used by SimpleInspector: controlled by a player > helper > motor running > off.
+- Player: `getIsControlled()`, name in MP `vehicle:getControllerName()`.
+- Any helper: `getIsAIActive()` (FarmTablet calls `getAIIsActive` inside `pcall` – ❓ one of the two may not exist, nil-check). Game helper turning: `getAIFieldWorkerIsTurning()` on the root vehicle.
+- AutoDrive: `vehicle.ad.stateModule:isActive()`, `getRemainingDriveTime()` (s).
+- Courseplay: `vehicle:getCpStatus()` → `getIsActive()`, `getWaypointText()`, `getTimeRemainingText()`; or `rootVehicle:getIsCpActive()`.
+- ❓ On clients these values exist only as far as AD/CP sync them.
+
+## Other mods and helpers
+
+🔎 – details per mod in [12](12-learned-from-other-mods.md).
+- AdvancedDamageSystem makes helpers immune to its hard-start effect and stops them on critical breakdowns; check `getIsAIActive()` before blocking a start yourself.
+- CVT Addon skips its start interlock while Courseplay is active; RealisticHarvesting limits combine speed via `motor:setSpeedLimit` so Courseplay and cruise control obey it ([5](05-motor-and-gearbox.md)).
+- guidanceSteering blocks helpers while it steers by overriding `getCanStartAIVehicle` / `getShowAIToggleActionEvent`, and does not steer while `getIsAIActive()`. 🔎 ❓ (guidanceSteering, FS22 code)
 
 ## Stop message → follow-up by CP and AD
 
