@@ -69,7 +69,8 @@ end
 - `g_currentMission.isServer` was nil/false on a headless dedicated server during `onStartMission` – check `g_server ~= nil`. 🔎 (MarketDynamics)
 - Server-only functions: guard with `if self.isServer` and log a dev error otherwise (AutoDrive's `stopAutoDrive`). 🔎
 - Patch 1.24: `loadstring` is disabled. 📖
-- Patch 1.24: "Fixed configurations not deducting money on multiplayer servers" – mods that book configuration prices themselves (e.g. a payment fix mod) may now charge twice. 📖
+- Patch 1.24: "Fixed configurations not deducting money on multiplayer servers" – mods that book configuration prices themselves (e.g. a payment fix mod) may now charge twice. 📖 The bug affected dedicated servers; the payment fix mod is no longer offered (per a modder's report).
+- Server-only values on clients: either sync them yourself (dirty flags, ~1 s), or – for consumption – estimate from the synced tank level change (FuelConsumptionHUD technique, slow, resolution ❓). Server-computed values on request: request/response events with a timeout (MotorLoadHUD slip). 🔎
 
 ## Vehicle values server → clients (dirty flags)
 

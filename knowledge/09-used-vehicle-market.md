@@ -14,7 +14,7 @@
 
 ## Changing the market
 
-- **Constants:** simply set the class field (`VehicleSaleSystem.MAX_GENERATED_ITEMS = 10`), remember the original values and write them back when your feature is switched off. 🔎 ✅
+- **Constants:** the instance `g_currentMission.vehicleSaleSystem` may hold its own copies – Configurable_Sales writes both class and instance ❓ 🔎. Simply set the class field (`VehicleSaleSystem.MAX_GENERATED_ITEMS = 10`), remember the original values and write them back when your feature is switched off. 🔎 ✅
 - **Own offer:** `vehicleSaleSystem:addSale({ xmlFilename, boughtConfigurations = { <configName> = { [<index>] = true } }, price, age (months), operatingTime (ms), damage, wear, timeLeft (h), isGenerated })`; the game assigns `id`. For the exact equipment of a vehicle convert all `vehicle.configurations` (number per name) to this format. Leaving out the wheel configuration on random offers avoids unfitting tyres. ✅
 - **Sold vehicles:** `VehicleSaleSystem:onVehicleWillSell(vehicle)` is called on every sale, also in single player – but in single player **no** offer is created. Good hook to put sold vehicles on the market yourself. ✅ `SellVehicleEvent` (server): fields `vehicle, isDirectSell, isOwned, multiplier`, no price; `run` is called a second time without `vehicle` (answer). Overriding `SellVehicleEvent.run` also catches returns of leased vehicles. 🔎 (ExtendedLeasing)
 - **New savegame:** `generateInitialSales` (3–4 start offers) runs **inside** `loadFromXMLFile` – a load guard around `loadFromXMLFile` must make an exception for it. ✅

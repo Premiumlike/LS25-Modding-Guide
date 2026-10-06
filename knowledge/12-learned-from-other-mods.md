@@ -2,7 +2,7 @@
 
 [← Overview](../README.md)
 
-We only describe techniques here, no code is copied. Check each mod's license before reusing anything. Everything except AdjustSuite was read from the source in October 2026 and is **not tested by us** (🔎); details live in the linked topic files. A table of what each mod overrides is at the end ([compatibility notes](#compatibility-notes)).
+We only describe techniques here, no code is copied. Check each mod's license before reusing anything. Everything except AdjustSuite was read from the source (GitHub, or the ModHub zip for the ModHub-only mods) in October 2026 and is **not tested by us** (🔎); details live in the linked topic files. A table of what each mod overrides is at the end ([compatibility notes](#compatibility-notes)).
 
 ## FS25_AdjustSuite (BLU3COW)
 
@@ -210,6 +210,38 @@ Source: <https://github.com/stijnwop/guidanceSteering> (read 2.1.6.0, `develop`)
 - Lines with `drawDebugLine` on terrain height every frame; join data appended to `SavegameSettingsEvent` → [10](10-multiplayer.md).
 - Blocks helpers while steering → [8](08-helpers-ai.md).
 
+## ModHub-only mods (read from the downloaded zip, no license file)
+
+Read in October 2026, 🔎, not tested together with other mods.
+
+### FS25_Configurable_Sales (JulLeBarge, 1.0.1.0)
+- Sets all `VehicleSaleSystem` constants, including the multiplayer ones and `MINIMUM_ITEM_VALUE`.
+  - It writes them on the class **and** on the instance `g_currentMission.vehicleSaleSystem`, in `loadMap` and again in an appended `FSBaseMission.onFinishedLoading`.
+  - Its defaults differ from vanilla (hourly chance 0.20), so it always overrides. → [9](09-used-vehicle-market.md)
+- Optional repricing: appended to `VehicleSaleSystem.addSale`. After every add it lowers the price of **all** generated offers whose discount is above a cap (it assumes a vanilla maximum discount of about 0.65 ❓).
+- Settings in its own file in the savegame folder, injected into the settings frame via appended `InGameMenuSettingsFrame.updateGameSettings`. No MP events.
+
+### FS25_MotorLoadHUD (Dr.Fajen, 1.1.0.0)
+- Load, power, slip and gear range.
+- Prepended and appended on the instance `g_currentMission.hud.drawControlledEntityHUD`; vehicle tracked via appended `hud.setControlledVehicle`. → [7](07-hud-and-display.md)
+- "Above speedometer" position from `hud.speedMeter.speedBg` (`y + height`). It **moves the vanilla fill-level display** (`hud.fillLevelsDisplay.y` / `offsetY`) every frame and restores the remembered values on leaving.
+- Load from `getMotorLoadPercentage()`, power from `motor:getTorqueCurveValue(rpm)` × rpm. These are readable on clients.
+- Wheel slip is server-computed and delivered by a request/response event pair: the client asks every 100 ms, the value expires after 750 ms. → [10](10-multiplayer.md)
+
+### FS25_FuelConsumptionHUD (Jansgi, 1.1.0.0)
+- One text line (l/h or kW), bottom right above the speedometer. Only `addModEventListener` with `update` (every 100 ms) and `draw`, no hooks.
+- Consumption mixed from three sources:
+  1. `spec_motorized.lastFuelUsage` (server only)
+  2. the consumer table, with a factor from `missionInfo.fuelUsage`
+  3. **a fill-level-delta estimator**: tank level change over ≥ 1 s, median/trimmed mean over 7 samples, noise check, plausibility check against source 1
+- The estimator works on multiplayer clients **without own network traffic**, because fill levels are synced. It is slow, and the synced resolution is unknown ❓. → [10](10-multiplayer.md), [15](15-dashboards-and-vehicle-data.md)
+
+### FS25_AdvancedMaintenance (MechMoxer, 1.0.2.0)
+- Adds its spec to every `Drivable`, non-`Locomotive` type directly when its source file runs.
+- **Replaces** `getCanMotorRun` and `getMotorNotAllowedWarning` without `superFunc`. It re-checks propellant and `motor:getCanMotorRun()` itself, so specs registered before it are skipped.
+- "Dead engine" is a new random roll on every call above about 29 % damage, so not persistent. The chance grows with damage × operating time.
+- On a hit it stops the helper with `AIMessageErrorVehicleBroken`, which triggers Courseplay/AutoDrive follow-up actions ([8](08-helpers-ai.md)).
+
 ## Other references
 
 | Mod | What we learned |
@@ -233,6 +265,7 @@ What the mods above override at points other mods commonly touch – for checkin
 | Courseplay | chains (fuel-save) | calls without asking ❓ | · | · | · | · | · |
 | AdjustSuite | · | · | · | · | · | `#torqueScale` in XML, gear ratios | · |
 | WorkerCosts | · | · | · | · | · | · | **instance wrapper** (drops `AI`, farm 0) |
+| AdvancedMaintenance | **replaces** (random dead engine) | · | · | · | · (reads vanilla damage) | · | · |
 | ExtendedLeasing | · | · | · | `repairVehicle(nil)` on return | · | · | uses `changeBalance` |
 
 Other override points seen:
@@ -240,4 +273,4 @@ Other override points seen:
 - `getRequiredMotorRpmRange` → CVT Addon. `getSpeedLimit`, `startThreshing`/`stopThreshing` (replaced), `addFillUnitFillLevel` → RealisticHarvesting.
 - `Drivable.actionEventAccelerate`, static `InfoDialog.show` → Additional Game Settings. `SellingStation.getEffectiveFillTypePrice` (replaced) → MarketDynamics. `Farm.changeBalance` (wrapped, read-only) → FarmTablet.
 - `getIsVehicleControlledByPlayer`, `Drivable.actionEventAccelerate/Brake/Steer`, `getCanStartAIVehicle` → guidanceSteering (FS22 code ❓); `getIsVehicleControlledByPlayer`, `getIsAIActive` → AutoDrive.
-- `getAdditionalComponentMass`, fill unit capacities → AdjustStorageCapacity. Mission classes → ContractBoost.
+- `getAdditionalComponentMass`, fill unit capacities → AdjustStorageCapacity. `VehicleSaleSystem` constants (class + instance), appended `addSale` → Configurable_Sales. `hud.drawControlledEntityHUD` (instance), `hud.fillLevelsDisplay.y` → MotorLoadHUD. `getMotorNotAllowedWarning` (replaced) → AdvancedMaintenance. Mission classes → ContractBoost.
