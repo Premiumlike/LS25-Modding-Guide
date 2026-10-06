@@ -56,4 +56,6 @@
 47. `getFarmlandIdAtWorldPosition` shown as field number → it is the farmland id ([15](15-dashboards-and-vehicle-data.md)). 🔎
 48. `forDBL_*` values compared as numbers → some are strings; `tonumber()` ([15](15-dashboards-and-vehicle-data.md)). 🔎
 49. A damage mod active → `getDamageAmount()` may read 0 and `setOperatingTime` may be blocked ([6](06-consumption-wear-value.md)). 🔎
-
+50. Two mods setting the same `VehicleSaleSystem` constants, or one mod remembering "original" values after another already changed them → last writer wins; stale values written back when switched off ([9](09-used-vehicle-market.md)). 🔎
+51. Random failure rolled on every `getCanMotorRun` call (every frame) → the motor fails intermittently and the effective rate depends on frame rate ❓. Roll once per interval and keep the state. 🔎
+52. Moving a vanilla HUD element (`fillLevelsDisplay.y`) without restoring it → other HUD mods that position relative to it end up wrong; restore on leaving the vehicle ([7](07-hud-and-display.md)). 🔎
