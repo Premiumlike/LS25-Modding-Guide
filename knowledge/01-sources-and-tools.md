@@ -28,6 +28,10 @@ Look at how they are built, do not copy their code (check each mod's license). U
 | FS25_EnhancedVehicle, FS25_DashboardLive | HUD next to the speedometer, dashboard value types, server-only motor values |
 | manualAttach | attaching, PTO, hoses, on-foot input |
 | FS25_PowerTools | console commands, restart into the savegame → [14](14-development-and-debugging.md) |
+| FS25_AdvancedDamageSystem, FS25_ExtendedVehicleMaintenance | damage/maintenance mods and what they override → [6](06-consumption-wear-value.md) |
+| FS25_CVT_Addon, FS25_RealisticHarvesting | per-tick motor writes, speed limits, cross-mod API → [5](05-motor-and-gearbox.md), [15](15-dashboards-and-vehicle-data.md) |
+| FS25_SimpleInspector, FS25_FarmTablet, FS25_HideHelpTexts | HUD text panels, overlay apps, F1 help entries → [7](07-hud-and-display.md), [13](13-input-and-player.md) |
+| FS25_AdjustStorageCapacity, FS25_WorkerCosts, FS25_ContractBoost, FS25_MarketDynamics | storages, money booking paths, contracts, selling prices → [16](16-economy-missions-and-placeables.md) |
 
 ## Log
 

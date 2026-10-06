@@ -19,6 +19,15 @@ See also [1](01-sources-and-tools.md) (log, mock tests) and the [workflow](../wo
 - **Time scale:** `g_currentMission:setTimeScale(0)` pauses game time (reproducible wear/consumption tests); high values test hourly/daily callbacks quickly. Read back `g_currentMission.missionInfo.timeScale`. Extra steps by replacing `Platform.gameplay.timeScaleSettings`. 🔎 (PowerTools)
 - Spawn a vehicle or pallet: `VehicleLoadingData.new()`, `setFilename`, `setPosition(x, y, z)`, `setPropertyState(VehiclePropertyState.OWNED)`, `setOwnerFarmId(id)`, `load(callback)`; check `VehicleLoadingState.OK`. Ground height: `RaycastUtil.raycastClosest(...)` or `getTerrainHeightAtWorldPos(g_terrainNode, x, y, z)`. Server only. 🔎 (PowerTools)
 
+## Test-tool checklist (EasyDevelopmentControls)
+
+EasyDevelopmentControls (ModHub) offers most test actions in a menu. Its repository contains **no Lua code**, so the list below comes from its texts; the game APIs we name are guesses ❓.
+- **Vehicles:** add/remove/set dirt, wear, damage, wetness in % (entered vehicle with implements or one in range) ❓ `Wearable`/`Washable` setters; fuel level; motor temperature ❓ `spec_motorized.motorTemperature.value`; operating time ❓ `setOperatingTime(ms)`; reload vehicle XML + i3d ❓ same path as `VehicleSystem.consoleCommandReloadVehicle`; analyse vehicle → log; power consumer edit (PTO power, force, rpm); fill unit level/type.
+- **General:** money add/remove/set ❓ `addMoney` / `changeBalance`; teleport and flip; extra time scales and stop time ❓ `setTimeScale`; set farm of player or vehicle; clear the i3d cache ❓ `g_i3DManager:clearEntireSharedI3DFileCache`; reload store items.
+- **Environment / fields / placeables:** set time (advances time), set or add weather, snow; field fruit, growth, ground and fertilizer states; farmland owner; production point state and fill levels; reload placeables.
+- **Multiplayer:** per-feature minimum permission level, own admin login; some features single player only.
+- Useful for wear/value/leasing mods: condition and hours for thresholds and prices, temperature, money, time jumps for monthly/daily hooks, reload without restart, set farm for ownership tests. Mind that damage mods may block foreign writes (e.g. AdvancedDamageSystem blocks `setOperatingTime` and ships its own command) ([6](06-consumption-wear-value.md)).
+
 ## Looking into tables
 
 - `DebugUtil.printTableRecursively(tbl, prefix, indent, depth)` – e.g. dump `spec_motorized` of the current vehicle. 🔎 (UniversalAutoload, PowerTools)
@@ -34,6 +43,8 @@ See also [1](01-sources-and-tools.md) (log, mock tests) and the [workflow](../wo
 ## Logging and builds
 
 - `print`, `printWarning`, `printError`, `printCallstack()`, `Logging.warning`, `Logging.devError`, `Logging.xmlWarning(xmlFile, fmt, …)` for vehicle XML authoring errors. Remember: `Logging.info` does not reach `log.txt` ([1](01-sources-and-tools.md)). 🔎 (PowerTools, AutoDrive, interactiveControl)
+- **Log level at runtime:** console commands `rmShowLoglevel` and `rmSetLoglevel <name|*> <level>` switch a per-logger level without a rebuild – a good pattern for a debug switch. 🔎 (HideHelpTexts) A returned string from a console command method is printed. 🔎
+- Console commands in multiplayer: route them to the server with an event. 🔎 (AdvancedDamageSystem) Dev-only features: gate on `g_isDevelopmentVersion`; clean dumps with `setFileLogPrefixTimestamp(false)`. 🔎 (AdditionalGameSettings)
 - Writing `log.txt` from Lua with `io.open` reportedly no longer works (since game version 1.12). 🔎 (PowerTools)
 - **Debug build by file presence:** debug output only if a certain file (e.g. a debug helper Lua) is in the zip; the release build excludes that file. Combine with auto-bumping the modDesc version in the build script. 🔎 (PowerTools)
 - Builds of other modders: a zip script with a whitelist of extensions. 🔎 (manualAttach, PowerTools)
@@ -43,4 +54,6 @@ See also [1](01-sources-and-tools.md) (log, mock tests) and the [workflow](../wo
 ## Lua dialect
 
 - manualAttach's source uses **Luau** syntax (`continue`, `+=`, backtick string interpolation, type annotations, `table.freeze` / `table.find` / `table.clear`) and zips the files unchanged. ❓ This suggests the FS25 runtime accepts Luau, but it is unverified (the build tool might transpile). `luac5.1 -p` rejects such files – stay with plain Lua 5.1 unless you test it in game. 🔎 (manualAttach)
+- ContractBoost iterates tables directly (`for _, m in tbl do`, without `pairs`) – an error in stock Lua 5.1; ❓ it apparently runs in the game. Use `pairs`/`ipairs`. 🔎 (ContractBoost)
+- `FSBaseMission.update`'s `dt` is real milliseconds, not scaled by the time scale ❓ – for in-game periods use `environment.currentDay` / `dayTime` or `MessageType.HOUR_CHANGED` / `DAY_CHANGED`; absolute game time ≈ `(currentDay - 1) * 86400000 + dayTime`. 🔎 (MarketDynamics)
 - Not available in mods: `os.time()` / `os.date()` → use `g_currentMission.time`, `environment.currentDay/currentHour/currentPeriod`; no `goto`. 🔎 (UsedPlus)

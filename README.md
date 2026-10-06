@@ -2,7 +2,7 @@
 
 Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) Lua script mods**, collected while building a large gameplay mod (tuning, wear, used market, leasing, multiplayer) – with tools and a mod template.
 
-**Keywords:** Farming Simulator 25 modding, FS25 Lua scripting, LS25 Mod erstellen, GIANTS Engine 10, modDesc, specialization, `ConfigurationUtil.getConfigurationsFromXML`, `ShopConfigScreen`, `VehicleMotor`, `SpeedMeterDisplay`, `VehicleSaleSystem`, `EconomyManager`, multiplayer events, dedicated server, AutoDrive and Courseplay interop, `AIMessage`, `DashboardValueType`, `XMLFile.initInheritance`, input actions, console commands, ModHub.
+**Keywords:** Farming Simulator 25 modding, FS25 Lua scripting, LS25 Mod erstellen, GIANTS Engine 10, modDesc, specialization, `ConfigurationUtil.getConfigurationsFromXML`, `ShopConfigScreen`, `VehicleMotor`, `SpeedMeterDisplay`, `VehicleSaleSystem`, `EconomyManager`, multiplayer events, dedicated server, AutoDrive and Courseplay interop, `AIMessage`, `DashboardValueType`, `XMLFile.initInheritance`, `SellingStation`, `MissionManager`, `MoneyType`, input actions, console commands, ModHub.
 
 **Using an AI assistant?** Point it to [`llms.txt`](llms.txt) or [`CLAUDE.md`](CLAUDE.md): look up a game function in the [API index](knowledge/INDEX.md), then read only the one topic file you need.
 
@@ -23,10 +23,11 @@ Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) L
 | [9. Used vehicle market](knowledge/09-used-vehicle-market.md) | `VehicleSaleSystem`, own offers, shop cells |
 | [10. Multiplayer](knowledge/10-multiplayer.md) | roles, events, relay pattern, admin, per-player values, dirty flags, server-authoritative blueprint |
 | [11. Pitfalls](knowledge/11-pitfalls.md) | short list of mistakes we made and ones seen in other mods |
-| [12. Learned from other mods](knowledge/12-learned-from-other-mods.md) | one section per published mod we read: license, link, notable techniques |
+| [12. Learned from other mods](knowledge/12-learned-from-other-mods.md) | one section per published mod we read: license, link, notable techniques; compatibility table (what each mod overrides) |
 | [13. Input and player](knowledge/13-input-and-player.md) | actions and bindings, vehicle/global/on-foot input, clicks on 3D points, player, attaching implements |
 | [14. Development and debugging](knowledge/14-development-and-debugging.md) | console commands, restart into the savegame, time scale, table dumps, debug drawing, debug builds |
-| [15. Dashboards and vehicle data](knowledge/15-dashboards-and-vehicle-data.md) | live vehicle values, server-only motor values, vanilla dashboard value types |
+| [15. Dashboards and vehicle data](knowledge/15-dashboards-and-vehicle-data.md) | live vehicle values, server-only motor values, vanilla dashboard value types, offering data/APIs to other mods |
+| [16. Economy, missions, placeables](knowledge/16-economy-missions-and-placeables.md) | money types and booking paths, selling station prices, contracts, storages and capacities, fill units |
 | [API index](knowledge/INDEX.md) | game function / class / global → topic file |
 | [Workflow](workflow.md) | versions, checks before delivery, log discipline, in-game testing |
 | [Tools](tools/) | translation check, run-all script, index builder |

@@ -23,6 +23,7 @@
 - Purchase: `BuyVehicleData:setSaleItem`, price `economyManager:getBuyPrice(storeItem, configurations, saleItem)`. With `setSaleItem(saleItem)` on a `BuyVehicleEvent` **the game itself removes the offer** on the server – also when you buy an offer from your own dialog. A client cannot serialise the `saleItem` into an own event, so let the vanilla event carry it. 🔎 (UsedPlus) Details in [4](04-configurations-and-shop.md).
 - Condition after spawning a used vehicle yourself: it starts at 0 damage → `addDamageAmount(damage, true)`, `setOperatingTime(hours * 3600000)`, wear via `Wearable`; dirt was applied with a short delay (`addTimer(ms, "method", target)`). 🔎 (UsedPlus)
 - UsedPlus runs its own used-vehicle search and does **not** use `VehicleSaleSystem` for its offers (and hooks nothing in it). 🔎 (UsedPlus)
+- Contract (mission) vehicles also spawn as vehicles (`AbstractMission.onSpawnedVehicle`, `propertyState` `MISSION`) – exclude them from market and sell-value logic ❓ ([16](16-economy-missions-and-placeables.md)).
 - Observe hours: `g_messageCenter:subscribe(MessageType.HOUR_CHANGED, fn, self)` and `unsubscribeAll(self)` in `deleteMap`.
 
 ## Showing something in a shop cell
