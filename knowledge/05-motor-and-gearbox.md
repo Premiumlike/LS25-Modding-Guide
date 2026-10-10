@@ -76,3 +76,11 @@ All 🔎 (AutoDrive, Courseplay, EnhancedVehicle) – not tested by us.
 - **Intervention points:** `updateGear` (correct group/gear afterwards), `applyTargetGear` (prepended, just before engaging), `findGearChangeTargetGearPrediction` (adjust the result). After changing `targetGear` yourself, raise `onGearChanged` again so the lever animation and display match. Do not change the shift pause (`gearChangeTime`) – it belongs to the vehicle.
 - More gearbox hooks seen: `VehicleMotor.getMinMaxGearRatio`, `shiftGear(up)`, `selectGear(gearIndex, activation)`, `applyTargetGear`, `updateGear(acc, brake, dt)`. 🔎 (AdvancedDamageSystem) CVT Addon is mostly inactive on geared vehicles ❓.
 - In the low field group the automatic skips gears (e.g. L5 → L7) – that is vanilla behaviour.
+
+## Engine sound volume
+
+- Engine samples live in `vehicle.spec_motorized.motorSamples` (7–8 entries on base game tractors), each with `indoorAttributes.volume` / `outdoorAttributes.volume`, `soundSample` (engine handle) and the usual SoundManager modifiers. ✅
+- The loud loops already have a base volume of **1.0** (seen: 0.10–1.00). Raising the base value (×1.25, ×2.0) was **not audible** in game. ✅
+- What works: overwrite `SoundManager.getModifierFactor(sample, modifierName)` and multiply the result for `modifierName == "volume"` on your own samples (mark them with a field on the sample table). The engine then really plays louder: `getSampleVolume(sample.soundSample)` went from ~1.0 to ~2.0 outdoors and ~0.7 to ~1.4 indoors with factor 2, so values above 1 are accepted. ✅ (technique 🔎 Interactive Control)
+- SoundManager functions available for volume work (FS25 1.24): `getCurrentFadeFactor`, `getCurrentSampleVolume`, `getCurrentSampleLowpassGain`, `getCurrentSamplePitch`, `getModifierFactor`, `getSampleModifierValue`, `getSampleVolumeScale`, `setSampleVolumeScale`, `setSampleVolumeOffset`, `setSampleLowpassGainOffset`, `setCurrentSampleAttributes`, `updateSampleModifiers`. Engine globals `getSampleVolume`, `setSampleVolume`, `isSamplePlaying` exist. ✅ (listed at runtime)
+- `g_soundManager:getIsIndoor()` tells whether the indoor attributes are in use. ✅
