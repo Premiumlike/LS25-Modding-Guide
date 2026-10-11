@@ -242,6 +242,17 @@ Read in October 2026, 🔎, not tested together with other mods.
 - "Dead engine" is a new random roll on every call above about 29 % damage, so not persistent. The chance grows with damage × operating time.
 - On a hit it stops the helper with `AIMessageErrorVehicleBroken`, which triggers Courseplay/AutoDrive follow-up actions ([8](08-helpers-ai.md)).
 
+### FS25_moreMotorSounds (PeterAH + Farming Dud's, 2.0.0.0)
+- Alternative engine sounds per vehicle as a shop configuration `moreMotorSounds` (only for matching store items).
+- Swaps the whole sound file: in `onPreLoad` it sets `externalSoundsFilename`/`externalSoundsFile`, and an overwritten `Motorized.loadSounds` temporarily sets `self.baseDirectory` to the mod folder; `Honk.onLoad` likewise. → [5](05-motor-and-gearbox.md)
+- Its sound XMLs put many layers under `<gearbox>` (exhaust load, retarder, turbo, extras) and use `<blowOffValve>` with `BLOW_OFF_VALVE_STATE`. Its own note: blow-off sounds are only heard in multiplayer with "Multiplayer Game Sound Expansion". → [5](05-motor-and-gearbox.md), [10](10-multiplayer.md)
+
+### FS25_soundExpansionMP ([Weekend Farmers] T4xs, 1.2.0.0)
+- Script pack with its own loader (captures the mod directory/name at load time, guards against standalone loading and double init) and per-script debug switches.
+- Multiplayer sound sync: blow-off valve, air compressor, hydraulic `TOOL_MOVE` sounds, tree cutting → [10](10-multiplayer.md).
+- Overrides: `VehicleMotor.setLastRpm` (server broadcast), `Motorized.onUpdate`, `Motorized.onMotorBlowOffValveChanged`, `Cylindered.onUpdate`, `SoundManager.loadSampleFromXML`/`playSample` (blow-off `isLocalSound`), `Lights.onUpdate`/`onUpdateTick`/`onVehiclePhysicsUpdate`, `Drivable.setBrakePedalInput`/`updateVehiclePhysics`/`getAccelerationAxis`/`getDecelerationAxis`, `Motorized.updateConsumers`, `EnterablePassenger.enablePassengerActiveCamera`.
+- Other modules: reverse lights/warning react to the **selected** direction → [13](13-input-and-player.md); cruise control stays on while the accelerator overrides it (brake still disables); passengers get indoor/outdoor sound → [13](13-input-and-player.md); bridge for RealismAddon Gearbox blow-offs into the vanilla `BLOW_OFF_VALVE_STATE` path.
+
 ## Other references
 
 | Mod | What we learned |
