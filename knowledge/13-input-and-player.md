@@ -72,3 +72,8 @@ All 🔎 (manualAttach) unless noted.
 - **Hoses:** override `connectHosesToAttacherVehicle(...)`; `getConnectionHosesByInputAttacherJoint(idx)`, `disconnectHose(hose)`, `updateAttachedConnectionHoses`. Without hoses the mod blocks `setLightsTypesMask`, `setBeaconLightsVisibility`, `setTurnLightState`, `getIsFoldAllowed`, `getIsMovingToolActive` … and brakes with `self:brake(1, true)` without an air hose.
 - `getIsFoldMiddleAllowed` is false while hoses are detached – check `spec_foldable.foldMiddleAnimTime` for the capability instead.
 - Before node math on a remembered vehicle: `not v.isDeleted and v.rootNode ~= nil and entityExists(v.rootNode)` – sold/reset vehicles crash otherwise.
+
+## Selected driving direction and passengers
+
+- **Selected direction** (what the transmission has engaged, not where the vehicle rolls): `spec_motorized.motor.currentDirection` (> 0.1 forward, < -0.1 reverse). Do **not** use `getDrivingDirection()` for this – in automatic mode it falls back to the actual movement. Manual direction change: `vehicle:getIsManualDirectionChangeActive()` or `getDirectionChangeMode() == VehicleMotor.DIRECTION_CHANGE_MODE_MANUAL`. Reverse lights: `vehicle:setReverseLightsVisibility(bool)`. 🔎 (soundExpansionMP)
+- **Passenger indoor/outdoor sound:** after `EnterablePassenger.enablePassengerActiveCamera` set `g_soundManager:setIsIndoor(x)`, `g_currentMission.ambientSoundSystem:setIsIndoor(x)` and `environment.environmentMaskSystem:setIsIndoor(x)`. 🔎 (soundExpansionMP)

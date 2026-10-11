@@ -85,3 +85,39 @@ All 🔎 (AutoDrive, Courseplay, EnhancedVehicle) – not tested by us.
 - SoundManager functions available for volume work (FS25 1.24): `getCurrentFadeFactor`, `getCurrentSampleVolume`, `getCurrentSampleLowpassGain`, `getCurrentSamplePitch`, `getModifierFactor`, `getSampleModifierValue`, `getSampleVolumeScale`, `setSampleVolumeScale`, `setSampleVolumeOffset`, `setSampleLowpassGainOffset`, `setCurrentSampleAttributes`, `updateSampleModifiers`. Engine globals `getSampleVolume`, `setSampleVolume`, `isSamplePlaying` exist. ✅ (listed at runtime)
 - `g_soundManager:getIsIndoor()` tells whether the indoor attributes are in use. ✅
 - **Engine off:** `spec_motorized.smoothedLoadPercentage` and `lastFuelUsage` are not updated while the motor is off (e.g. after a breakdown, `getIsMotorStarted()` false) – they keep their last value (seen: 96 % load / 95 l/h at 0 km/h). Set displayed values to 0 yourself. ✅
+
+## Sound layers: structure and meaning
+
+Read from the base game Fiat 180-90 sound XML and all 73 sound XMLs of More Motor Sounds 2.0 (October 2026), runtime fields confirmed in game with a debug log.
+
+- A vehicle's sound XML (`vehicle.base.sounds#filename`, optional `#volumeFactor`) has a block `motorized.sounds` with several `<motor>` layers, several `<gearbox>` layers, optionally `<blowOffValve>`, plus `retarder`, `brake`, `airCompressorRun/Stop`, `compressedAir`, `gearLeverStart/End`, `gearGroupLeverStart/End`, `reverseDrive`. Each layer has `file` (.gls/.ogg/.wav) **or** `template`, `volumeScale`, `pitchScale`, `linkNode`/`linkNodeOffset`, and children `<volume indoor outdoor>` with `<modifier type value modifiedValue>`, `<pitch>`, `<lowpassGain>`, `<loopSynthesisRpm>`/`<loopSynthesisLoad>`. ✅ (files)
+- **`<motor>` does not mean "engine".** The Fiat 180-90 has 7 `<motor>` layers: engine, a turbo (`$data/vehicles/volvo/vnx300/sounds/turbo_loop.gls`, `volumeScale` 0.2), two transmission whines (`template="transmissionModern_04"`), a fan and two cabin rumbles (`indoorCabinRumble`). Scaling all `motorSamples` also scales transmission, fan and cabin. ✅
+- **A turbo is just another layer**, not a sound type. It can sit under `<motor>` (Fiat) or `<gearbox>` (More Motor Sounds). Only its name tells you. Not every vehicle has one. ✅
+- **More Motor Sounds uses `<gearbox>` as a catch-all:** on the MB-trac 1800 21 layers, 14 under `<gearbox>` – exhaust under load (`*_Load_exh`), a second engine layer, retarder (`*_ret_exh`), turbo, transmission, and six `FD_Extra` layers. "Came from `<gearbox>`" therefore does not mean "transmission". ✅
+- **Blow-off valve** is a real type (`<blowOffValve>`); the game drives it with the modifier `BLOW_OFF_VALVE_STATE` (0..1). More Motor Sounds also gates it with `ACCELERATE`/`CRUISECONTROL` = 0 (only when lifting off the throttle). The base game Fiat has none. ✅ (files)
+- Modifier types used in More Motor Sounds (by frequency): `MOTOR_LOAD`, `SPEED`, `SUSPENSION`, `MOTOR_RPM`, `DIFFERENTIAL_SPEED`, `DRIVING_DIRECTION`, `DECELERATE`, `ACCELERATE`, `CRUISECONTROL`, `BLOW_OFF_VALVE_STATE`, `MOTOR_RPM_REAL`. ✅
+- **Reusing game sounds without copying:** vehicles reference sounds of other vehicles via `$data/...` (the Fiat uses the Volvo truck's turbo). A mod can do the same instead of shipping copies. ✅ (file)
+
+### Runtime fields
+
+- `vehicle.spec_motorized.motorSamples`, `.gearboxSamples` (arrays) and `.samples` (table, e.g. `samples.blowOffValve`). ✅
+- Per sample: `filename` (base game e.g. `data/vehicles/fiat/series90/sounds/fiatagri90.gls`, mods/DLC with the full path), `templateName` (e.g. `engineMediumVintage`, `transmissionModern_04`, `indoorCabinRumble`, `cabinTractor_01`, `blowOffValve`), `sampleName` (`motor(0)`, `gearbox(1)`), `volumeScale`, `soundSample` (engine handle), `linkNode`, `isGlsFile`, `isLocalSound`, `innerRadius`/`outerRadius`, `indoorAttributes`/`outdoorAttributes`. A template resolves `filename` to the base game file (`data/sounds/vehicles/transmission/transmissionmodern_04.gls`). ✅
+
+### Telling layers apart (rule that matches all of More Motor Sounds 2.0)
+
+Use only the **file name without folders** plus `templateName`. Folders mislead (More Motor Sounds keeps almost everything in `FD_extras/…`), and `sampleName` ("gearbox(1)") says nothing. Order that classified all 215 engine/transmission/blow-off layers of More Motor Sounds 2.0, the base game Fiat 180-90 and the DLC MB-trac 1800 correctly: ✅ (offline check against the files + in-game log)
+1. blow-off: from `samples.blowOffValve` or "blowoff" in the name
+2. turbo: "turbo"
+3. fan: "fan", "luefter", "kuehl", "cooling"
+4. cabin: "cabin", "rumble" – **not** for `<gearbox>` layers (the Fiat's `<gearbox file="cabin.gls">` is the transmission heard in the cab)
+5. leave alone: "retarder", "_ret", "ret_", "extra", "reifen", "tire", "rattle", "brake", "trailer", "mtb"
+6. engine: "eng", "exh", "auspuff", "_int", "_ext", "motor"
+7. transmission: "getriebe", "gtr", "gearbox", "transmission", "cvt", "cvx", "vario", "tms"
+8. "load" → engine
+9. otherwise by origin: `<gearbox>` → transmission, `<motor>` → engine
+
+Per-layer volume works with the `getModifierFactor` hook above (mark each sample with its own factor). ✅ (VEC v0.76.1)
+
+### How More Motor Sounds swaps the sound
+
+Own shop configuration `moreMotorSounds`; in `onPreLoad` it points `self.externalSoundsFilename` / `self.externalSoundsFile` to its own sound XML and calls `Motorized.loadSounds` with `self.baseDirectory` set to the mod folder (relative paths inside the mod). It replaces the whole sound file, it does not touch single layers. 🔎 (read, not copied)
