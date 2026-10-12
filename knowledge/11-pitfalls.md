@@ -36,6 +36,7 @@
 27. `addMoney` in nested dialog callbacks → "attempt to index nil with id"; `MoneyType.VEHICLE_SELL` → nil, money silently lost ([4](04-configurations-and-shop.md)). 🔎
 28. Price or amount taken from a client event → compute on the server ([10](10-multiplayer.md)). 🔎
 29. `g_client` used in server code → nil on a dedicated server. 🔎
+30. `stopCurrentAIJob(nil)` on a Courseplay job → CP crashes in its stop handler; and CP's auto repair silently undoes your "broken" state ([8](08-helpers-ai.md)). ✅
 30. Remembered vehicle used after it was sold/reset → check `isDeleted` and `entityExists(rootNode)` ([13](13-input-and-player.md)). 🔎
 31. Global hooks and console commands left behind after leaving a savegame → guard with `g_modIsLoaded`, `removeConsoleCommand` on delete ([2](02-mod-skeleton.md), [14](14-development-and-debugging.md)). 🔎
 32. Detecting vanilla dialogs by their text → works only in the languages you check. 🔎
