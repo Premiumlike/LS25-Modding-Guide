@@ -243,7 +243,7 @@ Read in October 2026, 🔎, not tested together with other mods.
 - On a hit it stops the helper with `AIMessageErrorVehicleBroken`, which triggers Courseplay/AutoDrive follow-up actions ([8](08-helpers-ai.md)).
 
 ### FS25_moreMotorSounds (PeterAH + Farming Dud's, 2.0.0.0)
-- Alternative engine sounds per vehicle as a shop configuration `moreMotorSounds` (only for matching store items).
+- Alternative engine sounds per vehicle as a shop configuration `moreMotorSounds` (only for matching store items). **Detect it by the configuration:** option **1 = "Standard sound"** (original), **2 and up = an MMS sound** (`configItem.indexMMS`); invalid ids are reset to 1 by MMS in `onPreLoad`. This works even if the mod folder is renamed – better than checking sound file paths. ✅ (code read, 2.0.0.0)
 - Swaps the whole sound file: in `onPreLoad` it sets `externalSoundsFilename`/`externalSoundsFile`, and an overwritten `Motorized.loadSounds` temporarily sets `self.baseDirectory` to the mod folder; `Honk.onLoad` likewise. → [5](05-motor-and-gearbox.md)
 - Its sound XMLs put many layers under `<gearbox>` (exhaust load, retarder, turbo, extras) and use `<blowOffValve>` with `BLOW_OFF_VALVE_STATE`. Its own note: blow-off sounds are only heard in multiplayer with "Multiplayer Game Sound Expansion". → [5](05-motor-and-gearbox.md), [10](10-multiplayer.md)
 
