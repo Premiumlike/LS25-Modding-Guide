@@ -121,3 +121,8 @@ Per-layer volume works with the `getModifierFactor` hook above (mark each sample
 ### How More Motor Sounds swaps the sound
 
 Own shop configuration `moreMotorSounds`; in `onPreLoad` it points `self.externalSoundsFilename` / `self.externalSoundsFile` to its own sound XML and calls `Motorized.loadSounds` with `self.baseDirectory` set to the mod folder (relative paths inside the mod). It replaces the whole sound file, it does not touch single layers. 🔎 (read, not copied)
+
+## Copying a transmission into a motor variant
+- If a motor configuration has no own `<transmission>`, the game uses the one of index 0. If you copy it into the variant (e.g. to change one gear group), **copy the direction change too** (`transmission.directionChange#useGroup`/`#reverseGroupIndex`, `#useGear`/`#reverseGearIndex` ❓ key names as in FS22). Without it the motor falls back to `directionChangeUseInverse`; with a reverse **group** (negative `ratio`, e.g. MB-trac 1100 "H R") the automatic then toggles between the reverse group and the road group and the tractor creeps forward when reversing. ✅ (VEC log, game update Oct 2026)
+- Safe fix after `loadMotor`: find the group with a negative ratio and call `motor:setDirectionChange(false, gearIndex, true, groupIndex, changeTime)`. Runtime fields: `directionChangeUseGroup`, `directionChangeGroupIndex`, `directionChangeUseGear`, `directionChangeGearIndex`, `directionChangeUseInverse`, `directionChangeTime`. 📖
+- When hooking game functions, pass **all** return values through (`{ n = select("#", ...), ... }` + `unpack(t, 1, t.n)`); updates may add return values.
