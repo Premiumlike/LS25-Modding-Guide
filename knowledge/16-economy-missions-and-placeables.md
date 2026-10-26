@@ -51,6 +51,12 @@ Money types and booking paths, selling prices, contracts, storages and fill unit
 - Placeable spec events used: `onLoad`, `onPostLoad`, `onFinalizePlacement`, `onDelete`, `onReadStream`, `onWriteStream`, `loadFromXMLFile`, `saveToXMLFile`, `onInfoTriggerEnter/Leave`; savegame keys via `registerSavegameXMLPaths(schema, basePath)` under `<modName>.<specName>`. Helpers `getOwnerFarmId()`, `getName()`, `spec_infoTrigger.infoTriggerNode`; proximity prompt via `g_currentMission.activatableObjectsSystem`.
 - Other data seen 🔎 (FarmTablet): husbandry `getNumOfAnimals`, `getMaxNumOfAnimals`, `getTotalFood`, `getFoodCapacity`, `getHusbandryFillLevel(FillType.WATER)`, `getConditionInfos`; silos `getFillLevels()`; productions `productionChainManager:getProductionPointsForFarmId(id)`, `activeProductions`; farmlands `g_farmlandManager.farmlands` (`id`, `farmId`, `field`, `areaInHa`), `g_fieldManager.farmlandIdFieldMapping`, `field:getAreaHa()`.
 
+## Farmlands and the big map
+
+- 📖 (`economy/FarmlandManager.lua`, `Farmland.lua`): `g_farmlandManager:getFarmlandIdAtWorldPosition(x, z)` (0 = no farmland), `getFarmlandAtWorldPosition(x, z)`, `getFarmlandOwner(farmlandId)` (owner farm id, `FarmlandManager.NO_OWNER_FARM_ID` if none), `getFarmlandById(id)`, `getFarmlands()`, `getOwnedFarmlandIdsByFarmId(farmId)`, `getIsOwnedByFarmAtWorldPosition(farmId, x, z)`, `getPricePerHa()`. Farmland fields: `id`, `name`, `areaInHa`, `price`, `farmId`, `field`, `showOnFarmlandsScreen`.
+- "Is this position on a field?": `vehicle:getIsOnField()` or `FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)` → `isOnField, densityBits, groundType` 🔎 (AutoDrive).
+- Own button in the farmland context box of the big map (ESC → map), next to Visit/Buy/Sell 🔎 (FS25_UsedPlus): wrap `InGameMenuMapFrame.onLoadMapFinished` (call the game first), append an id to `InGameMenuMapFrame.ACTIONS` and set `self.contextActions[id] = { title, callback, isActive }`; wrap `InGameMenuMapFrame.setMapInputContext(self, enterVehicleActive, resetVehicleActive, sellVehicleActive, visitPlaceActive, setMarkerActive, removeMarkerActive, buyFarmlandActive, sellFarmlandActive, manageActive)` and switch `isActive` after the game call. Selected farmland: `self.selectedFarmland`; close the box with `InGameMenuMapUtil.hideContextBox(self.contextBoxFarmland)`. Used by VEC v0.80.0 (service contract per farmland) – in-game test pending ❓.
+
 ## Fill units (vehicles)
 
 🔎 (AdjustStorageCapacity unless noted)
