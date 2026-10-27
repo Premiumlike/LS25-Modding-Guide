@@ -24,6 +24,6 @@ Read `knowledge/INDEX.md` first to find the file for a game function or class na
 - [16. Economy, missions, placeables](knowledge/16-economy-missions-and-placeables.md): MoneyType members, booking paths (addMoney vs changeBalance), SellingStation.getEffectiveFillTypePrice, getPricePerLiter, sellFillType, MissionManager constants and mission type data, contract vehicles, placeable storages and capacities (onLoad timing), vehicle fill units and mass
 
 ## Practice
-- [Workflow](workflow.md): versioning, checks before every build, log discipline, in-game testing
+- [Workflow](workflow.md): versioning, checks before every build, log discipline (English logs), in-game testing, ground rules for every new mod (multiplayer, modules, savegame without mod)
 - [Tools](tools/README.md): check_translations.py, run_all.sh, build_index.py
 - [Mod template](template/README.md): log with debug switch, savegame settings, multiplayer settings sync, example mock test
