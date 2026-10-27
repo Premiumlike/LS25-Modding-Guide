@@ -3,7 +3,7 @@
 
 - every language has the same keys, no empty text
 - placeholders (%s, %d, %.1f, %%) per text appear as often as in English
-- no key defined twice (file and directly in modDesc.xml)
+- no texts directly in modDesc.xml (keep it small, all texts in translations/)
 - every $l10n_ reference in modDesc.xml exists
 - every key used in scripts via a getter matching --prefix exists
 
@@ -45,8 +45,8 @@ for k in keys:
             fail.append("%s: placeholders in %s: %s instead of %s" % (lang, k, sorted(PH.findall(data[lang][k])), ref))
 md = open("modDesc.xml", encoding="utf-8").read()
 inline = set(re.findall(r'<text name="(\w+)">', md))
-for k in inline & keys:
-    fail.append("defined twice (file and modDesc): %s" % k)
+for k in sorted(inline):
+    fail.append("text directly in modDesc (move it to translations/): %s" % k)
 allkeys = keys | inline
 for k in set(re.findall(r"\$l10n_(\w+)", md)):
     if k not in allkeys:
@@ -60,4 +60,4 @@ if args.prefix:
 if fail:
     print("\n".join("FAIL " + x for x in fail))
     sys.exit(1)
-print("OK    translations: %d texts x %d languages + %d English only" % (len(keys), len(LANGS), len(inline)))
+print("OK    translations: %d texts x %d languages" % (len(keys), len(LANGS)))

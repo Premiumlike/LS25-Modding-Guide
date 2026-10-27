@@ -3,5 +3,6 @@
     <elements>
         <e k="mymod_opt_feature" v="Funktion aktiv" />
         <e k="mymod_opt_cost" v="Kosten: %d %%" />
+        <e k="mymod_brand" v="Mod Template" />
     </elements>
 </l10n>

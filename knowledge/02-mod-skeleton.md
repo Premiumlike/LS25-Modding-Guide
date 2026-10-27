@@ -56,7 +56,7 @@
 ## Texts (l10n)
 
 - Large amounts of text do not belong into the modDesc (advice from ModHub modders). Use `<l10n filenamePrefix="translations/translation">` with files `translation_de.xml`, `translation_en.xml` … in the format `<l10n><elements><e k="key" v="Text"/></elements></l10n>`. ✅
-- Texts that are **identical in all languages** go only as `<text name="…"><en>…</en></text>` directly into the same `<l10n>` block of the modDesc. GIANTS does the same: if a language is missing, the game uses English. File entries and modDesc entries can be mixed. ✅
+- Texts that are **identical in all languages** can go as `<text name="…"><en>…</en></text>` directly into the same `<l10n>` block of the modDesc – if a language is missing, the game uses English ✅; file entries and modDesc entries can be mixed ✅. GIANTS prefers small modDescs, though, so we now put them into every translation file with the same value and keep only `<l10n filenamePrefix="…" />` in the modDesc. Whether a key that exists only in `translation_en.xml` is used for other languages is ❓ – so add it to all files.
 - Language codes: **`cz` = Czech**. `cs`/`ct` are *probably* simplified and traditional Chinese. ❓
 - Get texts with `g_i18n:hasText(k)` / `g_i18n:getText(k)`, keep a fallback text in the script and log a missing key once.
 - For texts the **game itself** looks up (tab titles, `$l10n_` in your own GUI XMLs), additionally set the text in the global `g_i18n` (`setText`).

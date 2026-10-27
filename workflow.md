@@ -38,7 +38,7 @@ Only deliver when it says "ALL OK".
 ## Texts
 
 - All texts in translation files, one file per language, same keys everywhere.
-- Texts identical in every language (brand names, units) only once as `<en>` in the modDesc.
+- Texts identical in every language (brand names, units) also in the translation files, same value in each – keep the modDesc small (GIANTS' advice: move out what you can).
 - Keep a fallback text in the script for every key.
 
 ## Compatibility with other mods
@@ -55,7 +55,7 @@ Only deliver when it says "ALL OK".
 
 Retrofitting each of these later cost far more than doing it from day one.
 
-- **ModHub basics from the start:** English log output; texts identical in all languages only as `<en>` in the modDesc, everything else in `translations/`; current `descVersion`; no copied game/DLC/foreign files or code.
+- **ModHub basics from the start:** English log output; small modDesc – all texts in `translations/` (also those identical in all languages), only title and description stay in the modDesc; current `descVersion`; no copied game/DLC/foreign files or code.
 - **Multiplayer from the start:** every feature server-authoritative (server computes and books, client requests via event, permissions checked, state sent on join – see [10](knowledge/10-multiplayer.md)). Avoid "off in multiplayer for now" – we had to retrofit two whole modules.
 - **Modules and presets from the start:** every feature belongs to a module that can be switched off; difficulty via presets instead of dozens of single sliders.
 - **Look before you build:** log what the game really provides with a diagnostic build first. Example: FS25 has no `samples.motorStart`, and More Motor Sounds may keep engine layers under `gearboxSamples` ([5](knowledge/05-motor-and-gearbox.md)).

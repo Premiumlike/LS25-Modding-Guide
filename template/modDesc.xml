@@ -20,8 +20,6 @@
         <sourceFile filename="scripts/mtSync.lua" />
     </extraSourceFiles>
 
-    <l10n filenamePrefix="translations/translation">
-        <!-- texts identical in all languages: only <en> here -->
-        <text name="mymod_brand"><en>Mod Template</en></text>
-    </l10n>
+    <!-- all texts live in translations/ (also those identical in all languages) - keep the modDesc small -->
+    <l10n filenamePrefix="translations/translation" />
 </modDesc>
