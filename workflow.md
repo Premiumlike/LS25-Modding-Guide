@@ -24,6 +24,7 @@ Only deliver when it says "ALL OK".
 - One prefix for all your lines, e.g. `[MYMOD]`.
 - Diagnostics only with a debug switch (best in `modSettings/`, independent of the savegame).
 - Error and warning lines and the version line always, regardless of the switch.
+- Log output in English only (ModHub expectation; players' logs reach modders worldwide). Player-facing texts stay in the translation files.
 - Log a recurring error only once per object; use "print only when changed" for values the game asks for constantly (menus).
 - When reading a log: search for `Error` and `LUA call stack` first.
 
@@ -49,3 +50,20 @@ Only deliver when it says "ALL OK".
 
 - Diagnostics from finished development phases can stay if they cost nothing while the debug switch is off – they help when players send logs later.
 - Truly dead code (never called) goes. A quick script that lists functions/locals referenced only once finds candidates; settings callbacks referenced by string are false positives.
+
+## Ground rules for every new mod (lessons from our first big mod)
+
+Retrofitting each of these later cost far more than doing it from day one.
+
+- **ModHub basics from the start:** English log output; texts identical in all languages only as `<en>` in the modDesc, everything else in `translations/`; current `descVersion`; no copied game/DLC/foreign files or code.
+- **Multiplayer from the start:** every feature server-authoritative (server computes and books, client requests via event, permissions checked, state sent on join – see [10](knowledge/10-multiplayer.md)). Avoid "off in multiplayer for now" – we had to retrofit two whole modules.
+- **Modules and presets from the start:** every feature belongs to a module that can be switched off; difficulty via presets instead of dozens of single sliders.
+- **Look before you build:** log what the game really provides with a diagnostic build first. Example: FS25 has no `samples.motorStart`, and More Motor Sounds may keep engine layers under `gearboxSamples` ([5](knowledge/05-motor-and-gearbox.md)).
+- **Check how often the game calls a function** before using it as a trigger – some getters (e.g. `getMotorNotAllowedWarning`) are polled every frame while seated, they are not events.
+- **Derive values per vehicle** (durations, volumes) from the vehicle's own data instead of one fixed value for all.
+- **Savegame without the mod must load:** test removing the mod before release; keep saved keys and configurations harmless when the mod is gone.
+- **Conflict list from the start:** scan the ModHub category your mod touches.
+- **Console test commands early** – only those that really speed up testing.
+- **Several own mods: one feature, one mod.** Each runs alone; together they add value through a small query API ([15](knowledge/15-dashboards-and-vehicle-data.md)).
+- **Test with streamers early** – their chats produced several of our best features.
+- **Record every engine finding at once** in `knowledge/` with its status marker.
