@@ -63,3 +63,4 @@
 53. Making "the engine" louder by scaling all `motorSamples` → transmission whine, fan and cabin rumble get louder too; classify the layers ([5](05-motor-and-gearbox.md)). ✅
 54. Classifying sound layers by the full file path → mod folders like More Motor Sounds' `FD_extras/…` match words such as "extra"; use the file name only ([5](05-motor-and-gearbox.md)). ✅
 55. Expecting a blow-off valve (or air compressor, hydraulic sound) to be heard by other players → the game does not send these; see [10](10-multiplayer.md). 🔎
+56. `x = cond and a or b` as if/else when `a` can be nil → you silently get `b`. Ours: "helper attempt time" was nil, so the check fell back to the normal start attempt and showed a helper warning on every key press. Use a real `if`. ✅
