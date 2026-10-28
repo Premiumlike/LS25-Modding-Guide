@@ -21,6 +21,7 @@
 - Background like the fill level display: `gui.filltypes_left/middle/right` with `HUD.COLOR.BACKGROUND`; accent colour `HUD.COLOR.ACTIVE`.
 - **Own icons:** `g_overlayManager:addTextureConfigFile(modDir .. "x.xml", "prefix")`, then `g_overlayManager:createOverlay("prefix.slice", 0,0,0,0)`, `setDimension`, `setColor`, `setPosition`, `render`. ✅
 - Game icons: `gui.icon_fuel`, `gui.icon_repair`, `gui.icon_gear`, `gui.icon_electricCharge`, `gui.icon_methane`, `gui.icon_tempomat`, `gui.icon_usage`, `gui.icon_clock` … – there is no engine icon.
+- **No round "i" info icon in the `gui` atlas:** slices with "info" in the name are only `dialogType_info` (a square), `fieldInfo_*`, `gameInfo_*`, `map_fieldInfo_*`, `storeAttribute_info`. The "i" in the blocked-start warning box is not reachable this way – draw your own icon in an own atlas. ✅ (Martin's log 28.10.2026)
 - Draw your own icons with a margin, otherwise they look too big next to the game icons. ✅
 - **Text:** `renderText(x, y, size, text)` in screen fractions, `setTextColor/Bold/Alignment`, `getTextWidth`. Reset afterwards (white, not bold, left).
 - Help lines in the F1 box: in `onDraw` with `isActiveForInputIgnoreSelection` → `g_currentMission:addExtraPrintText(text)`. 🔎
