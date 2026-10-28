@@ -37,6 +37,7 @@
 ## Selected configuration on a vehicle
 
 - `vehicle.configurations[type]` = id; the item: `ConfigurationUtil.getConfigItemByConfigId(vehicle.configFileName, type, id)`.
+- **Own configuration type: the base option is a selection too.** Every vehicle that got your configuration has an item selected, also the "stock"/base option – a cache like "stage ~= nil" is true for stock vehicles. Check the item's `saveId`. ✅ (Martin's test 28.10.2026)
 - A **workshop rebuild creates a new object**: the old one is saved (`getReloadXML` → `saveToXMLFile`) and reloaded; the new configuration is already set before saving. ✅
 - Correcting a bought configuration on the server: `ConfigurationUtil.addBoughtConfiguration(manager, object, configName, configId)`. 🔎
 - **Shop preview vehicles** have `propertyState == VehiclePropertyState.SHOP_CONFIG` (others: `OWNED`, `LEASED`, `MISSION`). Courseplay prepends `Vehicle.load` and removes its event listeners for such vehicles – useful when your spec must not run in the shop. 🔎 (Courseplay, UniversalAutoload)

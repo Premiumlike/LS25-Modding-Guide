@@ -64,6 +64,11 @@ Retrofitting each of these later cost far more than doing it from day one.
 - **Savegame without the mod must load:** test removing the mod before release; keep saved keys and configurations harmless when the mod is gone.
 - **Conflict list from the start:** scan the ModHub category your mod touches.
 - **Console test commands early** – only those that really speed up testing.
+- **Make rare random events testable:** a console command with a multiplier instead of waiting (ours: a random engine failure at 8 %/h happens about every 45 s with factor 1000; not saved, back to 1 on load).
+- **Build mocks from real game data, not from your assumption:** our mocks modelled stock vehicles without a tuning stage, but in game they carry our own configuration with the option "stock". All mocks passed, yet "tuned engines only" did nothing. Copy mock values from a real log.
+- **Own configuration types have no "not selected":** every vehicle with the configuration has an item, including the base option – check the `saveId`, never just `~= nil` ([4](knowledge/04-configurations-and-shop.md)).
+- **Diagnostics show what takes effect, not what is configured:** a log line that prints the surcharge even where a setting disables it makes the test impossible to read.
+- **Log menu changes** ("Setting changed: …"): otherwise you cannot tell a wrong switch from wrong logic.
 - **Several own mods: one feature, one mod.** Each runs alone; together they add value through a small query API ([15](knowledge/15-dashboards-and-vehicle-data.md)).
 - **Test with streamers early** – their chats produced several of our best features.
 - **Record every engine finding at once** in `knowledge/` with its status marker.
