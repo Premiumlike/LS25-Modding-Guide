@@ -69,6 +69,7 @@ Retrofitting each of these later cost far more than doing it from day one.
 - **Own configuration types have no "not selected":** every vehicle with the configuration has an item, including the base option – check the `saveId`, never just `~= nil` ([4](knowledge/04-configurations-and-shop.md)).
 - **Diagnostics show what takes effect, not what is configured:** a log line that prints the surcharge even where a setting disables it makes the test impossible to read.
 - **Log menu changes** ("Setting changed: …"): otherwise you cannot tell a wrong switch from wrong logic.
+- **Make it look like the base game, not like a mod:** build displays, boxes, icons, colours and texts from the game's own elements – game icons and backgrounds instead of look-alikes. If you do not know the game element, find it with a diagnostic build first; draw your own icon only if the game really has none.
 - **Several own mods: one feature, one mod.** Each runs alone; together they add value through a small query API ([15](knowledge/15-dashboards-and-vehicle-data.md)).
 - **Test with streamers early** – their chats produced several of our best features.
 - **Record every engine finding at once** in `knowledge/` with its status marker.
