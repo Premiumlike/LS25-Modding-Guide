@@ -6,7 +6,7 @@ How to use it with few tokens:
 1. Look up the game function, class or global you need in `knowledge/INDEX.md` (one table, name -> file).
 2. Read only that file in `knowledge/`. Each file is one topic and short. Interop with other mods (AutoDrive, Courseplay …) is in `08`, per-mod summaries and a compatibility table (what each mod overrides) in `12`, a fast test loop in `14`, money bookings, selling prices, contracts and storages in `16`.
 3. Respect the status markers: ✅ confirmed in game, 📖 read from the partial game source, 🔎 learned from another mod (untested), ❓ assumption. Do not present 🔎/❓ as fact.
-4. For a new mod, start from `template/` and `workflow.md`; run `sh tools/run_all.sh` (needs lua5.1, luac5.1, xmllint, python3) before handing out a build.
+4. For a new mod, start from `template/` and `workflow.md`; copy `tools/` into the mod and run `sh tools/run_all.sh` from there (needs lua5.1, luac5.1, xmllint, python3) before handing out a build. In this repo, `tools/run_all.sh` is only the copy source; the template is checked with `sh template/tools/run_all.sh`.
 
 When contributing:
 - No GIANTS source code and no code copied from other mods – only own findings, names and references.

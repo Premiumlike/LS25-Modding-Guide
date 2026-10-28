@@ -6,6 +6,11 @@
 PREFIX="mymod_"
 LANGS="de,en"
 cd "$(dirname "$0")/.." || exit 1
+if [ ! -f modDesc.xml ]; then
+  echo "No modDesc.xml in $(pwd) - this script belongs in the tools/ folder of a mod."
+  echo "Copy tools/ into your mod first. To check the template in this repo: sh template/tools/run_all.sh"
+  exit 1
+fi
 fail=0
 for f in $(find scripts -name "*.lua"); do luac5.1 -p "$f" || fail=1; done
 xmllint --noout modDesc.xml translations/*.xml || fail=1
