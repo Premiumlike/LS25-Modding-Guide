@@ -29,6 +29,7 @@
 
 - Hook `VehicleMotor.getTorqueCurveValue` – the game itself subtracts damage there (`DAMAGE_TORQUE_REDUCTION`). 📖
 - **The physics only receives the curve via `Motorized:updateMotorProperties`** → `setMotorProperties(… motor:getTorqueAndSpeedValues())`, which the game calls only on load and on a damage change > 5 %. If you change torque at runtime you must **call `updateMotorProperties` yourself** – otherwise it shows in displays but not while driving. ✅
+- 📖 The automatic gear selection (`VehicleMotor` power checks for the next/previous gear) calls `getTorqueCurveValue` directly, not `getTorqueAndSpeedValues`. To change only what the **driving physics** gets (e.g. a turbo lag) without changing how the automatic picks gears, hook `VehicleMotor.getTorqueAndSpeedValues` and scale the returned torque array, then call `updateMotorProperties`. Push only on noticeable changes (VEC: ≥ 2 %, endpoints exact) – a turbo spool-up needed about 10 pushes. In-game effect still to be confirmed ❓.
 - Other mods hook `VehicleMotor.getTorqueCurveValue` globally too (AdvancedDamageSystem: torque × max(1 + effect, 0.2), then `updateMotorProperties`) – factors of several mods **multiply**. 🔎 (AdvancedDamageSystem)
 - PTO torque: `PowerConsumer.getTotalConsumedPtoTorque` recurses across implements – AdvancedDamageSystem hooks it with a call-depth counter and `pcall`. 🔎
 - Less torque alone hardly slows a vehicle on the road – it keeps its speed. It becomes noticeable only with a pedal intervention. ✅
