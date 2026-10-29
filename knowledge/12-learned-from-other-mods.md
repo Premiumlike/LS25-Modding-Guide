@@ -273,7 +273,7 @@ What the mods above override at points other mods commonly touch – for checkin
 | CVT Addon | start interlock | · | · | · | · (`addDamageAmount` on manual) | · (per-tick motor fields) | · |
 | UsedPlus | stall/governor | · | global override (composes) | replaces workshop dialog, static price | · | · | uses `changeBalance` |
 | AutoDrive | overridden | restarts if allowed | · | · | · | · | · |
-| Courseplay | chains (fuel-save) | calls without asking ❓ | · | · | · | · | · |
+| Courseplay | chains (fuel-save) | calls without asking ✅ (also on the game helper; refuse the start in a `startMotor` override) | · | · | · | · | · |
 | AdjustSuite | · | · | · | · | · | `#torqueScale` in XML, gear ratios | · |
 | WorkerCosts | · | · | · | · | · | · | **instance wrapper** (drops `AI`, farm 0) |
 | AdvancedMaintenance | **replaces** (random dead engine) | · | · | · | · (reads vanilla damage) | · | · |
