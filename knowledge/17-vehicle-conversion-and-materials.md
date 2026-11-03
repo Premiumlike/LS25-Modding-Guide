@@ -7,6 +7,8 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 ## Workflow without Blender
 
 - Open the FS19 i3d once in **GIANTS Editor 10** and save it → geometry is in the FS25 format (`.i3d.shapes` version 10). Everything else can be scripted. ✅
+  - GIANTS Editor merges materials whose FS19 textures are missing (they become identical) and reassigns `materialIds` – e.g. a drawbar or decal suddenly uses the body material. Take the scene and `shapeId`s from the saved file but `<Files>`, `<Materials>` and every shape's `materialIds` from the FS19 original (nodes are in the same order). ✅
+  - FS19 `.i3d.shapes` are version 5 and parse with the same reader; writing them as v10 yourself works for geometry, but the editor also adds convex collision data (`cm` attachment) to compound collision shapes – keep the editor step. 📖
 - **Reading `.i3d.shapes`:** the pure-Python reader of [blender-i3d-importer](https://github.com/nadine-brinkmann/blender-i3d-importer) (GPLv3) works without Blender (`i3d_shapes_reader`, `i3d_shapes_models`, `_cipher_keys`).
 - **Writing `.i3d.shapes` v10** (own writer, verified by a byte-identical read→write roundtrip ✅). Shape entity layout:
   name (int32 length + bytes, pad to 4) · id · bounding volume (4 floats, not for type 5) · cornerCount, numSubsets, vertexCount, options · `vtxCompression` float (v ≥ 9) · subsets (4 × uint32 + one float UV density per present UV set) · **material slot names** (uint16 length + bytes, pad to 2, then to 4) · indices (uint16 if vertexCount ≤ 0x10000, else uint32; pad to 4) · positions · normals · tangents (4 floats) · UV sets · vertex colours · skinning (weights only if not single-weight, then index bytes) · generic data · remaining attachment bytes unchanged.
