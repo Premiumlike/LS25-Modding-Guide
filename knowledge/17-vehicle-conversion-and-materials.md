@@ -99,7 +99,8 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
   - Skinned base-game shapes are stored in model space (rest pose). To make them static, clear the skinning flag, drop the weights and indices, and recompute the bounding volume.
   - **Also clear `SINGLE_BLEND_WEIGHTS`** and the high option bit `0x80000000`. A shape that keeps these bits without skinning data **crashes the game** without a log message when the vehicle loads, for example in the shop. ✅
   - **Don't warp hoses onto a different frame.** A piecewise-linear map also stretches the tube cross-section, and round hoses turn into flat ribbons. ✅ (seen in game)
-  - Build your own tubes along anchor points instead: Catmull-Rom spline, parallel-transport frames, 8 sides. Thin out straight runs and map the UVs onto a straight hose island of the base-game vmask. Base-game hoses have their face normals pointing the same way as the vertex normals. ❓ in-game look pending
+  - Build your own tubes along anchor points instead: Catmull-Rom spline, parallel-transport frames, 8 sides. Thin out straight runs and map the UVs onto a straight hose island of the base-game vmask. Base-game hoses have their face normals pointing the same way as the vertex normals. ✅ (looks good in game)
+  - Spline pitfalls: add points along long straight runs, near the corners and every 0.3 m, or Catmull-Rom bulges by more than 10 cm. Remove duplicate points. Check tube-to-tube distance (KD-tree) and tube centerline against the mesh (trimesh `ProximityQuery`) before testing in game.
 
 ## Converting sister models
 
