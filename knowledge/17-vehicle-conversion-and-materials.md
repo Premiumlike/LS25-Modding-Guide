@@ -98,8 +98,8 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
   - Parts merged into the main mesh, or hoses shaped to another frame, have to be cut out instead.
   - Skinned base-game shapes are stored in model space (rest pose). To make them static, clear the skinning flag, drop the weights and indices, and recompute the bounding volume.
   - **Also clear `SINGLE_BLEND_WEIGHTS`** and the high option bit `0x80000000`. A shape that keeps these bits without skinning data **crashes the game** without a log message when the vehicle loads, for example in the shop. ✅
-  - Fit hoses to a different frame with a piecewise-linear map per axis through anchor points: cross members, axles, rear end; x to the inner face of the rail.
-  - ❓ in-game result pending
+  - **Don't warp hoses onto a different frame.** A piecewise-linear map also stretches the tube cross-section, and round hoses turn into flat ribbons. ✅ (seen in game)
+  - Build your own tubes along anchor points instead: Catmull-Rom spline, parallel-transport frames, 8 sides. Thin out straight runs and map the UVs onto a straight hose island of the base-game vmask. Base-game hoses have their face normals pointing the same way as the vertex normals. ❓ in-game look pending
 
 ## Converting sister models
 
