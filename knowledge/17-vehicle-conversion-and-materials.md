@@ -22,6 +22,8 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - **Colour configurations need slot names in the `.i3d.shapes` file** (one per subset). Names only in the i3d XML give "Failed to find material by material slot name". Split each colorMask mesh into one subset per zone and write the slot names. ✅
 - Official brand colours: `data/shared/brandMaterialTemplates.xml`; own templates in the modDesc `<materialTemplates>` with `parentTemplate` (`calibratedPaint`, `wood2`, `silverScratched` …). Detail templates: `data/shared/detailLibrary/materialTemplates.xml`. 📖
 - Decals must not sample the body vmask with UV1 (smeared). Base-game way: `customShaderVariation="vmaskUV2"` with the body vmask as glossmap – the decal's **second UV set** points to the body texture under it, so decals get the same dirt as the wall. FS19 decals already have that UV2. Add `alphaBlendingClipThreshold 1` and detail maps (`metalPainted_diffuse/_specular`, `flat_normal`). ❓
+- Base-game decal shapes use `castsShadows="false"`; with shadows the thin decal layer looks noisy. ❓
+- Bare metal (silver parts) needs much less dirt than paint – the same mask value reads as thick stuck mud on metal. Lower it (~30 %) only where the texture area is not shared with painted parts. ❓
 - **A vehicleShader material without detail maps shows the engine's default detail texture** – a test pattern with numbers and crosshairs, plus glitter. Give every material its own `detailDiffuse/Normal/Specular`. 📖
 - Collision masks: FS19 `8397058`/`8194` → `collisionFilterGroup 0x10004`, `collisionFilterMask 0xfe3ffb83`; `1073741824` → `0x40000000 / 0x20000000`. ✅
 - HD warning stickers: FS25 atlas `$data/shared/assets/assetLibraryStickers_diffuse` (4096², 16 × 8 cells of 256 px). ✅
