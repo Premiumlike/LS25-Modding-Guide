@@ -59,6 +59,10 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - **Drawbar springs:** base-game springs are a plain cylinder with end eyes – the coils are in the texture – stretched by a `movingPart` with `scaleZ="true"` towards a reference node. When swapping, measure the rest length (node → `referencePoint`) and only stretch the new mesh slightly, or the painted coils pull apart.Split old and new parts by **connected triangle groups**, not by a z cut (a z cut clips the turnbuckle eye and leaves bits of the old hooks). Turn the front hook so it lies **perpendicular** to the eye it hangs in (rotate normals/tangents too), move the hooks undeformed and stretch only the coil body, and shear so both hook tips sit on the node axis – base-game spring meshes are modelled slightly offset. Keep the source normal map for the coils; recolour through a material that uses it. ❓
 - **Look things up in the schema instead of guessing:** `<game install>/shared/xml/schema/vehicle.xsd` documents every vehicle XML path; also `wheel.xsd`, `wheelHub.xsd`, `materialTemplates.xsd`. 📖
 
+## Physics
+
+- **Converted trailers creep slowly over the ground:** FS19 values are usually `solverIterationCount="10"` on all components, no `inertiaScale` on the light dolly/drawbar components and a `brakeForce` without load scaling. Base-game drawbar trailer (Rudolph DK 280 RP): `solverIterationCount` 15/25/25, `inertiaScale="6 6 6"` on the dolly, `"2 2 2"` on the drawbar, `<brakeForce force="0.7" maxForce="1.5" maxForceMass="18000"/>` (brake force grows with the load). 📖 (effect in game not confirmed yet)
+
 ## Reusing parts from FS22 mods (with the author's permission)
 
 - FS22 `.i3d.shapes` are version 7; the same reader parses them and the v10 writer can re-emit them (add material slot names, `vtxCompression` 0, keep the 4-byte attachment tail). FS22 colorMask uses the same zone rule as FS19, so split by zone into subsets with FS25 materials. ❓
