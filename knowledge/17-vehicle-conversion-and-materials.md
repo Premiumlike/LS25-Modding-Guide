@@ -101,6 +101,11 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Build fill quads for each side of the hole. Get their UVs from an affine map (x, y, 1) → uv fitted by least squares to the vertices of the surrounding face in the same plane. For planar-mapped panels the error is about 0, so paint and dirt continue without a seam.
 - Filling only the hole is not enough when the removed parts are painted into the textures (AO in the vmask, normal map): their shadows show up on the fill. Rebuild the whole panel from fields instead, and let the affected field use the UVs of its neighbour field, shifted by one post spacing, with the seams hidden under the posts. Check beforehand by sampling the texture through the UVs into an image.
 
+## Transferring edits to a sister model ✅
+- Do not invent new selection rules. Instead, find the triangles of the finished model whose material changed: compare against an older state, keyed by rounded corner positions. Group them into parts, then search the sister model for **identical parts** (same triangle count, size ±2 mm, world x/y ±5 mm, any z). Copy the material per triangle from the nearest source triangle, measured relative to the part's corner. Check first that no identical part in the source exists both with and without the edit.
+- Compute world coordinates of each shape from the i3d hierarchy (translation and rotation).
+- For added geometry such as bolts, do not use "nearest part", because small neighbouring parts win. Use the build layout instead: if the sister model is longer by an extra panel, keep the parts at the same place and repeat the affected section shifted. Afterwards, verify that every bolt base sits on a surface.
+
 ## Useful base-game references
 
 - `data/vehicles/rudolphSohn/dk280RP/` – tipper with cover and a good dirt mask; `data/vehicles/kroeger/pwo24/`; `data/vehicles/fendt/vario700/vario700.xml` (`rimColorConfigurations`).
