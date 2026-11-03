@@ -45,6 +45,8 @@
 
 ## Shop configurator (`ShopConfigScreen`)
 
+- **Row order** (seen in game for a trailer): wheels, then `design`, `design2`, `design3`, `design4` …, then `cover`, `trailer`, then the colours. This matches the registration order in `Vehicle.init` (design/designColor pairs) followed by the specialization types. To group rows, choose the designN numbers accordingly. Renumbering swaps the stored choice of vehicles already bought. ✅
+
 - **Context:** `setStoreItem(self, storeItem, vehicle, saleItem, …)` – `vehicle ~= nil` = workshop, `saleItem ~= nil` = used purchase, both nil = new purchase. ✅
 - **`updateData(self, storeItem, …)` runs on every change.** Before `superFunc` you can correct `self.configurations[type]` and prices. **After** it you can hide rows: `row:setVisible(false)` + `invalidateLayout` on the list container. ✅
 - `configItem.isSelectable = false` only works if set **before** `superFunc`; `updateButtons` is too late. ✅
