@@ -42,6 +42,9 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - **Detail textures are world-space:** `detailDiffuse/Normal/Specular` are sampled triplanar from `localPosition` (1 tile = 1 m), independent of the UVs. Useful for even surface structure (e.g. tarp weave) on badly unwrapped old models. 📖 ❓ (result in game not confirmed yet)
 - A colour configuration applies the whole material template, including detail maps. Keep own detail maps with `<material materialSlotName="…" materialTemplateUseColorOnly="true"/>`. 📖
 
+- **Keep the mod size close to comparable base-game vehicles.** FS25 itself uses **BC7** (DDS DX10, DXGI format 98, e.g. `dashboardSymbols_diffuse`). BC7 keeps a hand-made dirt channel nearly lossless (~1.6/255 mean error) at ¼ of the uncompressed size – use it instead of uncompressed masks.
+- Before upscaling a texture, rasterise which UV areas the shapes actually use – old decal atlases often contain unused parts (e.g. warning symbols that already come from the game's sticker atlas).
+
 ## Configurations
 
 - Yes/No options: `isYesNoOption="true"` on the container (cover, design2, trailer …); the first entry is "No". ✅
