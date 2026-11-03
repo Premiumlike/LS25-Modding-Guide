@@ -97,6 +97,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
   - Standalone nodes can be loaded by reference with `dynamicallyLoadedParts` (filename, node, linkNode, position, rotation). 📖
   - Parts merged into the main mesh, or hoses shaped to another frame, have to be cut out instead.
   - Skinned base-game shapes are stored in model space (rest pose). To make them static, clear the skinning flag, drop the weights and indices, and recompute the bounding volume.
+  - **Also clear `SINGLE_BLEND_WEIGHTS`** and the high option bit `0x80000000`. A shape that keeps these bits without skinning data **crashes the game** without a log message when the vehicle loads, for example in the shop. ✅
   - Fit hoses to a different frame with a piecewise-linear map per axis through anchor points: cross members, axles, rear end; x to the inner face of the rail.
   - ❓ in-game result pending
 
