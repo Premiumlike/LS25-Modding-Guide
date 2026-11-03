@@ -56,6 +56,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - **Own hub colour selection:** in `<wheels>` `<hubMaterial useDesignColorIndex="4"/>` plus a `designColor4Configurations` block without material slot. `hubMaterial` accepts `materialTemplateName`, `useBaseColor`, `useRimColor`, `useDesignColorIndex` (1–16); `designColor` … `designColor16Configurations` exist. ✅
 - **License plate:** replace an FS19 modelled plate by an empty `TransformGroup` at the plate centre (rotation `0 180 0` at the back) **in the same place in the scenegraph** (keeps all index paths valid) plus `<licensePlates><licensePlate node="…" position="BACK" preferedType="ELONGATED" placementArea="top right bottom left"/></licensePlates>` (base game: `0.1 0.27 0.1 0.27`). ❓
 - **Plate lights** (`plateNumberLight01`): base-game orientation is `rotation="-90 0 -90"` on the left (−x) node and `-90 0 90` on the right (+x) – both shine inward. ❓
+- **Drawbar springs:** base-game springs are a plain cylinder with end eyes – the coils are in the texture – stretched by a `movingPart` with `scaleZ="true"` towards a reference node. When swapping, measure the rest length (node → `referencePoint`) and only stretch the new mesh slightly, or the painted coils pull apart. ❓
 - **Look things up in the schema instead of guessing:** `<game install>/shared/xml/schema/vehicle.xsd` documents every vehicle XML path; also `wheel.xsd`, `wheelHub.xsd`, `materialTemplates.xsd`. 📖
 
 ## Reusing parts from FS22 mods (with the author's permission)
