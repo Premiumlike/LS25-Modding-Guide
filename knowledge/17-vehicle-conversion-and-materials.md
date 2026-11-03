@@ -93,6 +93,13 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 
 - **Shape names differ from node names:** the name inside `.i3d.shapes` often differs from the node name in the `.i3d` (node "Leitung", shape "tdk301RP_vis.001"). Key per-part rules on the shape ID or the node, not on the shape name. ✅
 
+- **Base-game parts on a mod vehicle:**
+  - Standalone nodes can be loaded by reference with `dynamicallyLoadedParts` (filename, node, linkNode, position, rotation). 📖
+  - Parts merged into the main mesh, or hoses shaped to another frame, have to be cut out instead.
+  - Skinned base-game shapes are stored in model space (rest pose). To make them static, clear the skinning flag, drop the weights and indices, and recompute the bounding volume.
+  - Fit hoses to a different frame with a piecewise-linear map per axis through anchor points: cross members, axles, rear end; x to the inner face of the rail.
+  - ❓ in-game result pending
+
 ## Converting sister models
 
 - When a second model of the same family uses the same FS19 texture atlas (e.g. a longer tipper), port the finished material definitions of the first one by material name (prefix swapped) instead of redoing them; only the main normal/vmask files and UV2-only variations differ. Derive the vehicle XML from the finished one: resolve `i3dMapping`s first from the FS19 XML of the new model (paths stay valid after the editor save), then by node name, and drop features whose nodes do not exist yet. Run a consistency check (mappings resolve, material/file/shape ids exist, XML slot names exist in the shapes, texture files exist) before handing it out. ❓
