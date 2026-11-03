@@ -105,6 +105,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Do not invent new selection rules. Instead, find the triangles of the finished model whose material changed: compare against an older state, keyed by rounded corner positions. Group them into parts, then search the sister model for **identical parts** (same triangle count, size ±2 mm, world x/y ±5 mm, any z). Copy the material per triangle from the nearest source triangle, measured relative to the part's corner. Check first that no identical part in the source exists both with and without the edit.
 - Compute world coordinates of each shape from the i3d hierarchy (translation and rotation).
 - For added geometry such as bolts, do not use "nearest part", because small neighbouring parts win. Use the build layout instead: if the sister model is longer by an extra panel, keep the parts at the same place and repeat the affected section shifted. Afterwards, verify that every bolt base sits on a surface.
+- When the sister model shares the UV1 layout, reuse the finished vmask through `vmaskUV2` and build UV2 with the same rule. If there are more wall panels than free areas in the mask, map the extra panel onto the area of a panel on the **opposite side**, mirrored horizontally (u → U0+U1−u). The two are never visible at the same time. When checking, sample only outer faces: inner faces share UVs and look like repeats.
 
 ## Useful base-game references
 
