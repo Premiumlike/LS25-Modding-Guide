@@ -49,6 +49,8 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - **Removable cover:** put the `objectChange` on the cover's **parent** – the `toggleCover` animation resets the visibility of the cover node itself. ✅
 - **Rim colour:** `<rimColorConfigurations useDefaultColors="true" price="…">` with `rimColorConfiguration materialTemplateName="…"` (`RIM_DEFAULT`, `RIM_CONFIGURATION_CHROME`, `RIM_CONFIGURATION_BLACK`, `SHARED_GREYLIGHT` …). ✅
 - **Own hub colour selection:** in `<wheels>` `<hubMaterial useDesignColorIndex="4"/>` plus a `designColor4Configurations` block without material slot. `hubMaterial` accepts `materialTemplateName`, `useBaseColor`, `useRimColor`, `useDesignColorIndex` (1–16); `designColor` … `designColor16Configurations` exist. ✅
+- **License plate:** replace an FS19 modelled plate by an empty `TransformGroup` at the plate centre (rotation `0 180 0` at the back) **in the same place in the scenegraph** (keeps all index paths valid) plus `<licensePlates><licensePlate node="…" position="BACK" preferedType="ELONGATED" placementArea="top right bottom left"/></licensePlates>` (base game: `0.1 0.27 0.1 0.27`). ❓
+- **Plate lights** (`plateNumberLight01`): base-game orientation is `rotation="-90 0 -90"` on the left (−x) node and `-90 0 90` on the right (+x) – both shine inward. ❓
 - **Look things up in the schema instead of guessing:** `<game install>/shared/xml/schema/vehicle.xsd` documents every vehicle XML path; also `wheel.xsd`, `wheelHub.xsd`, `materialTemplates.xsd`. 📖
 
 ## Useful base-game references
