@@ -96,6 +96,10 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - `Texture was flipped with quality loss: <file>.dds`: the engine flips the image vertically on the CPU while loading (message lives in `ImageUtil.cpp`). BC1–BC5 can be flipped losslessly by reordering blocks, BC7 cannot. Why only some textures get flipped is unknown ❓. Saving the affected vmask as BC1 (as GIANTS exports in other mods do) removes the warning ✅.
 - The BC7 warning "has undefined channel count" disappears when the DDS carries the GIANTS block in dwReserved1 (magic 0x288ae8d9, 0, channel count, 16-byte checksum) – confirmed in game.
 
+## Closing an opening in a mesh (option "without grain door") ✅
+- Move the add-on parts into their own shape (last child of the same node, same local coordinates) and toggle it with objectChange.
+- Build fill quads for each side of the hole. Get their UVs from an affine map (x, y, 1) → uv fitted by least squares to the vertices of the surrounding face in the same plane. For planar-mapped panels the error is about 0, so paint and dirt continue without a seam.
+
 ## Useful base-game references
 
 - `data/vehicles/rudolphSohn/dk280RP/` – tipper with cover and a good dirt mask; `data/vehicles/kroeger/pwo24/`; `data/vehicles/fendt/vario700/vario700.xml` (`rimColorConfigurations`).
