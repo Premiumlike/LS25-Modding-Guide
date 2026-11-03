@@ -33,6 +33,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
   - DXT1 quantises B per 4 × 4 block → mosaic. Store a hand-made dirt vmask uncompressed (BGRA8 with mipmaps). ✅
   - Distribute dirt by **world height** (rasterise vertex height into UV space): dirty at the bottom and chassis, almost clean at the top; base-game covers have B ≈ 0. ✅
   - Convert any copied grain/noise to **texels per metre** of the target model; mirrored tiling shows as a kaleidoscope once you threshold it – generate non-tiled noise instead.
+- **Base-game dirt is hand-painted and instanced per panel:** e.g. on the Rudolph DK 280 RP all wall panels of one kind share one UV rectangle in the vmask (stored upside down), with dirt collecting at each panel's lower edge. Procedural noise does not reach that look; transferring such a panel rectangle onto your own panels (between the struts, cropped to real-world scale) gets much closer. ❓
 - **Detail textures are world-space:** `detailDiffuse/Normal/Specular` are sampled triplanar from `localPosition` (1 tile = 1 m), independent of the UVs. Useful for even surface structure (e.g. tarp weave) on badly unwrapped old models. 📖 ❓ (result in game not confirmed yet)
 - A colour configuration applies the whole material template, including detail maps. Keep own detail maps with `<material materialSlotName="…" materialTemplateUseColorOnly="true"/>`. 📖
 
