@@ -53,6 +53,12 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - **Plate lights** (`plateNumberLight01`): base-game orientation is `rotation="-90 0 -90"` on the left (−x) node and `-90 0 90` on the right (+x) – both shine inward. ❓
 - **Look things up in the schema instead of guessing:** `<game install>/shared/xml/schema/vehicle.xsd` documents every vehicle XML path; also `wheel.xsd`, `wheelHub.xsd`, `materialTemplates.xsd`. 📖
 
+## Reusing parts from FS22 mods (with the author's permission)
+
+- FS22 `.i3d.shapes` are version 7; the same reader parses them and the v10 writer can re-emit them (add material slot names, `vtxCompression` 0, keep the 4-byte attachment tail). FS22 colorMask uses the same zone rule as FS19, so split by zone into subsets with FS25 materials. ❓
+- Insert foreign subtrees **at the same child index** as the node they replace (wrap several in one group) so all other index paths stay valid; convert index paths used in the XML (`localHose`). Base-game Rudolph textures moved to `$data/vehicles/rudolphSohn/shared/` in FS25.
+- When deleting `i3dMapping` lines with a regex, remember node paths contain `>` – `[^>]*` stops inside `node="2>3|10"`.
+
 ## Useful base-game references
 
 - `data/vehicles/rudolphSohn/dk280RP/` – tipper with cover and a good dirt mask; `data/vehicles/kroeger/pwo24/`; `data/vehicles/fendt/vario700/vario700.xml` (`rimColorConfigurations`).
