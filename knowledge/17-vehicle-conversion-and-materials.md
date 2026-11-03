@@ -99,6 +99,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 ## Closing an opening in a mesh (option "without grain door") ✅
 - Move the add-on parts into their own shape (last child of the same node, same local coordinates) and toggle it with objectChange.
 - Build fill quads for each side of the hole. Get their UVs from an affine map (x, y, 1) → uv fitted by least squares to the vertices of the surrounding face in the same plane. For planar-mapped panels the error is about 0, so paint and dirt continue without a seam.
+- Filling only the hole is not enough when the removed parts are painted into the textures (AO in the vmask, normal map): their shadows show up on the fill. Rebuild the whole panel from fields instead, and let the affected field use the UVs of its neighbour field, shifted by one post spacing, with the seams hidden under the posts. Check beforehand by sampling the texture through the UVs into an image.
 
 ## Useful base-game references
 
