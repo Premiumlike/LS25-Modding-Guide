@@ -1,6 +1,6 @@
 # LS25 / FS25 Modding Guide
 
-Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) Lua script mods**, collected while building a large gameplay mod (tuning, wear, used market, leasing, multiplayer) – with tools and a mod template.
+Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) Lua script mods** and vehicle conversions from FS19, collected while building a large gameplay mod (tuning, wear, used market, leasing, multiplayer) – with tools and a mod template.
 
 **Keywords:** Farming Simulator 25 modding, FS25 Lua scripting, LS25 Mod erstellen, GIANTS Engine 10, modDesc, specialization, `ConfigurationUtil.getConfigurationsFromXML`, `ShopConfigScreen`, `VehicleMotor`, `SpeedMeterDisplay`, `VehicleSaleSystem`, `EconomyManager`, multiplayer events, dedicated server, AutoDrive and Courseplay interop, `AIMessage`, `DashboardValueType`, `XMLFile.initInheritance`, `SellingStation`, `MissionManager`, `MoneyType`, input actions, console commands, ModHub.
 
@@ -28,6 +28,7 @@ Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) L
 | [14. Development and debugging](knowledge/14-development-and-debugging.md) | console commands, restart into the savegame, time scale, table dumps, debug drawing, debug builds |
 | [15. Dashboards and vehicle data](knowledge/15-dashboards-and-vehicle-data.md) | live vehicle values, server-only motor values, vanilla dashboard value types, offering data/APIs to other mods |
 | [16. Economy, missions, placeables](knowledge/16-economy-missions-and-placeables.md) | money types and booking paths, selling station prices, contracts, storages and capacities, fill units |
+| [17. Vehicle conversion and materials](knowledge/17-vehicle-conversion-and-materials.md) | FS19→FS25 vehicles without Blender: reading/writing `.i3d.shapes`, colorMask zones and material slot names, white_diffuse, vmask channels, dirt formula, world-space detail textures, normal-map speckles, yes/no parts, rim and hub colour |
 | [API index](knowledge/INDEX.md) | game function / class / global → topic file |
 | [Workflow](workflow.md) | versions, checks before delivery, log discipline, in-game testing, ground rules for every new mod |
 | [Tools](tools/) | translation check, run-all script, index builder |
