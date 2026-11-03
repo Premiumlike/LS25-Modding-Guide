@@ -86,6 +86,9 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 
 - **Parked hoses without plugs:** FS25 places the plug of a detached hose at `adapterNode` (base game: `<hose … node="hydraulicIn01" adapterNode="hydraulicIn01_connector">`, the TG is a child of the `*_detached` shape at the hose end). Hoses taken from older mods may have such nodes but no `adapterNode` in the XML. Check the adapter sits on the hose end (distance to the nearest vertex of the parked hose mesh). 📖 ❓
 
+- **Moving a hose group to a model with different geometry:** copy the subtree unchanged into a wrapper TG. Put the wrapper at the target point with the target tilt. Set the inner node to old position − old pivot. Child positions and mapping suffixes stay the same. Insert at the **same child index** as the node it replaces, or every later path (i3dMappings, localHose node paths) shifts. ✅ (loads without errors; in-game look pending)
+- **Parked hose meshes are rigid:** test them against the new chassis, for example a wide drawbar box. If one intersects, rotate that mesh about its plug point (the adapter TG): t' = p − R·a. ❓ visual result pending
+
 ## Converting sister models
 
 - When a second model of the same family uses the same FS19 texture atlas (e.g. a longer tipper), port the finished material definitions of the first one by material name (prefix swapped) instead of redoing them; only the main normal/vmask files and UV2-only variations differ. Derive the vehicle XML from the finished one: resolve `i3dMapping`s first from the FS19 XML of the new model (paths stay valid after the editor save), then by node name, and drop features whose nodes do not exist yet. Run a consistency check (mappings resolve, material/file/shape ids exist, XML slot names exist in the shapes, texture files exist) before handing it out. ❓
