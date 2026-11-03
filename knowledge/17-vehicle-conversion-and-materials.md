@@ -105,6 +105,14 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - **movingPart roll:** The game orients the node using the direction to the `referencePoint` and "up" = the y-axis of the `referenceFrame` (Cylindered.lua, `localDirectionToWorld(part.referenceFrame, 0, 1, 0)`). If the node is rolled about its axis in the i3d relative to that frame (e.g. `rotation="0 0 90"`), the first update rolls it back, and skinned parts such as cylinder trunnions visibly turn by 90°. Fix: give the node the frame's roll in the i3d and counter-rotate its children. 📖 ❓ (fix untested in game)
 - **Routing tubes through a frame:** sample a free-space grid (distance from each grid point to all triangles) to find the gaps that cross members leave. Pick a height per section (high in front, under the cross members at the rear), keep a fixed order in the bundle, and put clips where they touch a cross member or a rail.
 
+- **Stair-step artifacts on old models (raster):** the cause is long parts on narrow UV strips, plus blocky DXT1/BC1 normal and AO data. What helps:
+  - median along each strip (keep the cross profile);
+  - refill the island rims of the vmask and pad 3 px outward, then smooth AO and dirt only over used texels;
+  - store as BC7.
+  - A vmask shared by several models needs the triangles of all of them.
+  ❓ in-game result pending
+- **Alpha-tested gratings:** build the mips so that the share of texels at or above the alpha threshold stays the same in every level. Plain box mips soften alpha, so the bars break up in small mips. ❓
+
 ## Converting sister models
 
 - When a second model of the same family uses the same FS19 texture atlas (e.g. a longer tipper), port the finished material definitions of the first one by material name (prefix swapped) instead of redoing them; only the main normal/vmask files and UV2-only variations differ. Derive the vehicle XML from the finished one: resolve `i3dMapping`s first from the FS19 XML of the new model (paths stay valid after the editor save), then by node name, and drop features whose nodes do not exist yet. Run a consistency check (mappings resolve, material/file/shape ids exist, XML slot names exist in the shapes, texture files exist) before handing it out. ❓
