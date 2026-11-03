@@ -93,6 +93,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 ## Porting materials between i3d files ✅
 - A material's `customShaderId="N"` points at a `<File>` entry. When copying materials from another i3d, make sure the target has `$data/shaders/vehicleShader.xml` under exactly that id. If that id is a texture instead, the log shows `Failed to open xml file '<some>.png'` plus `custommap "detailDiffuse" is not referenced in variation "base"` for every material, and all shapes using them are invisible.
 - FS19 collision masks (e.g. 0x2002, 0x802102) trigger `Missing collision group/filter mask bit 16 (VEHICLE)`. Working trailer values: components and collision shapes group 0x10004, mask 0xfe3ffb83; exactFillRootNode group 0x40000000, mask 0x20000000.
+- `Texture was flipped with quality loss: <file>.dds`: the engine flips the image vertically on the CPU while loading (message lives in `ImageUtil.cpp`). BC1–BC5 can be flipped losslessly by reordering blocks, BC7 cannot. Why only some textures get flipped is unknown ❓. Saving the affected vmask as BC1 (as GIANTS exports in other mods do) removes the warning ✅.
 - The BC7 warning "has undefined channel count" disappears when the DDS carries the GIANTS block in dwReserved1 (magic 0x288ae8d9, 0, channel count, 16-byte checksum) – confirmed in game.
 
 ## Useful base-game references
