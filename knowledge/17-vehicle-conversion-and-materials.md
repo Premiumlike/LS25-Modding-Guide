@@ -90,6 +90,11 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 
 - When a second model of the same family uses the same FS19 texture atlas (e.g. a longer tipper), port the finished material definitions of the first one by material name (prefix swapped) instead of redoing them; only the main normal/vmask files and UV2-only variations differ. Derive the vehicle XML from the finished one: resolve `i3dMapping`s first from the FS19 XML of the new model (paths stay valid after the editor save), then by node name, and drop features whose nodes do not exist yet. Run a consistency check (mappings resolve, material/file/shape ids exist, XML slot names exist in the shapes, texture files exist) before handing it out. ❓
 
+## Porting materials between i3d files ✅
+- A material's `customShaderId="N"` points at a `<File>` entry. When copying materials from another i3d, make sure the target has `$data/shaders/vehicleShader.xml` under exactly that id. If that id is a texture instead, the log shows `Failed to open xml file '<some>.png'` plus `custommap "detailDiffuse" is not referenced in variation "base"` for every material, and all shapes using them are invisible.
+- FS19 collision masks (e.g. 0x2002, 0x802102) trigger `Missing collision group/filter mask bit 16 (VEHICLE)`. Working trailer values: components and collision shapes group 0x10004, mask 0xfe3ffb83; exactFillRootNode group 0x40000000, mask 0x20000000.
+- The BC7 warning "has undefined channel count" disappears when the DDS carries the GIANTS block in dwReserved1 (magic 0x288ae8d9, 0, channel count, 16-byte checksum) – confirmed in game.
+
 ## Useful base-game references
 
 - `data/vehicles/rudolphSohn/dk280RP/` – tipper with cover and a good dirt mask; `data/vehicles/kroeger/pwo24/`; `data/vehicles/fendt/vario700/vario700.xml` (`rimColorConfigurations`).
