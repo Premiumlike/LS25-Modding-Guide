@@ -128,6 +128,8 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Build fill quads for each side of the hole. Get their UVs from an affine map (x, y, 1) → uv fitted by least squares to the vertices of the surrounding face in the same plane. For planar-mapped panels the error is about 0, so paint and dirt continue without a seam.
 - Filling only the hole is not enough when the removed parts are painted into the textures (AO in the vmask, normal map): their shadows show up on the fill. Rebuild the whole panel from fields instead, and let the affected field use the UVs of its neighbour field, shifted by one post spacing, with the seams hidden under the posts. Check beforehand by sampling the texture through the UVs into an image.
 
+- **Flickering usually means two nearly coincident faces:** before deleting a flickering part, look for faces of another part with the same normal less than 1 mm away (here a strip's inner face at x 1.2121 against the body at 1.2120). Moving it a few millimetres is usually enough; deleting it leaves a hole. ✅ (cause found; fix not yet tested in game)
+
 ## Duplicating an assembly (e.g. three grain doors instead of one) ❓
 - Read the parts from the skinned merged mesh (triangles per bone) or from separate shapes. Transform them into the **local frame of the target node** (inverse world matrix; rotate normals and tangents too). Store them as unskinned shapes under copies of the nodes (same rotation, translation plus offset).
 - Duplicate in the XML for every copy: the animation parts, the `movingTool`/`movingParts`, the effect subtree, and a discharge node listing all effect groups. Copy effect subtrees as XML: shapes can share a `shapeId`, and `skinBindNodeIds` must point at the copied joints.
