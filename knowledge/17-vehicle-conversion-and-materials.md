@@ -205,3 +205,5 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 
 - **Duplicated decals in FS19 models** ✅: a decal shape can carry a same-named, slightly offset child copy, which shows as a doubled, smeared logo. Check for child shapes with the same name as their parent shape.
 - **Mirroring copied geometry** : z' = 2·plane − z, negate the normal and tangent z, reverse the triangle winding. When shortening a drive shaft, keep the joint ends and compress only the middle tube.
+- **Decal UV2 after re-laying wall UV2** 🔎 (own tooling, in-game check pending): decals using the vmask read dirt/AO through UV2; when the walls get a new UV2 layout, old decal UV2 point at unrelated texels (post shadows show inside logos). Cast a ray from each decal piece to the wall and copy the wall's UV2 at the hit point to all its corners.
+- **Flat chrome lettering** 🔎: with the `chrome` template a flat decal reflects as one bright or dark area. A normal map derived from the decal alpha (distance transform → height → normals) makes it reflect like a rounded part, so it matches curved chrome trim.
