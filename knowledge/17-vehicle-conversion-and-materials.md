@@ -161,3 +161,9 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - To find which channel causes a spot on one face, profile the face along its length (e.g. tenths): normal R/G, AO, dirt, scratches, for mip 0 and lower mips. The channel that changes where the spots are is the culprit. A blocky dirt mask (vmask B) gives sharp-edged dust patches on beams; blur B only along the face (normalized over the face's texels).
 - A light rectangle at a beam edge can also be a short break in the baked bevel line (in the old high-poly an attachment sat there). It spans the full bevel height, so a rule like "taller than 4 px across = detail" keeps it. On long rectangular faces, treat edge-band components shorter than ~25 % of the face length as notches. Never apply row-based rules to slanted or overlapping islands; restrict the result with a mask of long, non-overlapping rectangular faces.
 
+### Chassis hoses on turntable (dolly) trailers
+- The dolly is its own component, joined to the main frame by a joint rotating about y. Put dolly hoses under the dolly component (coordinates minus the component's translation) and main-frame hoses under the main mesh; join them at the turntable axis (a rotary-joint block), so steering keeps everything consistent. Base-game reference: Rudolph DK 280 RP. ❓ (in-game test pending)
+- Main-frame hoses inside the dolly's swing radius must stay above the dolly's top edge.
+- Several tubes changing sides together on a diagonal: same lateral offset for all, staggered start (outer lane first). Otherwise their normal distance shrinks to Δx·sin(angle).
+- Rasterise free space first (occupied z ranges per line, y-z maps per x). Bottlenecks (e.g. a 14 cm gap in a cross brace) decide how many lines can pass; branch light cables at the rear from the electric socket instead of running them from the front.
+
