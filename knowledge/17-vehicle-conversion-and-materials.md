@@ -141,3 +141,9 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 
 - `data/vehicles/rudolphSohn/dk280RP/` – tipper with cover and a good dirt mask; `data/vehicles/kroeger/pwo24/`; `data/vehicles/fendt/vario700/vario700.xml` (`rimColorConfigurations`).
 - `data/shaders/vehicleShader.xml` (FS25) and the FS19 version (colorMask rule, channel layout).
+
+### Dashed bevel lines on wider faces
+- Old FS19 normal maps often have dashed bevel lines on long faces that are wider than thin strips (20–60 px), plus stray dots 1–2 px outside the UV island. In game this shows as regular notches along beam edges. A median along thin strips alone does not catch them.
+- Fix that worked: for each long, axis-aligned face take the per-row median along the face (include 2 margin rows where no other island lies); replace deviations that are less than ~4 px tall across the face (dashes), keep taller ones (brackets, bolts). Renormalize. ✅ visually in the texture, in-game check pending ❓
+- The `Texture was flipped with quality loss` warning can also hit a BC7 normal map, with a header identical to unaffected files. Base-game normal maps (e.g. Rudolph, Kröger) are DXT1, so saving the affected file as BC1 is consistent with GIANTS assets. Use a high-quality BC1 encoder (e.g. quicktex level 18: mean error ~2 vs ~7 with etcpak's fast BC1).
+
