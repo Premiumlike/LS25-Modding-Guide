@@ -147,3 +147,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Fix that worked: for each long, axis-aligned face take the per-row median along the face (include 2 margin rows where no other island lies); replace deviations that are less than ~4 px tall across the face (dashes), keep taller ones (brackets, bolts). Renormalize. ✅ visually in the texture, in-game check pending ❓
 - The `Texture was flipped with quality loss` warning can also hit a BC7 normal map, with a header identical to unaffected files. Base-game normal maps (e.g. Rudolph, Kröger) are DXT1, so saving the affected file as BC1 is consistent with GIANTS assets. Use a high-quality BC1 encoder (e.g. quicktex level 18: mean error ~2 vs ~7 with etcpak's fast BC1).
 
+### AO blotches on beams, alpha-tested gratings
+- Old AO (vmask G) on straight frame beams often has blotches and steps along the beam. Replacing each row by its median along the long face keeps the cross profile and removes them. Process both triangles of a quad together (same UV box), otherwise each half gets its own median and a diagonal seam appears.
+- Alpha-tested gratings seen at a grazing angle show regular teeth/moiré. Mitigation: close the holes in mip levels where holes are below ~1.5 texels (colour = bar colour mixed with a dark see-through tone by coverage). Base-game alpha parts (e.g. Rudolph DK 280) use alpha test without `alphaBlending`; trying `alphaBlending="true"` on the grating material is untested ❓.
+
