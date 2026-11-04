@@ -166,4 +166,5 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Main-frame hoses inside the dolly's swing radius must stay above the dolly's top edge.
 - Several tubes changing sides together on a diagonal: same lateral offset for all, staggered start (outer lane first). Otherwise their normal distance shrinks to Δx·sin(angle).
 - Rasterise free space first (occupied z ranges per line, y-z maps per x). Bottlenecks (e.g. a 14 cm gap in a cross brace) decide how many lines can pass; branch light cables at the rear from the electric socket instead of running them from the front.
+- Mounting a transplanted air tank: hanging it freely between the frame rails looks wrong even with spacer blocks to a cross member. Mount it lengthwise under a main rail with its straps reaching the rail's bottom flange (bolted strap plates). When rotating a transplanted part, rotate normals and tangents too. ❓ (in-game check pending)
 
