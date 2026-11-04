@@ -158,4 +158,5 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Using `$data/shared/default_normal.png` on large painted parts removes such artefacts but makes the parts look flat and plain; good as a diagnosis, usually not as the fix.
 - Grating with a toothed side edge: the hole rows of the alpha texture run right up to the UV border, so the mesh edge cuts through holes. Make the border columns/rows of the texture opaque (a frame).
 - Notches along panel edges also appear on compact faces (aspect ratio below 4): a row of small spots (±4 in R/G) right next to a bevel line already shows as teeth in game. Process every face in both directions and, inside a band along each edge, set whole rows to their median along the face, keeping only details that are at least ~4 px tall across.
+- To find which channel causes a spot on one face, profile the face along its length (e.g. tenths): normal R/G, AO, dirt, scratches, for mip 0 and lower mips. The channel that changes where the spots are is the culprit. A blocky dirt mask (vmask B) gives sharp-edged dust patches on beams; blur B only along the face (normalized over the face's texels).
 
