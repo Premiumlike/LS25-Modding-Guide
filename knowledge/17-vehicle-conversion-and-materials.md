@@ -155,4 +155,6 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Symptom: slightly lighter or darker rectangles that follow face boundaries on clear-coated frame parts, mostly at mid distance. Diagnose by elimination: point the material's normal map to `$data/shared/default_normal.png` (or the vmask to `$data/shared/default_vmask.png`) on a test build and see which removes them. ✅ (normal map was the cause)
 - Cause: mip 0 was flat on the faces, but standard mip generation blends bevel lines and neighbouring UV islands into thin faces (a 17 px beam face was tilted ~5° at mip 3). Clear coat makes every tilt visible.
 - Fix: generate normal-map mips per UV face (each texel averages only texels of the face under its centre, empty texels assigned to the nearest face) and ease the lower mips toward flat. In-game result pending ❓
+- Pragmatic fallback: if a converted normal map keeps causing artefacts on large painted parts (frames), point those materials to `$data/shared/default_normal.png`. Geometry provides the edges, the detail map the surface. 
+- Grating with a toothed side edge: the hole rows of the alpha texture run right up to the UV border, so the mesh edge cuts through holes. Make the border columns/rows of the texture opaque (a frame).
 
