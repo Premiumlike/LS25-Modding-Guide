@@ -151,3 +151,8 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Old AO (vmask G) on straight frame beams often has blotches and steps along the beam. Replacing each row by its median along the long face keeps the cross profile and removes them. Process both triangles of a quad together (same UV box), otherwise each half gets its own median and a diagonal seam appears.
 - Alpha-tested gratings seen at a grazing angle show regular teeth/moiré. Mitigation: close the holes in mip levels where holes are below ~1.5 texels (colour = bar colour mixed with a dark see-through tone by coverage). Base-game alpha parts (e.g. Rudolph DK 280) use alpha test without `alphaBlending`; trying `alphaBlending="true"` on the grating material is untested ❓.
 
+### Sharp-edged light/dark rectangles on glossy paint: normal-map mips
+- Symptom: slightly lighter or darker rectangles that follow face boundaries on clear-coated frame parts, mostly at mid distance. Diagnose by elimination: point the material's normal map to `$data/shared/default_normal.png` (or the vmask to `$data/shared/default_vmask.png`) on a test build and see which removes them. ✅ (normal map was the cause)
+- Cause: mip 0 was flat on the faces, but standard mip generation blends bevel lines and neighbouring UV islands into thin faces (a 17 px beam face was tilted ~5° at mip 3). Clear coat makes every tilt visible.
+- Fix: generate normal-map mips per UV face (each texel averages only texels of the face under its centre, empty texels assigned to the nearest face) and ease the lower mips toward flat. In-game result pending ❓
+
