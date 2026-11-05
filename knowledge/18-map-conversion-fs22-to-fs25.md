@@ -74,6 +74,20 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - Not yet confirmed in game.
 - 📖 Destructible map rocks (`onCreate = DestructibleMapObjectSystem.onCreateGroup`, `groupId`, `dropFillTypeName = STONE`) sit visibly on the terrain in the base maps. Check that template copies are not buried under the new terrain.
 
+## Collectibles, pedestrians, licence plates
+- 📖 FS25 collectibles (EU map golden apples):
+  - Each collectible is a trigger shape (`static`, `trigger`, group `0x20000000`, mask `0x100000`, `nonRenderable`) with user attributes `name` and `onCreate = Collectible.onCreate`, plus a visual child.
+  - The target is a group with `onCreate = CollectibleTarget.onCreate`, holding one child per collectible name. That child becomes visible once the collectible is found.
+  - `collectibles.xml` links each `name` to its `target`.
+  - FS22 used a visible shape with `triggerIndex` instead.
+- 📖 The pedestrian system format did not change between FS22 and FS25: a `pedestrianSystem` group (`onCreate = PedestrianSystem.onCreate`, `xmlFile`) with splines (`density`, `groupName`, `width`). FS22 splines can be reused; take `pedestrianSystem.xml` from an FS25 base map.
+- ✅ Inline geometry in an import i3d (`IndexedTriangleSet`, `NurbsCurve` with `<cv c=…/>`) imports fine in GIANTS Editor 10.
+- ❓ FS22 licence plates:
+  - Point the material shader to `$data/fs22support/shaders/vehicleShader.xml`. FS25 ships this FS22 vehicle shader, including the `colorMask` and `Decal` variations.
+  - Copy the FS22 textures into the mod.
+  - FS25 has the fonts `LICENSE_PLATE_FR/DE/PL/CZ/UK/US/AS`.
+  - FS25 plate XMLs use `<material materialSlotName>` instead of FS22's `<color shaderParameter>`; whether the old element still works is unconfirmed.
+
 ## Map placeables
 - ✅ Register the mod's own placeables in the modDesc under `<storeItems>` with mod-relative paths. In the map `placeables.xml`, reference them as `$moddir$ModName/...`. The map `storeItems.xml` only resolves `$data` paths.
 - ✅ Farm buildings get a `uniqueId` in `placeables.xml`, as in the base maps.
