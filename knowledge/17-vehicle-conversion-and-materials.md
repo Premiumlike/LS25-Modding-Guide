@@ -247,3 +247,4 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
 - FS22 accepted `-` placeholders in vectors (`rotDriveRotation="- - 0"`); FS25 fails to parse them, use `0`.
 - Missing sounds: `vehHydrostaticTransmission_BgMN01` → `vehHydrostaticTransmission_01`, `cabin/indoorCabinRumbleLoop` → `cabin/vehIndoorCabinRumble_01`. FS25 wants `categoryRange` or `widthRange` on `bottomArm`.
 - ✅ Fixed FS22 detail layers carry their own colour (see the FS22 colorMask notes). If the per-layer colour table is missing, those parts (black paint, seat fabric, …) become white in FS25.
+- 📖 FS22 `secondUV_*` variations read the vmask via UV2 → FS25 `vmaskUV2` (`uvTransform_vmaskUV2`/`meshScroll_vmaskUV2` with scrolling); `Decal_normalThirdUV_colorMask` → `vmaskUV2_normalUV3`. Otherwise dirt and AO appear as a foreign pattern on the part.
