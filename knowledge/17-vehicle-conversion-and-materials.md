@@ -246,3 +246,4 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
 - ❓ A combine pipe unload trigger (`trailerTrigger`) needs FILLABLE (bit 30) in its mask: `collisionFilterGroup="0x20000000" collisionFilterMask="0x40000000"`.
 - FS22 accepted `-` placeholders in vectors (`rotDriveRotation="- - 0"`); FS25 fails to parse them, use `0`.
 - Missing sounds: `vehHydrostaticTransmission_BgMN01` → `vehHydrostaticTransmission_01`, `cabin/indoorCabinRumbleLoop` → `cabin/vehIndoorCabinRumble_01`. FS25 wants `categoryRange` or `widthRange` on `bottomArm`.
+- ✅ Fixed FS22 detail layers carry their own colour (see the FS22 colorMask notes). If the per-layer colour table is missing, those parts (black paint, seat fabric, …) become white in FS25.

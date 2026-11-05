@@ -105,3 +105,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - The GIANTS Editor crashed importing a whole FS22 map. Import only the needed group (e.g. the traffic system) saved as its own i3d.
 - Raycasts in the GIANTS Editor do not hit temporarily static shapes, so editor scripts cannot fit terrain to roads by raycasting.
 - After changing the DEM, delete the `*.terrain.*.cache` files next to the map i3d.
+
+## Start fields of the player farm
+- FS22 had no file for this: the crops were painted into the map's `densityMap_fruits.gdm`. FS25 sets start fields in `maps/config/fields.xml` (`<field fieldId>` with `<fruit type growthState>`, `<ground type angle>`, `<spray>`). State names are the `foliageState` names in capitals (`HARVESTREADY`, `HARVESTED`). 📖
+- Read the FS22 state: convert `.gdm`/`.grle` to PNG with `grleconvert` (github.com/Paint-a-Farm/grleconvert). FS22 fruit pixel value = R + 256·G; fruit type = value & 31 (order of the `FoliageType` entries in the FoliageMultiLayer with `numTypeIndexChannels`), growth state = value >> 5 (FS22 wheat: 8 harvest ready, 9 withered, 10 cut). Ground type = value & 15 (2 cultivated, 11 harvest ready). Sample inside each FS25 field polygon (`polygonPoints`).
