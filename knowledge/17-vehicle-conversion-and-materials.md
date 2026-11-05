@@ -240,3 +240,8 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
 - 📖 FS22 vehicleShader `Decal_normalThirdUV` (decal, vmask via UV2, normal map via UV3) → FS25 variation `vmaskUV2_normalUV3` with the `decal` template and `alphaBlending`. `Decal_colorMask` materials need `alphaBlending="true"`.
 - ✅ Remove `referenceId` attributes from converted i3d files: they point at the old `<File>` ids (editor references such as reflectors or wheel chocks, which the XML loads anyway); after renumbering the files they point at textures.
 - FS22 shapes (v7) keep their collision hull attachment; re-serialise the v7 prefix and append the original tail when writing v10.
+- Textures from **other FS22 vehicle folders** (e.g. canola modules, front-weight frames) must be copied as well, or the log shows "Missing png file".
+- 📖 FS22 `uvScroll_colorMask` → FS25 `uvTransform` (parameter `offsetUV`); FS22 `meshScroll_colorMask` → FS25 `meshScroll` (the parameter is `scrollPos`, not `scrollPosition`; keep `lengthAndRadius`).
+- ❓ A combine pipe unload trigger (`trailerTrigger`) needs FILLABLE (bit 30) in its mask: `collisionFilterGroup="0x20000000" collisionFilterMask="0x40000000"`.
+- FS22 accepted `-` placeholders in vectors (`rotDriveRotation="- - 0"`); FS25 fails to parse them, use `0`.
+- Missing sounds: `vehHydrostaticTransmission_BgMN01` → `vehHydrostaticTransmission_01`, `cabin/indoorCabinRumbleLoop` → `cabin/vehIndoorCabinRumble_01`. FS25 wants `categoryRange` or `widthRange` on `bottomArm`.
