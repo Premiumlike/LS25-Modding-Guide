@@ -81,6 +81,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - `collectibles.xml` links each `name` to its `target`.
   - FS22 used a visible shape with `triggerIndex` instead.
 - 📖 The pedestrian system format did not change between FS22 and FS25: a `pedestrianSystem` group (`onCreate = PedestrianSystem.onCreate`, `xmlFile`) with splines (`density`, `groupName`, `width`). FS22 splines can be reused; take `pedestrianSystem.xml` from an FS25 base map.
+- ✅ The `blender-i3d-importer` shapes reader returns triangle indices starting at 1. Subtract 1 when writing an inline `IndexedTriangleSet`, otherwise GIANTS Editor 10 crashes silently on import (the log ends with "non-binary indexed triangle sets").
 - ✅ Inline geometry in an import i3d (`IndexedTriangleSet`, `NurbsCurve` with `<cv c=…/>`) imports fine in GIANTS Editor 10.
 - ❓ FS22 licence plates:
   - Point the material shader to `$data/fs22support/shaders/vehicleShader.xml`. FS25 ships this FS22 vehicle shader, including the `colorMask` and `Decal` variations.
