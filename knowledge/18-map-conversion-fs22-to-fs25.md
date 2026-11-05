@@ -75,6 +75,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - Transport: 9–13 m from a road, height span < 0.8 m over 15 m, no tree < 9 m, no object < 18 m.
   - Rocks: 25–120 m from a road, flat.
   - Not yet confirmed in game.
+- ✅ Deadwood spots need a float user attribute `radius` (base game uses 75–95). Without it, the log warns "No radius defined for deadwood mission spot".
 - 📖 Destructible map rocks (`onCreate = DestructibleMapObjectSystem.onCreateGroup`, `groupId`, `dropFillTypeName = STONE`) sit visibly on the terrain in the base maps. Check that template copies are not buried under the new terrain.
 
 ## Collectibles, pedestrians, licence plates
@@ -91,6 +92,9 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - Copy the FS22 textures into the mod.
   - FS25 has the fonts `LICENSE_PLATE_FR/DE/PL/CZ/UK/US/AS`.
   - FS25 plate XMLs use `<material materialSlotName>` instead of FS22's `<color shaderParameter>`; whether the old element still works is unconfirmed.
+
+- ✅ When you copy and rename an FS25 i3d, also update `<Shapes externalShapesFile=…>`, or every shape is missing ("Failed to open shapes file").
+- ❌ `$data/fs22support/shaders/vehicleShader.xml` failed to compile for FS22 licence plates (variations `colorMask`/`Decal`: "cannot convert from float4 to float3"). Build the plates from an FS25 plate file instead (font `LICENSE_PLATE_FR` etc.).
 
 ## Map placeables
 - ✅ Register the mod's own placeables in the modDesc under `<storeItems>` with mod-relative paths. In the map `placeables.xml`, reference them as `$moddir$ModName/...`. The map `storeItems.xml` only resolves `$data` paths.
