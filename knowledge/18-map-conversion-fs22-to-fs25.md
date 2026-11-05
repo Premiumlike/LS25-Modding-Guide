@@ -26,6 +26,11 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   2. Lower only the inner part of each 3D road by 12 cm. Leave the border and the seams alone.
   3. Apply the poke-through fix above.
   Traffic is not affected once the road uses collision group `0x601c`.
+- ❓ Seam fit by least squares:
+  - Take the boundary edges of the 3D road that lie within 0.25 m of a decal road boundary edge.
+  - Solve the grid vertices within 3 m: terrain at the seam points = edge height − 4 mm (weight 10), terrain at mesh surface samples up to 1.6 m inside = surface − 8 mm (weight 3), plus smoothness and closeness to the start state.
+  - Then run the poke-through fix with no frozen vertices.
+  - Result: no poke-through, average seam gap 1.1 cm, at most 4.4 cm (before: up to 26 cm). That is about the limit of a 1 m height grid.
 - ❌ Variants that looked worse in game:
   - Removing the lowering and running the poke-through fix on the unlowered terrain: steps at the seams.
   - Terrain at exact mesh height at the seam: shows through as lighter patches.
