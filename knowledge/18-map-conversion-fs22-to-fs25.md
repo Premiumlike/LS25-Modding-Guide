@@ -48,11 +48,14 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 ### Road material (`vertexPaintShader`)
 - 📖 Vertex colour R = opacity of `mBlendedDiffuse`, G = softness, B = snow, A = noise gradient (`alphaNoise` variations).
 - FS22 used the `terrainFormat` variation without blended maps. In FS25, set `mBlendedDiffuse` and `mBlendedNormal`.
-- ❓ For brown dirt patches at field entrances, use the terrain layer texture of the field paths (e.g. `dirt01` diffuse + normal) with `uvScale="0.5 0.5 0.5 0.5"` for a 2 m unit size. The Asia map's `asphaltStreetCleanBlend` looks too pale.
+- ✅ Check the road vertex colours first. In the converted FS22 roads, R was 0 everywhere, so `mBlendedDiffuse` never shows.
+  - The dirt at field entrances came from separate `dirtTracks` decal shapes (`decalShader`, `alphaBlending`), which look paler in FS25.
+  - ❓ To darken them, use `<CustomParameter name="colorTint" value="-0.07 -0.075 -0.055"/>`; in the FS25 `decalShader`, `colorTint` computes `saturate(diffuse + XYZ)`.
 
 ## Traffic
 - 📖 FS22 traffic splines can be reused as they are. In the converted map they sat on the road surface within a few centimetres.
 - The traffic root node needs the user attribute `xmlFile` pointing to `trafficSystem.xml`. The EU map also sets `onCreate = TrafficSystem.onCreate`.
+- ✅ FS22 AI licence plate files are structured differently from FS25 ones (FS22: `licensePlateXX/…Front` transform group with `diffuse_decal` + `body`; FS25: `licensePlateXX/licensePlateFront` shape with child `diffuse_decal`). Using the FS22 file stopped all traffic; an FS25 AI plate file fixed it. FS22 player plates work.
 - 📖 Density reference: the EU map uses `maxNumVehicles="15"` on 15.3 km of traffic splines, about 1 car per km. Asia (54.8 km) and US do not set the attribute. The schema (`trafficSystem.xsd`) allows at most 30.
 - Spline length can be measured from the `.i3d.shapes`: entity type 2 is a spline (name, align4, shapeId, form, count, then `count × float3` control points in local space).
 
