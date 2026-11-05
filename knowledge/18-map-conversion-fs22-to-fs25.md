@@ -76,7 +76,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - Deadwood: tree density from all tree reference nodes, 200 m minimum spacing, excluding field polygons (`gameplay/fields`) and water.
   - Transport: 9–13 m from a road, height span < 0.8 m over 15 m, no tree < 9 m, no object < 18 m.
   - Rocks: 25–120 m from a road, flat.
-  - Not yet confirmed in game.
+  - ✅ Deadwood and tree transport contracts on such self-made spots work in game.
 - ✅ Deadwood spots need a float user attribute `radius` (base game uses 75–95). Without it, the log warns "No radius defined for deadwood mission spot".
 - 📖 Destructible map rocks (`onCreate = DestructibleMapObjectSystem.onCreateGroup`, `groupId`, `dropFillTypeName = STONE`) sit visibly on the terrain in the base maps. Check that template copies are not buried under the new terrain.
 
@@ -112,5 +112,5 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - FS22 had no file for this: the crops were painted into the map's `densityMap_fruits.gdm`. FS25 sets start fields in `maps/config/fields.xml` (`<field fieldId>` with `<fruit type growthState>`, `<ground type angle>`, `<spray>`). State names are the `foliageState` names in capitals (`HARVESTREADY`, `HARVESTED`). 📖
 - Read the FS22 state: convert `.gdm`/`.grle` to PNG with `grleconvert` (github.com/Paint-a-Farm/grleconvert). FS22 fruit pixel value = R + 256·G; fruit type = value & 31 (order of the `FoliageType` entries in the FoliageMultiLayer with `numTypeIndexChannels`), growth state = value >> 5 (FS22 wheat: 8 harvest ready, 9 withered, 10 cut). Ground type = value & 15 (2 cultivated, 11 harvest ready). Sample inside each FS25 field polygon (`polygonPoints`).
 - ✅ The `fieldId` in `fields.xml` is the **farmland id**, not the field number (mapEU: farmlands 45/46 with `defaultFarmProperty` ↔ fieldId 45/46). With field numbers the start fields stayed empty.
-- ❓ "pedestrian can't find the next spline to walk on": FS22 pedestrian loops whose start and end points coincide are stored as open splines (`form_closed` = 0). With no other spline near the end, FS25 pedestrians get stuck there. Probable fix: close the spline in the editor.
+- ✅ "pedestrian can't find the next spline to walk on": FS22 pedestrian loops whose start and end points coincide are stored as open splines (`form_closed` = 0). With no other spline near the end, FS25 pedestrians get stuck there. Closing these splines (flag bit 0) fixed it: no more errors in a 26-minute session.
 - The `.i3d.shapes` encryption (I3DCipher) is an XOR key stream per 64-byte block: changing one plaintext byte changes only the same ciphertext byte. A spline entity (type 2) is name (int32 length + bytes, aligned to 4), shapeId, uint32 flags (bit 0 = closed), point count, points. So a spline in a huge map `.shapes` can be closed with a one-byte patch instead of rewriting the file. Decrypt entity by entity with the same chunking as the writer (count, then per entity type, size, data) to find the file offset.
