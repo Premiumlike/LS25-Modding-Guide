@@ -58,6 +58,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - The traffic root node needs the user attribute `xmlFile` pointing to `trafficSystem.xml`. The EU map also sets `onCreate = TrafficSystem.onCreate`.
 - ✅ FS22 AI licence plate files are structured differently from FS25 ones (FS22: `licensePlateXX/…Front` transform group with `diffuse_decal` + `body`; FS25: `licensePlateXX/licensePlateFront` shape with child `diffuse_decal`). Using the FS22 file stopped all traffic; an FS25 AI plate file fixed it. FS22 player plates work.
 - 📖 Density reference: the EU map uses `maxNumVehicles="15"` on 15.3 km of traffic splines, about 1 car per km. Asia (54.8 km) and US do not set the attribute. The schema (`trafficSystem.xsd`) allows at most 30.
+- 📖 Traffic vehicles: `dumpTruck` and `cementTruck` in `$data/trafficVehicles` are US-style conventional (bonneted) trucks, `tipperTruck` is a European cab-over truck. The EU map's `trafficSystem.xml` still lists all three; leave out `dumpTruck` and `cementTruck` for a purely European look.
 - Spline length can be measured from the `.i3d.shapes`: entity type 2 is a spline (name, align4, shapeId, form, count, then `count × float3` control points in local space).
 
 ## Trees
