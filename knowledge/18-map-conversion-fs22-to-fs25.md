@@ -21,9 +21,10 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - Lower only the grid vertices that actually poke through, to 2 cm below the road.
   - Let the lowering fade out by 6 cm per metre outside the road.
 - ✅ Lowering all terrain under a 3D road by a fixed amount creates visible edges at the road border.
-- ❓ For the decal↔mesh seam:
-  - On the decal side, blend the terrain over 5 m towards the mesh edge height.
-  - Set only the first terrain row under the mesh to mesh − 2 cm. At exact mesh height, the terrain (with its asphalt layer) shows through as lighter patches.
+- ❓ Decal↔mesh seam:
+  - In a 2 m band on both sides of the seam, set the terrain to road surface − 0.01 m, the same as the initial fit. Apply the poke-through fix only beyond that band. This leaves only isolated points poking through, at most 1.3 cm.
+  - At exactly mesh height, the terrain shows through as lighter patches.
+  - Blending only the decal side leaves a visible 1–2 cm step.
 
 ### Asphalt and verge vegetation
 - ✅ Paint an asphalt terrain layer under all roads, otherwise tyres leave dirt tracks on the road. A per-pixel coverage threshold of 0.02 worked. Higher thresholds made the painted area too wide, lower thresholds left stripes.
