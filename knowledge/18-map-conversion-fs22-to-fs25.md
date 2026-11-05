@@ -50,7 +50,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - FS22 used the `terrainFormat` variation without blended maps. In FS25, set `mBlendedDiffuse` and `mBlendedNormal`.
 - ✅ Check the road vertex colours first. In the converted FS22 roads, R was 0 everywhere, so `mBlendedDiffuse` never shows.
   - The dirt at field entrances came from separate `dirtTracks` decal shapes (`decalShader`, `alphaBlending`), which look paler in FS25.
-  - ❓ To make them follow the terrain like the roads, set them to terrain decals as well and put them on `decalLayer="2"`, above the road decals (layer 1).
+  - ✅ To make them follow the terrain like the roads, set them to terrain decals as well and put them on `decalLayer="2"`, above the road decals (layer 1).
   - ❓ To darken them, use `<CustomParameter name="colorTint" value="-0.07 -0.075 -0.055"/>`; in the FS25 `decalShader`, `colorTint` computes `saturate(diffuse + XYZ)`.
 
 ## Traffic
