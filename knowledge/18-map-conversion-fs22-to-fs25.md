@@ -60,6 +60,20 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - ❓ FS22 trees use the old `collisionMask="16791586"`, which FS25 ignores, so the trees have no collision. Use the base game values `collisionFilterGroup="0x830" collisionFilterMask="0xfe3ffb83"`.
 - The oak split type (7) is the same in FS22 and FS25. Other FS22 split type numbers were not checked.
 
+## Forestry and rock contracts (new in FS25)
+- 📖 FS25 maps list `deadwoodMission`, `treeTransportMission` and `destructibleRockMission` under `<missions>` in the map XML. Each one points to a spots i3d.
+- Map templates often ship these commented out, with spots that belong to another map. Make your own spots for a converted map.
+- Spots are empty transform groups:
+  - Deadwood: the centre of a forest.
+  - Tree transport: the origin sits at the edge of a flat, clear area next to a road, with `rotation="0 ry 0"`. Children `tree1…n` use `rotation="-90 -90 0"`, so they lie along local x. User attributes are `numRows`, `numTreesPerRow` and `sizeX`/`sizeY`/`sizeZ`. Point local z away from the road so the logs lie parallel to it.
+  - Rocks: a clear, flat meadow.
+- ❓ Spots can be found automatically:
+  - Deadwood: tree density from all tree reference nodes, 200 m minimum spacing, excluding field polygons (`gameplay/fields`) and water.
+  - Transport: 9–13 m from a road, height span < 0.8 m over 15 m, no tree < 9 m, no object < 18 m.
+  - Rocks: 25–120 m from a road, flat.
+  - Not yet confirmed in game.
+- 📖 Destructible map rocks (`onCreate = DestructibleMapObjectSystem.onCreateGroup`, `groupId`, `dropFillTypeName = STONE`) sit visibly on the terrain in the base maps. Check that template copies are not buried under the new terrain.
+
 ## Map placeables
 - ✅ Register the mod's own placeables in the modDesc under `<storeItems>` with mod-relative paths. In the map `placeables.xml`, reference them as `$moddir$ModName/...`. The map `storeItems.xml` only resolves `$data` paths.
 - ✅ Farm buildings get a `uniqueId` in `placeables.xml`, as in the base maps.
