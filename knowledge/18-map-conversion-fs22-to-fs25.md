@@ -21,18 +21,20 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - Lower only the grid vertices that actually poke through, to 2 cm below the road.
   - Let the lowering fade out by 6 cm per metre outside the road.
 - ✅ Lowering all terrain under a 3D road by a fixed amount creates visible edges at the road border.
-- ✅ A working terrain setup under 3D roads, clean at the seams to decal roads:
-  1. Fit the terrain to road surface − 0.01 m.
+- ✅ **Final recipe for terrain under 3D roads and at decal↔mesh seams** (confirmed perfect in game):
+  1. Fit the terrain to road surface − 0.01 m under decal and 3D roads.
   2. Lower only the inner part of each 3D road by 12 cm. Leave the border and the seams alone.
   3. Apply the poke-through fix above.
-  Traffic is not affected once the road uses collision group `0x601c`.
-- ❓ Seam fit by least squares:
-  - Take the boundary edges of the 3D road that lie within 0.25 m of a decal road boundary edge.
-  - Solve the grid vertices within 3 m: terrain at the seam points = edge height − 4 mm (weight 10), terrain at mesh surface samples up to 1.6 m inside = surface − 8 mm (weight 3), plus smoothness and closeness to the start state.
-  - Then run the poke-through fix with no frozen vertices.
-  - ✅ In game (first variant): seams invisible at most transitions, a very thin gap at a few.
-  - Refinement: target edge height + 2 mm and use mesh samples only from 0.3 m behind the seam. The poke-through fix ignores that 0.3 m strip, where the terrain rises at most 9 mm above the road. Average gap 0.5 cm, at most 3.3 cm.
-  - First variant result: no poke-through, average seam gap 1.1 cm, at most 4.4 cm (before: up to 26 cm). That is about the limit of a 1 m height grid.
+  4. **Fit the seams by least squares:**
+     - Seam points are boundary edges of the 3D road within 0.25 m of a decal road boundary edge, sampled every 0.2 m.
+     - Unknowns are all grid vertices within 3 m of a seam point.
+     - Seam equation: terrain (bilinear) at each seam point = edge height + 2 mm, weight 10.
+     - Mesh equation: every third mesh surface sample 0.3–1.6 m behind the seam, terrain = surface − 8 mm, weight 3.
+     - Add closeness to the start state (weight 0.05) and smoothness between neighbours (weight 0.5). Solve with `scipy.sparse.linalg.lsqr`.
+  5. Run the poke-through fix again (2 mm extra, 5 mm clearance), skipping the 0.3 m strip right behind the seam. There the terrain may rise up to 9 mm above the road.
+  - Computed result: average seam gap 0.5 cm, at most 3.3 cm (before: up to 26 cm). More rounds bring no further gain.
+  - Traffic is not affected by the lowering once the road uses collision group `0x601c`.
+  - Intermediate states tested in game: steps 1–3 alone left gaps and steps at the seams. With step 4 at edge − 4 mm, most seams looked clean and a few showed a very thin gap.
 - ❌ Variants that looked worse in game:
   - Removing the lowering and running the poke-through fix on the unlowered terrain: steps at the seams.
   - Terrain at exact mesh height at the seam: shows through as lighter patches.
