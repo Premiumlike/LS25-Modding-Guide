@@ -50,6 +50,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - FS22 used the `terrainFormat` variation without blended maps. In FS25, set `mBlendedDiffuse` and `mBlendedNormal`.
 - ✅ Check the road vertex colours first. In the converted FS22 roads, R was 0 everywhere, so `mBlendedDiffuse` never shows.
   - The dirt at field entrances came from separate `dirtTracks` decal shapes (`decalShader`, `alphaBlending`), which look paler in FS25.
+  - ❓ To make them follow the terrain like the roads, set them to terrain decals as well and put them on `decalLayer="2"`, above the road decals (layer 1).
   - ❓ To darken them, use `<CustomParameter name="colorTint" value="-0.07 -0.075 -0.055"/>`; in the FS25 `decalShader`, `colorTint` computes `saturate(diffuse + XYZ)`.
 
 ## Traffic
@@ -60,7 +61,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Spline length can be measured from the `.i3d.shapes`: entity type 2 is a spline (name, align4, shapeId, form, count, then `count × float3` control points in local space).
 
 ## Trees
-- ❓ FS22 trees use the old `collisionMask="16791586"`, which FS25 ignores, so the trees have no collision. Use the base game values `collisionFilterGroup="0x830" collisionFilterMask="0xfe3ffb83"`.
+- ✅ FS22 trees use the old `collisionMask="16791586"`, which FS25 ignores, so the trees have no collision. With the base game values `collisionFilterGroup="0x830" collisionFilterMask="0xfe3ffb83"` they stop vehicles and can be felled (confirmed in game).
 - The oak split type (7) is the same in FS22 and FS25. Other FS22 split type numbers were not checked.
 
 ## Forestry and rock contracts (new in FS25)
