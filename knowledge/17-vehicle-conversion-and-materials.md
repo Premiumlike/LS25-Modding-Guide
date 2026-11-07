@@ -156,6 +156,12 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - For added geometry such as bolts, do not use "nearest part", because small neighbouring parts win. Use the build layout instead: if the sister model is longer by an extra panel, keep the parts at the same place and repeat the affected section shifted. Afterwards, verify that every bolt base sits on a surface.
 - When the sister model shares the UV1 layout, reuse the finished vmask through `vmaskUV2` and build UV2 with the same rule. If there are more wall panels than free areas in the mask, map the extra panel onto the area of a panel on the **opposite side**, mirrored horizontally (u → U0+U1−u). The two are never visible at the same time. When checking, sample only outer faces: inner faces share UVs and look like repeats.
 
+## Removing leftovers of a former variant (e.g. tractor-unit hydraulics) ✅
+- Such parts often sit in a shared "additional parts" shape, not in the chassis mesh. List the connected components (triangle islands) of **all** shapes in the region, with bounding box and node name, before you decide where to cut.
+- Render the candidate group in a highlight color from the side, top and rear. Hide occluders such as the wheel, fender and frame rails. Hoses can run far away (e.g. across to the frame centre) and only show up in a view without occluders.
+- Run a proximity check: list the components within about 3 cm of the group. Small caps or plugs right next to the box usually belong to the group. Spring hangers and frame parts do not.
+- Remove whole components that lie fully inside one of a few boxes, so the step is idempotent. Then rebuild the bounding volume.
+
 ## Useful base-game references
 
 - `data/vehicles/rudolphSohn/dk280RP/` – tipper with cover and a good dirt mask; `data/vehicles/kroeger/pwo24/`; `data/vehicles/fendt/vario700/vario700.xml` (`rimColorConfigurations`).
