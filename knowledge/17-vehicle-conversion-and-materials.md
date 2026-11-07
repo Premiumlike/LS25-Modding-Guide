@@ -161,6 +161,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Render the candidate group in a highlight color from the side, top and rear. Hide occluders such as the wheel, fender and frame rails. Hoses can run far away (e.g. across to the frame centre) and only show up in a view without occluders.
 - Run a proximity check: list the components within about 3 cm of the group. Small caps or plugs right next to the box usually belong to the group. Spring hangers and frame parts do not.
 - Remove whole components that lie fully inside one of a few boxes, so the step is idempotent. Then rebuild the bounding volume.
+- Afterwards check the **baked AO** (vmask G) of the surfaces behind the removed part: they now show its baked shadow as dark spots. Render a side view with a z-buffer that samples vmask G per pixel, before and after, and list the newly visible pixels per component. Fix without re-baking: on that surface's texels, raise only the coarse part of G (Gaussian σ ≈ 2–3 texels; σ 10 leaves dark rims) to the clean height profile (e.g. 85th percentile per height band). Only brighten, keep uniform shadow bands, re-encode only the changed DXT1 blocks and their mip blocks. With stretched, multiply-used UVs (frame rails) treat the whole face, not a z range. This is not idempotent, so apply it once.
 
 ## Useful base-game references
 
