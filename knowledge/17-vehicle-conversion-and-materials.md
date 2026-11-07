@@ -167,6 +167,7 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - In a merged mesh (`skinBindNodeIds` plus `blend_indices`, no weights), vertex positions are stored in the shape space of the merged node, not in bone space.
 - If you put an extracted part as a new shape under its bone, convert the positions with inv(W(bone)) · W(merged node), and rotate normals and tangents with the rotation part. Otherwise the part is offset twice and floats away from the vehicle.
 - Store images from the Icon Generator show such floating parts clearly, so check them for stray geometry.
+- To make a part of a merged mesh switchable: cut its triangles (e.g. one subset) into a new shape under the bone. Take the positions from the world positions times inv(W(bone)). Rotate normals and tangents with the rotation that maps shape space to world space (Kabsch fit over the vertices; check that the residual is near zero, i.e. the part is rigid). Clear the skinning flags. Remove the subset and its material id from the merged mesh. Put LOD0 and LOD1 into their own LOD group with the original `lodDistance`. Verify by comparing triangle centres before and after (KD-tree). ❓
 
 ## Icon Generator notes ✅
 - Open an item's configuration by double-clicking it (dialog "Configuration & State"). The configuration applies only to that single selected item. A multi-selection renders every item with its default configuration.
