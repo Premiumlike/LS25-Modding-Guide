@@ -297,3 +297,7 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
 - Headless Blender: `pip install bpy` works without a GUI. Build parts with bmesh in game coordinates (y up), smart-UV-project, bake AO with Cycles on CPU (load the trailer as occluder), export per loop (position, split normal, tangent, UV) and write a new shape with your own `.shapes` writer. Image row = (1−v)·size as in FS25, so Blender UVs can be used directly. ❓
 - When writing subsets yourself, `first_index` counts indices, not triangles. ✅ (file check)
 - Body variants via configuration: extra parts as the last child of the body node (keeps index paths), collision copies reusing the same shapeId (the hull is in shape space), a raised fill volume, `dependentConfiguration` for fillUnit/fillVolume, `compoundChildActive/Inactive` for collisions, `translationActive/Inactive` for the cover parent. ❓
+
+### Wooden extension above a hinged top door (FS19 HW 80 rebuild) ✅
+- Moving the extension boards inboard to clear a folding top door leaves a visible gap in game. Better: keep the boards flush with the sheet but start them just above the door's swing envelope (compute it from the hinge position and max angle), then close the remaining gap from the inside with a rebated sealing strip that stays inboard of the door edge at full swing.
+- Check clearances with a 2D section (wood profile + door profile at several angles) before testing in game.
