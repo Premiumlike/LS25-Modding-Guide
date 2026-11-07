@@ -301,3 +301,4 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
 ### Wooden extension above a hinged top door (FS19 HW 80 rebuild) ✅
 - Moving the extension boards inboard to clear a folding top door leaves a visible gap in game. Better: keep the boards flush with the sheet but start them just above the door's swing envelope (compute it from the hinge position and max angle), then close the remaining gap from the inside with a rebated sealing strip that stays inboard of the door edge at full swing.
 - Check clearances with a 2D section (wood profile + door profile at several angles) before testing in game.
+- Dirt on custom wooden parts ✅: a vmask blue channel kept below ~40 shows practically no dirt in game. Use roughly median 140, reaching 255 at the bottom and in occluded corners (height factor from rasterising the UV triangles + inverted AO + noise). Wear (R) stays 0 for wood.
