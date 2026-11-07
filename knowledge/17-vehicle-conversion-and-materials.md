@@ -163,6 +163,15 @@ Learned while converting an FS19 tipper trailer to FS25 (November 2026). Status 
 - Remove whole components that lie fully inside one of a few boxes, so the step is idempotent. Then rebuild the bounding volume.
 - Afterwards check the **baked AO** (vmask G) of the surfaces behind the removed part: they now show its baked shadow as dark spots. Render a side view with a z-buffer that samples vmask G per pixel, before and after, and list the newly visible pixels per component. Fix without re-baking: on that surface's texels, raise only the coarse part of G (Gaussian σ ≈ 2–3 texels; σ 10 leaves dark rims) to the clean height profile (e.g. 85th percentile per height band). Only brighten, keep uniform shadow bands, re-encode only the changed DXT1 blocks and their mip blocks. With stretched, multiply-used UVs (frame rails) treat the whole face, not a z range. This is not idempotent, so apply it once.
 
+## Detaching parts from merged meshes ✅
+- In a merged mesh (`skinBindNodeIds` plus `blend_indices`, no weights), vertex positions are stored in the shape space of the merged node, not in bone space.
+- If you put an extracted part as a new shape under its bone, convert the positions with inv(W(bone)) · W(merged node), and rotate normals and tangents with the rotation part. Otherwise the part is offset twice and floats away from the vehicle.
+- Store images from the Icon Generator show such floating parts clearly, so check them for stray geometry.
+
+## Icon Generator notes ✅
+- Open an item's configuration by double-clicking it (dialog "Configuration & State"). The configuration applies only to that single selected item. A multi-selection renders every item with its default configuration.
+- Generate one item at a time: configure it, click Ok, then Generate. With the editor already running this takes about 15 s; the first start takes about 2 min.
+
 ## Useful base-game references
 
 - `data/vehicles/rudolphSohn/dk280RP/` – tipper with cover and a good dirt mask; `data/vehicles/kroeger/pwo24/`; `data/vehicles/fendt/vario700/vario700.xml` (`rimColorConfigurations`).
