@@ -19,6 +19,8 @@ Run one script that does everything (see [`tools/run_all.sh`](tools/run_all.sh))
 
 Only deliver when it says "ALL OK".
 
+Make sure the checker really checks something. A check that loops over a list of vehicles or files and gets an empty list (for example a wrong or missing argument) still prints "ALL OK". Let it fail when it has nothing to check. After adding a new check, run it once against a build that is known to be broken and confirm that it reports the error.
+
 ## Log discipline
 
 - One prefix for all your lines, e.g. `[MYMOD]`.
