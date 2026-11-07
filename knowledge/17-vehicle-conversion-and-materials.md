@@ -293,3 +293,6 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
 - A cover zone on FS19 layer 5 would map to `rubberBlack` (black detail diffuse × colour ≈ black); use `calibratedPaint` like FS25 base-game covers.
 - FORTSCHRITT exists in FS25 as a brand (`brand_fortschritt.dds`) with templates `FORTSCHRITT_GREEN/BLUE/RED/BLACK`.
 - To let a colour configuration affect only some parts that share a material, rename the material slot names in the other shapes (material assignment stays). ❓
+- Headless Blender: `pip install bpy` works without a GUI. Build parts with bmesh in game coordinates (y up), smart-UV-project, bake AO with Cycles on CPU (load the trailer as occluder), export per loop (position, split normal, tangent, UV) and write a new shape with your own `.shapes` writer. Image row = (1−v)·size as in FS25, so Blender UVs can be used directly. ❓
+- When writing subsets yourself, `first_index` counts indices, not triangles. ✅ (file check)
+- Body variants via configuration: extra parts as the last child of the body node (keeps index paths), collision copies reusing the same shapeId (the hull is in shape space), a raised fill volume, `dependentConfiguration` for fillUnit/fillVolume, `compoundChildActive/Inactive` for collisions, `translationActive/Inactive` for the cover parent. ❓
