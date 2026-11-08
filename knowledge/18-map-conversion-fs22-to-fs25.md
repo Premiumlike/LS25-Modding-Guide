@@ -114,3 +114,15 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - ✅ The `fieldId` in `fields.xml` is the **farmland id**, not the field number (mapEU: farmlands 45/46 with `defaultFarmProperty` ↔ fieldId 45/46). With field numbers the start fields stayed empty.
 - ✅ "pedestrian can't find the next spline to walk on": FS22 pedestrian loops whose start and end points coincide are stored as open splines (`form_closed` = 0). With no other spline near the end, FS25 pedestrians get stuck there. Closing these splines (flag bit 0) fixed it: no more errors in a 26-minute session.
 - The `.i3d.shapes` encryption (I3DCipher) is an XOR key stream per 64-byte block: changing one plaintext byte changes only the same ciphertext byte. A spline entity (type 2) is name (int32 length + bytes, aligned to 4), shapeId, uint32 flags (bit 0 = closed), point count, points. So a spline in a huge map `.shapes` can be closed with a one-byte patch instead of rewriting the file. Decrypt entity by entity with the same chunking as the writer (count, then per entity type, size, data) to find the file offset.
+
+## Enlarging a map to 4x (2 km -> 4 km) ❓ not yet tested in game
+- The world origin is the map centre, so existing objects keep their coordinates; only terrain files grow. 📖
+- Differences between the GIANTS template `maps` and `maps_4x` (📖 compared directly): DEM 2049 -> 4097 (unitsPerPixel stays 1);
+  every density/info map doubles its edge (fruits/ground/height etc. 4096 -> 8192, farmlands/soilMap 1024 -> 2048,
+  navigation/placement collision 2048 -> 4096, environment 512 -> 1024); weight maps 2048 -> 4096;
+  `lodTextureSize` 4096; sun `depthMapResolution` 4096 and `lastShadowMapSplitBboxMin/Max` ±2048;
+  `DisplacementLayer cellSize` 2 -> 4; border walls at ±2000; map XML `width/height` 4096.
+- The template border walls are planes ±1024 m long centred on their origin, so `scale="2 1 2"` at ±2000 covers 4 km. 📖
+- Padding: decode .gdm/.grle to PNG (grleconvert), put the old map in the centre, re-encode with `--i3d`; the round trip is lossless.
+- Rename `$moddir$<modName>/` paths in vehicles.xml / placeables.xml when the copy gets a new mod name.
+- Terrain continuation: a Laplace fill on a coarse grid plus noise with a ~1/f² height spectrum looks natural; flatter spectra look like grain.
