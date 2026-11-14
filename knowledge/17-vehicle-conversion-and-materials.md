@@ -495,6 +495,7 @@ Sharp-edged boxes with flat normals look like a beginner model next to GIANTS pa
   at rod length from the chassis anchor; upper link: end at flap height from the lever end; flap node as child of the upper link aiming
   at the lever end) and `dependentPart`s – the same pattern as the base-game FS19 HW 80 door arms. Check the geometry in 2D first: with
   rigid links the chain can lock before the full tipping angle.
+- The `referenceFrame`'s y axis appears to act as the up vector when the part is aimed (❓ inferred from behaviour): one shared frame with world-up made vertical parts spin about the vertical axis and parts swinging more than 90° flip by 180°. Give each part its own frame, y = the node's rest y rotated by half its swing (the FS19 door arms do the same with frames rotated about z).
 - When re-parenting a node, resolve all `i3dMapping`s to nodes first and rewrite them afterwards – removing a child shifts the index
   paths of all its siblings.
 
