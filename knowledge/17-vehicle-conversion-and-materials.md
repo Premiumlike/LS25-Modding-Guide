@@ -453,3 +453,29 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
   planar UV atlas and ray-traced AO. ❓ (not yet tested in game)
 - Identical panels can share one shape placed several times; for the opposite side use a 180° rotation about y instead of a
   mirror (keeps the triangle winding).
+
+### Base-game quality for self-built parts without Blender (numpy mesh kit) ❓ (renders only, not yet tested in game)
+Sharp-edged boxes with flat normals look like a beginner model next to GIANTS parts. A small numpy kit that worked well:
+- Build everything as a **sweep** (2D profile along an axis, with the profile shrunk by the radius at both ends = end chamfer) or as
+  a **shell** (grid surface with thickness, inner side offset along the local normal). Profiles: rounded rectangle (4–8 mm radius),
+  "thick filleted polyline" for bent sheet sections with real wall thickness and bend radius (U, hat, angle sections), circles with
+  16–24 segments, hexagon with a chamfer for bolt heads (+ washer, nut with thread end), a slightly convex fillet-weld profile swept
+  along the corner line, a lathe (surface of revolution) for round housings.
+- **Corner normals by auto-smoothing**: average the area-weighted face normals of all faces sharing the vertex whose normal is within
+  ~40° → rounded edges look soft, large faces stay flat (like Blender's weighted-normal modifier), 90° edges stay hard.
+- **UV atlas from the construction itself**: every sweep is unrolled (arc length around the profile × distance along the axis),
+  caps are planar, shells use their (u, v) arc lengths; pack the charts in shelves (long strips lying down, 2-texel gutter for tiny
+  parts). No smart-project islands, no wedge charts after unions.
+- Detail-texture UV (UV1) can be a projection perpendicular to the corner normal: smooth surfaces then share vertices; a per-face
+  projection doubled the vertex count in our case.
+- Pressed (beaded) side sheets of East German trailers are not round: use a breakpoint table per bead – short steep step at the
+  lower edge, flat bead face, sloped return at the top, only tiny radii (one or two extra points per knee), small flat groove – and
+  put the grid rows exactly on the breakpoints. Let the beads fade out over ~5 cm towards the panel edges (smoothstep) so a vertical
+  joint profile can sit on a flat strip. A sine-shaped bead looked like stacked logs.
+
+### FS19/FS22 HW 80 telescopic tipping cylinder head 📖
+- The top stage ends in a domed cap (Ø 44 mm) exactly at `hydraulicBodyRef`; the base-game body only has a narrow cross member there.
+  For left-only tipping the cylinder swings in the x-y plane, so a pin mount would need its pin along z; a ball socket (conical
+  opening) under a box cross member is the safer visual. In one FS22 SGA mod the rotated `mainSupport` group is the side-wall opening
+  linkage (longitudinal shaft, vertical rods anchored on the chassis), not the cylinder mount.
+
