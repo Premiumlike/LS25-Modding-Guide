@@ -482,3 +482,10 @@ Sharp-edged boxes with flat normals look like a beginner model next to GIANTS pa
 - In one FS22 SGA mod the rotated `mainSupport` group is the side-wall opening linkage, not the cylinder mount; its forage-body side
   walls use 7 inward-pressed channels (112 mm wide, 27 mm deep, 206 mm pitch) running to the panel edge, 44 mm folded panel edges,
   20 mm joint gaps.
+
+### Side-wall opening linkage without a script ❓ (built, not yet tested in game)
+- Pattern seen in an FS22 forage-body mod: the wall itself rotates in the tip animation; the linkage rods are `movingPart`s with
+  `scaleZ="true"` pointing at a pin node on the tipping body (one rod from a fixed chassis lever, one from the wall's clevis). A
+  rigid rod would have to slide far through its guide when the body tips, so the stretch is the practical compromise. Only stretch
+  plain tubes; keep eyes, brackets and nuts as fixed parts.
+
