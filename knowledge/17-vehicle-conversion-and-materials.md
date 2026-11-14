@@ -489,3 +489,12 @@ Sharp-edged boxes with flat normals look like a beginner model next to GIANTS pa
   rigid rod would have to slide far through its guide when the body tips, so the stretch is the practical compromise. Only stretch
   plain tubes; keep eyes, brackets and nuts as fixed parts.
 
+### Rigid side-flap linkage with chained moving parts ❓ (built, not yet tested in game)
+- A tipping-trailer flap that hangs on two links (a straight lever pivoted on the end wall, driven by a fixed-length rod from the
+  chassis, and an upper link to the flap) can be done without stretching: chain `movingPart`s with `localReferencePoint` (lever: joint
+  at rod length from the chassis anchor; upper link: end at flap height from the lever end; flap node as child of the upper link aiming
+  at the lever end) and `dependentPart`s – the same pattern as the base-game FS19 HW 80 door arms. Check the geometry in 2D first: with
+  rigid links the chain can lock before the full tipping angle.
+- When re-parenting a node, resolve all `i3dMapping`s to nodes first and rewrite them afterwards – removing a child shifts the index
+  paths of all its siblings.
+
