@@ -501,3 +501,10 @@ Sharp-edged boxes with flat normals look like a beginner model next to GIANTS pa
 - When re-parenting a node, resolve all `i3dMapping`s to nodes first and rewrite them afterwards – removing a child shifts the index
   paths of all its siblings.
 
+
+## Building a new implement from scratch (concrete weight)
+- Base-game weights: `vehicle type="implement"`, category `weights`; i3d = non-renderable compound collision box as component, visual shape below it with `attachable` (attacherJoint, topReferenceNode, trailerAttacherJoint) and `collisions` (compoundChild + `tensionBeltMesh01`). 📖
+- Input attacher joint orientation: local X points away from the tractor. Rear implement (tractor at +Z): `rotation="0 90 0"`; front weight (tractor at −Z): `0 -90 0`. 📖
+- Car tow ball on an implement: `jointType="trailerCar"`. 📖
+- Do not model lower-link balls: `bottomArm` loads them (`ballType` 1 plain, 2 with guide cone, `ballFilename`, `ballDefaultVisibility="true"` keeps them visible while detached). 📖 ❓
+- The detail library has no concrete; `plasticGraniteGrainSmall` with `calibratedPaintBumpy_normal` is a usable stand-in. ❓
