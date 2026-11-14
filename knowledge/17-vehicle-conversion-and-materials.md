@@ -473,9 +473,12 @@ Sharp-edged boxes with flat normals look like a beginner model next to GIANTS pa
   put the grid rows exactly on the breakpoints. Let the beads fade out over ~5 cm towards the panel edges (smoothstep) so a vertical
   joint profile can sit on a flat strip. A sine-shaped bead looked like stacked logs.
 
-### FS19/FS22 HW 80 telescopic tipping cylinder head 📖
-- The top stage ends in a domed cap (Ø 44 mm) exactly at `hydraulicBodyRef`; the base-game body only has a narrow cross member there.
-  For left-only tipping the cylinder swings in the x-y plane, so a pin mount would need its pin along z; a ball socket (conical
-  opening) under a box cross member is the safer visual. In one FS22 SGA mod the rotated `mainSupport` group is the side-wall opening
-  linkage (longitudinal shaft, vertical rods anchored on the chassis), not the cylinder mount.
-
+### FS19 HW 80: two tipping cylinders, keep the original sub-frame 📖
+- The FS19 base-game HW 80 merged mesh holds TWO telescopic cylinders (front z ≈ 2.18, rear z ≈ −1.52, head cap up to y 1.309) that
+  share one bone chain; the `bodyHydraulic`/`hydraulicBodyRef` nodes at z 0.331 are only the common reference. Split vertex clusters
+  per bone by position before building mounts.
+- When replacing the body, keep the original floor and sub-frame: split the body shape by a world box (all triangles below the floor
+  top into a new, always visible shape) and hide only the walls in the new body configuration – the cylinder mounts stay correct.
+- In one FS22 SGA mod the rotated `mainSupport` group is the side-wall opening linkage, not the cylinder mount; its forage-body side
+  walls use 7 inward-pressed channels (112 mm wide, 27 mm deep, 206 mm pitch) running to the panel edge, 44 mm folded panel edges,
+  20 mm joint gaps.
