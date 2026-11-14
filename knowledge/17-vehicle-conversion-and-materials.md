@@ -441,3 +441,15 @@ Learned while porting nine FS22 start vehicles (trailers, implements, tractors, 
 - **Semitrailer front axle floats on a tall tractor:** if the fifth wheel sits higher than the kingpin of the level trailer, the trailer tilts about its rear axle and the front axle lifts by height difference × (axle spacing / kingpin-to-rear-axle distance). Wheels can only drop by `suspTravel × initialCompression` (0.08 × 10 % = 8 mm here). More droop (e.g. suspTravel 0.2, initialCompression 50) lets the axle reach the ground. ✅
 
 - **Per-body, animated unload effects:** if several body configurations share one tipping side, a body that opens differently shows the effects in the wrong place. Without touching the default body: give it its own dischargeNode (own node) with its own effect nodes. The emitter shape and the skinned effect shape (TipEffect) can reuse the same shapeId; for the skinned one add new bones whose rest world position equals the original bones (otherwise it is offset) and point `skinBindNodeIds` at them. Move a group holding emitter + bones with `<part startTrans/endTrans>` in the tip animation, and store the group in the i3d at its start pose. Make **all three** effects own copies (particle emitter, TipEffect plane and the large "smoke" effect) and tie the lift to the opening (compute the flap edge over its angle, several `<part>` pieces) – a lift that finishes too early looks like "no change". ✅ (game test)
+
+### Replacing the whole body, keeping only chassis and tipping cylinder (FS19 merged mesh)
+- Some real-world bodies replace the complete tipper (e.g. forage bodies on East German HW 80 trailers): hide not only the side
+  walls but the whole tipping bridge (floor, sub-frame, front/rear walls). In a FS19 merged mesh, `split_bone.py <i3d> <mesh> tipper
+  <newName>` moves every triangle weighted to the tipper bone into its own shape; the new body's design configuration hides it.
+- The new body then needs its own floor and sub-frame, with the pivot lugs exactly on the old tipping axes (measure them from the
+  split shape: vertex clusters below the sub-frame) and a mount at the `hydraulicBodyRef` node for the cylinder head.
+- Geometry can be built entirely with numpy (no Blender): polygon prisms with ear clipping, winding from the sign of the mapping's
+  determinant, sheets as an offset outline (trapezoid beads), parts sunk 1 mm instead of coplanar, then hidden-face removal, a
+  planar UV atlas and ray-traced AO. ❓ (not yet tested in game)
+- Identical panels can share one shape placed several times; for the opposite side use a 180° rotation about y instead of a
+  mirror (keeps the triangle winding).
