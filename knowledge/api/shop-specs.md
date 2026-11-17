@@ -1,0 +1,61 @@
+# Shop specs (addSpecType)
+
+Source: `github.com/MyGameSteamOfficial/fs25-lua-api` (commit 9478ee9, 2025-02-26 – older than the current patch). Extracted automatically: names, XML keys, types, defaults only – no code. Status 📖 (read from source, not verified in game).
+
+| Name | Icon |
+|---|---|
+| `additionalWeight` | `shopListAttributeIconAdditionalWeight` |
+| `age` | `shopListAttributeIconLifeTime` |
+| `animalFoodFillTypes` | `shopListAttributeIconFillTypes` |
+| `baleGrabMaxSizeRound` | `shopListAttributeIconBaleSizeRound` |
+| `baleGrabMaxSizeSquare` | `shopListAttributeIconBaleSizeSquare` |
+| `baleLoaderBaleSizeRound` | `shopListAttributeIconBaleSizeRound` |
+| `baleLoaderBaleSizeSquare` | `shopListAttributeIconBaleSizeSquare` |
+| `baleWrapperBaleSizeRound` | `shopListAttributeIconBaleWrapperBaleSizeRound` |
+| `baleWrapperBaleSizeSquare` | `shopListAttributeIconBaleWrapperBaleSizeSquare` |
+| `balerBaleSizeRound` | `shopListAttributeIconBaleSizeRound` |
+| `balerBaleSizeSquare` | `shopListAttributeIconBaleSizeSquare` |
+| `buyingStationFillTypes` | `shopListAttributeIconOutput` |
+| `capacity` | `shopListAttributeIconCapacity` |
+| `dailyUpkeep` | `shopListAttributeIconMaintenanceCosts` |
+| `electricCharge` | `shopListAttributeIconElectricCharge` |
+| `fellerBuncherMaxTreeSize` | `shopListAttributeIconMaxTreeSize` |
+| `fillTypes` | `shopListAttributeIconFillTypes` |
+| `fuel` | `shopListAttributeIconFuel` |
+| `incomePerHour` | `shopListAttributeIconIncomePerHour` |
+| `inlineWrapperBaleSizeRound` | `shopListAttributeIconBaleWrapperBaleSizeRound` |
+| `inlineWrapperBaleSizeSquare` | `shopListAttributeIconBaleWrapperBaleSizeSquare` |
+| `licensePlate` | `shopListAttributeIconLicensePlate` |
+| `manureHeapCapacity` | `shopListAttributeIconCapacity` |
+| `maxSpeed` | `shopListAttributeIconMaxSpeed` |
+| `methane` | `shopListAttributeIconMethane` |
+| `neededPower` | `shopListAttributeIconPowerReq` |
+| `numAnimalsCow` | `shopListAttributeIconCow` |
+| `numAnimalsHorse` | `shopListAttributeIconHorse` |
+| `numAnimalsPig` | `shopListAttributeIconPig` |
+| `numAnimalsSheep` | `shopListAttributeIconSheep` |
+| `numberAnimals` | `shopListAttributeIconCapacity` |
+| `objectStorageCapacity` | `shopListAttributeIconCapacity` |
+| `objectStorageFillTypes` | `shopListAttributeIconFillTypes` |
+| `operatingTime` | `shopListAttributeIconOperatingHours` |
+| `placeableSlots` | `shopListAttributeIconSlots` |
+| `power` | `shopListAttributeIconPower` |
+| `powerConfig` | `shopListAttributeIconPower` |
+| `prodPointInputFillTypes` | `shopListAttributeIconInput` |
+| `prodPointOutputFillTypes` | `shopListAttributeIconOutput` |
+| `seedFillTypes` | `shopListAttributeIconSeeds` |
+| `sellingStationFillTypes` | `shopListAttributeIconInput` |
+| `siloExtensionVolume` | `shopListAttributeIconCapacity` |
+| `siloVolume` | `shopListAttributeIconCapacity` |
+| `slots` | `shopListAttributeIconSlots` |
+| `speedLimit` | `shopListAttributeIconWorkSpeed` |
+| `transmission` | `shopListAttributeIconTransmission` |
+| `wearable` | `shopListAttributeIconCondition` |
+| `weight` | `shopListAttributeIconWeight` |
+| `wheels` | `shopListAttributeIconWheels` |
+| `winchMaxMass` | `shopListAttributeIconWinchMaxMass` |
+| `woodHarvesterMaxTreeSize` | `shopListAttributeIconMaxTreeSize` |
+| `workingWidth` | `shopListAttributeIconWorkingWidth` |
+| `workingWidthConfig` | `shopListAttributeIconWorkingWidth` |
+| `yarderMaxLength` | `shopListAttributeIconWinchMaxLength` |
+| `yarderMaxMass` | `shopListAttributeIconWinchMaxMass` |

@@ -30,6 +30,7 @@ Practical knowledge for **Farming Simulator 25 (FS25 / LS25, GIANTS Engine 10) L
 | [16. Economy, missions, placeables](knowledge/16-economy-missions-and-placeables.md) | money types and booking paths, selling station prices, contracts, storages and capacities, fill units |
 | [17. Vehicle conversion and materials](knowledge/17-vehicle-conversion-and-materials.md) | FS19→FS25 vehicles without Blender: reading/writing `.i3d.shapes`, colorMask zones and material slot names, white_diffuse, vmask channels, dirt formula, world-space detail textures, normal-map speckles, yes/no parts, rim and hub colour |
 | [18. Map conversion FS22→FS25](knowledge/18-map-conversion-fs22-to-fs25.md) | Roads as terrain decals, fitting terrain to roads, terrain poking through 3D roads, decal/mesh seams, road collision for traffic, traffic density, FS22 tree collision, road blend maps, map placeables |
+| [API reference (fs25-lua-api)](knowledge/api/README.md) | name/key lists extracted from the FS25 Lua scripts (no code): all registered XML keys with type/default per specialization, functions per file, vehicle specializations with requirements/overwritable functions/events, console commands, shop spec types; plus a short own-words summary of loading, schema, configurations, shop specs and attaching |
 | [API index](knowledge/INDEX.md) | game function / class / global → topic file |
 | [Workflow](workflow.md) | versions, checks before delivery, log discipline, in-game testing, ground rules for every new mod |
 | [Tools](tools/) | translation check, run-all script, index builder |
