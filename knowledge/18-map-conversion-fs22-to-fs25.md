@@ -221,6 +221,12 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Swept track meshes that are only generated when writing the .shapes file do not exist yet for later build steps; recompute the sweep there if a level crossing needs the rail heads.
 - When restoring track-bed vegetation after road building, only use train-spline points that actually have rail geometry nearby — invisible splines otherwise restore grass across a road.
 
+### Bridges in new roads ❓ not yet tested in game
+- Base-game bridge files can be placed as a ReferenceNode to the $data i3d (as the US map does, e.g. mapUS bridgeRiver.i3d: deck at local y 0, 116 m along local x incl. abutments). Old map bridges may be body + separate 3D road piece rotated 90°.
+- Pull the road exactly onto the bridge axis over the deck length, end the decal at the deck ends and pin the height to the deck (enough clearance; raise it when the far bank is steep).
+- Do not touch terrain under the deck; at the ends use narrow, steep fills and never fill the river bed beside them — a wide embankment fan cut at a straight line leaves earth wedges in the water.
+- When planning, check the grade between fixed heights (level crossing, junction): slope-only path costs can produce links that need 20 %.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
