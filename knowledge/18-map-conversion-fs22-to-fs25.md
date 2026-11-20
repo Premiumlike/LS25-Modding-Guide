@@ -181,3 +181,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Nearest-centreline terrain shaping creates a crease along the bisector of tight corners; blur the terrain change outside the carriageway and smooth width changes along the road.
 - Traffic markers are dynamic objects with breakable joints; after terrain edits move them (and all signs) with the ground or they topple on load.
 - At level crossings only raise the terrain inside the ballast band under the deck itself, otherwise ballast and sleepers next to the deck disappear.
+- i3d Euler rotations compose as Rz·Ry·Rx (verified on an FS25 base-map crossing plank). With yaw θ and pitch α, local z maps to (sinθ·cosα, −sinα, cosθ·cosα), so α = −atan(gradient).
+- Crossing gate groups are not exactly at rail-head height (±10 cm) and tracks can be inclined at crossings; fit rail-head height and gradient from the rail vertices and place/tilt the deck 1 cm below the rail head so the rails stay visible.
+- Some FS22 traffic markers sit a few centimetres inside the terrain; in FS25 their breakable joints snap on load. Lift all sign objects to at least 2 cm above the ground.
+- When transferring verge templates beside a new road, keep existing dirt-track pixels beyond the shoulder so field tracks still reach the road.
