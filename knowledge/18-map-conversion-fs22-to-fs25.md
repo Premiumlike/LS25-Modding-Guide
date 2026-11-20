@@ -189,3 +189,5 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - To make field tracks reach a new road, fill the verge gap by searching outward perpendicular to the road for the first track pixel and copying its ground, then clear foliage there.
 - The FS25 plank crossing has a checker-plate base plate spanning its full size (tiled UVs); filter it by texture coordinates, not by triangle position, and centre the deck on the measured track centre so the rail-to-edge distance is equal on both sides.
 - Dirt-weight based track detection also picks up field soil; exclude field polygons from it.
+- Check which texture a terrain layer actually uses before painting it where it will be visible: in a converted FS22 map `asphalt01` pointed to the US asphalt texture, which looks like checker plate in FS25; `tarmac01` (EU) is the better visible asphalt.
+- Dirt next to a road is usually a verge, not a field track; treat only dirt that is narrow along the road direction as a track. Clear ground foliage (bushes) inside field polygons after transferring verges.
