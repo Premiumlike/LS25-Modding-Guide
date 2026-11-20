@@ -185,3 +185,5 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Crossing gate groups are not exactly at rail-head height (±10 cm) and tracks can be inclined at crossings; fit rail-head height and gradient from the rail vertices and place/tilt the deck 1 cm below the rail head so the rails stay visible.
 - Some FS22 traffic markers sit a few centimetres inside the terrain; in FS25 their breakable joints snap on load. Lift all sign objects to at least 2 cm above the ground.
 - When transferring verge templates beside a new road, keep existing dirt-track pixels beyond the shoulder so field tracks still reach the road.
+- The FS25 plank crossing (railroadCrossingWood02) has wood up to ±1.27 m and checker-plate strips beyond; keep only the wood triangles if a pure plank look is wanted and let asphalt meet the planks.
+- To make field tracks reach a new road, fill the verge gap by searching outward perpendicular to the road for the first track pixel and copying its ground, then clear foliage there.
