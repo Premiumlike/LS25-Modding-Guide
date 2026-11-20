@@ -199,3 +199,8 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Load and save weight PNGs through a `ThreadPoolExecutor`. PIL decoding and zlib compression release the GIL, so threads are enough.
 - Decrypting `.i3d.shapes` is single-threaded, roughly 10 s per large file. Cache the parsed meshes, keyed by path, size and mtime, when the source files never change.
 - Keep random-number streams on one thread so the output stays reproducible. Verify with md5 against the old run.
+
+### Level-crossing planks and track beds
+- Set the plank height from the rail-head vertices only within the plank length (about ±7.5 m), then lift the plane to the highest head underneath. A wider fit picks up neighbouring track pieces at other heights. Straight FS22 track pieces have vertices only every ~20 m, so interpolate between the nearest vertex on each side. Take the plank top from the mesh itself; leave about 2 mm below the rail head so vehicles do not bump.
+- When new roads copy roadside strips from template areas, reset weights and foliage within ~3 m of the track centreline to their previous state afterwards, except under the planks and asphalt. Otherwise grass ends up growing between the rails.
+- Paint crossing asphalt and clear foliage only on paved pixels and under the planks, not in a rectangle. FS22 roads often have a gravel verge stored as ground foliage.
