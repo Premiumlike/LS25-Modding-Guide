@@ -40,6 +40,10 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - Terrain at exact mesh height at the seam: shows through as lighter patches.
   - Blending only the decal side: a 1–2 cm step.
 
+### Snow on decal roads ❓ not yet tested in game
+- 📖 Vertex colour B is snow. FS25 base roads: B = 1 at the edges (|t| ≥ 2.8 m) and on the centre line, B = 0 in each lane (|t| ≈ 1.4 m), linear in between → wheel tracks in snow. FS22 roads only have edge 1 / centre 0.
+- To convert, split FS22 road strips along |t| = 1.4 and 2.8 m (lateral position from the texture v coordinate, which runs linearly across the 8 m asphalt) and recompute B; handle T-crossing decals from their local geometry.
+
 ### Asphalt and verge vegetation
 - ✅ Paint an asphalt terrain layer under all roads, otherwise tyres leave dirt tracks on the road. A per-pixel coverage threshold of 0.02 worked. Higher thresholds made the painted area too wide, lower thresholds left stripes.
 - ✅ Remove grass on the road but keep the original verge vegetation up to the curb. Do not paint over field paths or bushes. A GIANTS Editor Lua script with `DensityMapModifier` and `DensityMapFilter` can copy the states from the FS22 density map.
