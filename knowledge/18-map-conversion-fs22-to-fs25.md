@@ -178,3 +178,6 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Level crossings: remove the FS22 floor slab entirely (it creates bumps and edges), flatten the terrain along the road at rail-head height, paint asphalt and clear foliage there, then put the plank deck on top. FS22 gate bases sit at ±4 m along the track; for an 8 m road move them out to about ±5.8 m.
 - When a cut crosses a hill whose ground keeps rising sideways, grow the slope width until the ground at every distance is reached with the target slope, otherwise a wall appears — but not where a natural slope runs parallel to the road.
 - After merging FS22 fields, the old boundary often survives as a thin meadow strip and grass texture inside the new polygon; clear decorative grass and grass weights inside field polygons.
+- Nearest-centreline terrain shaping creates a crease along the bisector of tight corners; blur the terrain change outside the carriageway and smooth width changes along the road.
+- Traffic markers are dynamic objects with breakable joints; after terrain edits move them (and all signs) with the ground or they topple on load.
+- At level crossings only raise the terrain inside the ballast band under the deck itself, otherwise ballast and sleepers next to the deck disappear.
