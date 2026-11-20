@@ -193,3 +193,9 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Dirt next to a road is usually a verge, not a field track; treat only dirt that is narrow along the road direction as a track. Clear ground foliage (bushes) inside field polygons after transferring verges.
 - FS22 road decals can contain their own level-crossing triangles mapped to a checker-plate region of the road atlas; they replace the asphalt there. Remap their UVs to the asphalt region when using plank decks. Prove the cause with data (render the object's texture, read terrain layers at the spot, list nearby triangles with UVs) before changing things.
 - FS22 dirt areas are dithered pixel by pixel; detect tracks on a blurred dirt density (≥ 50 %, low density beside it, continuous away from the road) instead of single pixels.
+
+### Making terrain build scripts use all cores (bit-identical output)
+- Profile first (`python -m cProfile -o x.prof script.py`). The typical hotspot is a helper that builds `cKDTree(points)` on every call. Build it once, cache it, and query with `workers=-1`. In one case that took a step from 82 s to 32 s.
+- Load and save weight PNGs through a `ThreadPoolExecutor`. PIL decoding and zlib compression release the GIL, so threads are enough.
+- Decrypting `.i3d.shapes` is single-threaded, roughly 10 s per large file. Cache the parsed meshes, keyed by path, size and mtime, when the source files never change.
+- Keep random-number streams on one thread so the output stays reproducible. Verify with md5 against the old run.
