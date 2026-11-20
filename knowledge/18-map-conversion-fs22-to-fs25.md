@@ -187,3 +187,5 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - When transferring verge templates beside a new road, keep existing dirt-track pixels beyond the shoulder so field tracks still reach the road.
 - The FS25 plank crossing (railroadCrossingWood02) has wood up to ±1.27 m and checker-plate strips beyond; keep only the wood triangles if a pure plank look is wanted and let asphalt meet the planks.
 - To make field tracks reach a new road, fill the verge gap by searching outward perpendicular to the road for the first track pixel and copying its ground, then clear foliage there.
+- The FS25 plank crossing has a checker-plate base plate spanning its full size (tiled UVs); filter it by texture coordinates, not by triangle position, and centre the deck on the measured track centre so the rail-to-edge distance is equal on both sides.
+- Dirt-weight based track detection also picks up field soil; exclude field polygons from it.
