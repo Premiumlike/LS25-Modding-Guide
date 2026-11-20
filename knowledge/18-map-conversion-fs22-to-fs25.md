@@ -227,6 +227,10 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Do not touch terrain under the deck; at the ends use narrow, steep fills and never fill the river bed beside them — a wide embankment fan cut at a straight line leaves earth wedges in the water.
 - When planning, check the grade between fixed heights (level crossing, junction): slope-only path costs can produce links that need 20 %.
 
+### Building a long viaduct from base-game pieces ❓ not yet tested in game
+- When a link cannot reach a fixed junction height at a sane grade, bridge the whole valley: write an own i3d in the mod that reuses the header/materials of mapUS `bridgeConcreteLong.i3d` (copy its .shapes next to it) and places N deck pieces (one 15.94 m piece shape), two abutment pieces and one pier per joint, piers scaled in y down to the terrain. Reference it once from the map.
+- Keep the deck straight and level (straight pieces on a curve leave wedge gaps); disable level-crossing detection under the deck.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
