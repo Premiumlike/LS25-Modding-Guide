@@ -215,6 +215,12 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Letting the road mesh run ~15 m past the terrain edge (straight along the end direction, vertices at edge height) avoids a visible road end at the border.
 - Make per-road parameters (minimum embankment width etc.) piecewise along s with a soft blend, so exceptions of the old part do not apply to the whole extension.
 
+### T-junctions onto new decal roads ❓ not yet tested in game
+- Copy the map's T-crossing decal (main road along local x ±9 m, 8 m wide, branch towards −z up to 9 m) per junction and bend it along the curved main road: vertex (x, z) → centreline(s_j + σx) + z·ẑ(s) with ẑ = x̂ × up (a proper rotation; mirroring puts the stop line on the wrong lane). Leave a gap s_j ± 9 m in the main road mesh so the edges meet exactly.
+- Branch mesh starts 9 m from the junction centre; pin its height to the main road for the first ~13 m and do not touch terrain within 4 m of the centre. Connector roads do the same at their end.
+- Swept track meshes that are only generated when writing the .shapes file do not exist yet for later build steps; recompute the sweep there if a level crossing needs the rail heads.
+- When restoring track-bed vegetation after road building, only use train-spline points that actually have rail geometry nearby — invisible splines otherwise restore grass across a road.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
