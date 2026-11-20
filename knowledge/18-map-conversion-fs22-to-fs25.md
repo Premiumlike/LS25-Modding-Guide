@@ -235,6 +235,11 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - When a link cannot reach a fixed junction height at a sane grade, bridge the whole valley: write an own i3d in the mod that reuses the header/materials of mapUS `bridgeConcreteLong.i3d` (copy its .shapes next to it) and places N deck pieces (one 15.94 m piece shape), two abutment pieces and one pier per joint, piers scaled in y down to the terrain. Reference it once from the map.
 - Keep the deck straight and level (straight pieces on a curve leave wedge gaps); disable level-crossing detection under the deck.
 
+### Bridge ends, junction stubs and level crossings (lessons from testing)
+- For bridges with abutment blocks, fill terrain only up to the deck end (hard edge) so the abutments stay visible; slide the road decal ~0.6 m under the bridge deck and flatten the road crown near the bridge to avoid a dark seam. The mapUS bridgeRiver deck is bare concrete: add an own 3D road strip on it.
+- Branch roads must leave the T-decal stub straight for the first ~18 m, and the stub itself should stay rigid (not bent along a curved main road), otherwise a grass gap or kink appears.
+- At level crossings, replace old checker-plate decal sections by a proper road strip (kerbs, centre line) between the decal ends and cut it under the planks.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
