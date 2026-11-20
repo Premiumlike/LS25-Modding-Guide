@@ -191,3 +191,5 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Dirt-weight based track detection also picks up field soil; exclude field polygons from it.
 - Check which texture a terrain layer actually uses before painting it where it will be visible: in a converted FS22 map `asphalt01` pointed to the US asphalt texture, which looks like checker plate in FS25; `tarmac01` (EU) is the better visible asphalt.
 - Dirt next to a road is usually a verge, not a field track; treat only dirt that is narrow along the road direction as a track. Clear ground foliage (bushes) inside field polygons after transferring verges.
+- FS22 road decals can contain their own level-crossing triangles mapped to a checker-plate region of the road atlas; they replace the asphalt there. Remap their UVs to the asphalt region when using plank decks. Prove the cause with data (render the object's texture, read terrain layers at the spot, list nearby triangles with UVs) before changing things.
+- FS22 dirt areas are dithered pixel by pixel; detect tracks on a blurred dirt density (≥ 50 %, low density beside it, continuous away from the road) instead of single pixels.
