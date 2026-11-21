@@ -251,6 +251,11 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Reproduce it by switching the road from decal to a 3D mesh some 20–25 m before and after the bridge, with the same rings, UVs and profile; on land keep it a few mm above the terrain (flush at the decal end, ramping to ~2 cm), on the bridge at deck height.
 - To cut an existing road decal cleanly, split its triangles along a straight cutting line first, then drop the triangles on one side.
 
+### Decal road networks and bridges: where to switch to 3D
+- Switching from a terrain-decal road to a 3D road mesh in the middle of a road shows a visible edge (different shading), and a 3D road on land needs terrain that never pokes through between its vertices. FS25 main roads avoid this by being 3D everywhere. With decal networks, put the switch exactly at the bridge end (a natural joint): decal up to the deck edge (pin the last metre to deck height, since bilinear terrain sampling would read the lowered pixels under the bridge), 3D road only on the deck, same rings, no overlap.
+- In a 3D road mesh, a raised centre-line strip shows its texture in the dash gaps as dark stripes; keep only the dash parts.
+- Under the whole bridge width keep terrain below the deck (also after smoothing), fill the abutment ends fully and clear foliage.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
