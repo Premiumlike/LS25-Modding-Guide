@@ -240,6 +240,12 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Branch roads must leave the T-decal stub straight for the first ~18 m, and the stub itself should stay rigid (not bent along a curved main road), otherwise a grass gap or kink appears.
 - At level crossings, replace old checker-plate decal sections by a proper road strip (kerbs, centre line) between the decal ends and cut it under the planks.
 
+### Collision data when adding shapes, crossing markings (lessons from testing)
+- A new shape created from a template shape by copying its entity also copies the template's attachment block, i.e. its cooked collision. A static collision node then collides with the template's hull (here: plank decks got the hull of an 8.6 m power pole). Write an own convex-hull `cm` block for collision shapes and an empty attachment (4 zero bytes) for visual-only shapes.
+- Static collision on shapes without cooked data logs "Mesh cooking …" at load. Prefer simple unscaled box colliders with a cooked hull (nonRenderable) next to the visual parts.
+- In crossing decals, place raised markings 2 cm above the road surface beneath them (not above the terrain at their own vertices) and split the decal densely across the cambered road, otherwise the road pokes through stop lines.
+- Later build steps must use the rail geometry after earlier trimming steps; trimmed-away track still counted as track in our case.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
