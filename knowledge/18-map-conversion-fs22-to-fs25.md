@@ -292,3 +292,4 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   mapEU anchor windows (free of non-natural layers, objects, fields and crops, tree density ≥ 28/ha), 48 m cells with random rotation,
   blended by per-pixel scattering; keep rock/gravel/asphalt in the target (road cuts). Add forest edges (tall weeds, bushes, young
   trees), tree rows on open stretches and boulder groups on slopes.
+- Trees with a tall bare trunk look wrong in large numbers. Measured crown start (LOD0Attachments): stonePine_stage03 at 24 m, aspen_stage06_var02 ~8–12 m, beech_stage06_var02 ~10 m; the var01 variants and stage 5 have much lower crowns. Use the tall ones sparingly.
