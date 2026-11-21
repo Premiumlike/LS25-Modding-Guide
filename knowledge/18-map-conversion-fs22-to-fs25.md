@@ -256,6 +256,10 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - In a 3D road mesh, a raised centre-line strip shows its texture in the dash gaps as dark stripes; keep only the dash parts.
 - Under the whole bridge width keep terrain below the deck (also after smoothing), fill the abutment ends fully and clear foliage.
 
+### Bridge edge: the terrain sets the decal height
+- Terrain decals are drawn on the terrain; their vertex heights are ignored. At a bridge end, make the terrain itself flat at deck height for several metres before the edge (no road crown) and keep it at deck height under the first metres of the bridge before lowering it. Lowering right at the edge creates a dip from bilinear sampling (visible seam/step).
+- mapUS `bridgeRiver`: the deck spans only ±45 m; 45–57.5 m are abutments without road surface that expect earth fill up to deck height.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
