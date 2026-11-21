@@ -293,3 +293,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   blended by per-pixel scattering; keep rock/gravel/asphalt in the target (road cuts). Add forest edges (tall weeds, bushes, young
   trees), tree rows on open stretches and boulder groups on slopes.
 - Trees with a tall bare trunk look wrong in large numbers. Measured crown start (LOD0Attachments): stonePine_stage03 at 24 m, aspen_stage06_var02 ~8–12 m, beech_stage06_var02 ~10 m; the var01 variants and stage 5 have much lower crowns. Use the tall ones sparingly.
+- Bumpy new roads: taking the terrain height under the carriageway from the *nearest* centreline sample (1 m steps) creates irregular steps up to grade × 1 m on steep roads that run diagonally to the height-map grid. Interpolate the height along the arc length instead. Check with the second difference of the DEM along the centreline.
+- New rail meshes swept from a template inherit the template's precooked triangle-mesh collision (`tm` attachment), so the collision only exists where the template piece was. Clear the attachment for new or trimmed complex collision shapes (FS25 cooks at runtime, logged as mesh cooking) or add simple convex hulls.
+- FS22 maps contain many slightly tilted trees; transfers with rotated frames can push this past 90°. Set every tree node to yaw-only rotation at the end.
+
