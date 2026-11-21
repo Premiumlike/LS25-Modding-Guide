@@ -246,6 +246,11 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - In crossing decals, place raised markings 2 cm above the road surface beneath them (not above the terrain at their own vertices) and split the decal densely across the cambered road, otherwise the road pokes through stop lines.
 - Later build steps must use the rail geometry after earlier trimming steps; trimmed-away track still counted as track in our case.
 
+### How FS25 joins roads and bridges
+- 📖 In the FS25 EU map (shortBridge, creekBridge01) the road is one continuous static 3D road mesh that runs from the land over the bridge and onto the land again; the bridge model has no road surface of its own, so there is no decal-to-bridge seam.
+- Reproduce it by switching the road from decal to a 3D mesh some 20–25 m before and after the bridge, with the same rings, UVs and profile; on land keep it a few mm above the terrain (flush at the decal end, ramping to ~2 cm), on the bridge at deck height.
+- To cut an existing road decal cleanly, split its triangles along a straight cutting line first, then drop the triangles on one side.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
