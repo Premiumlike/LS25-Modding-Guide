@@ -272,3 +272,23 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   or meets the road it joins at a right angle, and snap junctions exactly onto the computed centreline.
 - Dead-end spurs to the map edge do not read as a network, and a tight ring around the old map looks like a bypass. More
   believable: radial continuations plus cross-links 600–900 m further out that pass through the corners, with real junctions.
+
+## Natural scenery along new roads, GIANTS style ❓ not yet tested in game
+- The FS25 base maps ship complete in the game folder (`data/maps/mapEU/data`: dem, every `*_weight.png` at 1 m, fruits density map at
+  0.5 m, groundFoliage/stones/ground). Real GIANTS FS25 forests can therefore be transferred pixel-exactly. A converted FS22 map has all
+  mapEU terrain layers (forestMossGround, forestRoots, forestMossGroundLeaves …), so weights map 1:1 by layer name.
+- mapEU pattern: forest on hills, slopes and hollows, open farmland between, roads along forest edges or through them. Forests hold only
+  ~40–60 trees/ha (large beech/oak/aspen, stages 4–6); the ground is ~75 % grass01/02 with moss/root/leaf patches, foliage mainly
+  forestPlants and decoBush. An FS22 map like Haut-Beyleron has little forest but tree rows along about half of its roads
+  (~11 m spacing, 4–8 m from the asphalt edge).
+- Converting foliage values: mapEU fruits uses 6 type-index bits (state = value >> 6), a converted map often 7 (state = value >> 7) with a
+  different type order – remap by FoliageType name. States are the 1-based `<foliageState>` entries of the foliage XML; when the XMLs
+  differ (map-local meadow/grass vs. meadowEU), remap states by name. mapEU decoBush sits in fruits; on maps with a separate
+  groundFoliage layer it goes to decoBushEU there.
+- `ProceduralPlacement` in the i3d is an editor tool only; it does nothing at runtime. `deadwood.i3d` is a standing dead trunk
+  (deadwood mission), not a fallen branch – use groundFoliage branches instead.
+- Method that worked: plan on a 2 m grid (forest score from large-scale noise, slope, relief and the inside of tight bends so the road
+  appears to avoid the forest), keep patches ≥ 2.5 ha and forest edges ≥ 13–19 m from the centreline; fill the interior from validated
+  mapEU anchor windows (free of non-natural layers, objects, fields and crops, tree density ≥ 28/ha), 48 m cells with random rotation,
+  blended by per-pixel scattering; keep rock/gravel/asphalt in the target (road cuts). Add forest edges (tall weeds, bushes, young
+  trees), tree rows on open stretches and boulder groups on slopes.
