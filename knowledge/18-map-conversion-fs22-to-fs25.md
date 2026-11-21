@@ -260,6 +260,9 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Terrain decals are drawn on the terrain; their vertex heights are ignored. At a bridge end, make the terrain itself flat at deck height for several metres before the edge (no road crown) and keep it at deck height under the first metres of the bridge before lowering it. Lowering right at the edge creates a dip from bilinear sampling (visible seam/step).
 - mapUS `bridgeRiver`: the deck spans only ±45 m; 45–57.5 m are abutments without road surface that expect earth fill up to deck height.
 
+### Overlap, do not butt-join, decal and 3D road
+- An exactly flush butt joint between a terrain-decal road and a 3D road mesh still shows a thin seam and a gap in the centre dash. Let the decal continue ~0.4 m under the 3D road and keep the 3D road ~1 cm above it there; 1 cm is enough to avoid z-fighting and the lip is not noticeable.
+
 ## Planning a road network for new map area
 - Agree on a sketch first, main roads only; farms and field tracks come later.
 - Use a least-cost path (Dijkstra on a 4 m cost grid: squared slope, water expensive, rail expensive plus a 30 m buffer) only
