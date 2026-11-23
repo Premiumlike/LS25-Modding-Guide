@@ -565,4 +565,5 @@ Sharp-edged boxes with flat normals look like a beginner model next to GIANTS pa
   - To still show a higher load: build the top as a dome that rises from each wall at no more than ~30° in small steps (kinks of 5° or less) with a short flat top, and never extend the volume into the space under an overhanging wall.
   - Tears/hard edges in the fill plane on a kinked volume top: the plane is tessellated with up to `maxSubDivEdgeLength` (default 0.9 m) and may deviate `maxSurfaceDistanceError` (default 0.05 m) from the volume. Try `maxSurfaceDistanceError="0.01" maxSubDivEdgeLength="0.3" syncMaxSubDivEdgeLength="0.45" retessellateTop="true"` on the `<volume>` entry. ❓ (in test)
   - GIANTS Editor 10 can run `createFillPlaneShape` from an app-data script (`-- AlwaysLoaded: yes`, start work in `onStart` via `addDrawListener`) to test fill volumes without the game.
+  - Finer tessellation smooths the plane ✅ (seen in game). A remaining open gap appeared where the flat top meets a steep sloped volume face (~65°); end the volume with a vertical face there instead (hidden under an overhanging wall). ❓ (in test)
 
