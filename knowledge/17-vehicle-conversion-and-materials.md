@@ -566,4 +566,5 @@ Sharp-edged boxes with flat normals look like a beginner model next to GIANTS pa
   - Tears/hard edges in the fill plane on a kinked volume top: the plane is tessellated with up to `maxSubDivEdgeLength` (default 0.9 m) and may deviate `maxSurfaceDistanceError` (default 0.05 m) from the volume. Try `maxSurfaceDistanceError="0.01" maxSubDivEdgeLength="0.3" syncMaxSubDivEdgeLength="0.45" retessellateTop="true"` on the `<volume>` entry. ❓ (in test)
   - GIANTS Editor 10 can run `createFillPlaneShape` from an app-data script (`-- AlwaysLoaded: yes`, start work in `onStart` via `addDrawListener`) to test fill volumes without the game.
   - Finer tessellation smooths the plane ✅ (seen in game). A remaining open gap appeared where the flat top meets a steep sloped volume face (~65°); end the volume with a vertical face there instead (hidden under an overhanging wall). ❓ (in test)
+  - Tears appeared exactly at edges between the flat top and volume faces of 35° or steeper (the script passes a fixed `maxPhysicalSurfaceAngle` of 35°). Rule: every volume face is either clearly below 35° (≤ 30°) or vertical; print all face angles after building. ❓ (in test)
 
