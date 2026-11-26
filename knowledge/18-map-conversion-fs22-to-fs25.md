@@ -172,6 +172,17 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
   - AI splines do not duplicate traffic: 96–100 % of `ai` points are more than 6 m from any traffic spline, so main roads carrying traffic have no separate AI spline.
   - There is usually one spline per direction, with the same name twice or a suffix `R`. Typical point spacing is 2.7–4 m.
   - Placeables and locations add small `aiSplines` groups of their own.
+  - 📖 How they connect:
+    - Traffic splines connect only through identical end/start points (0.00 m).
+    - At junctions the lanes stop about 9 m before the centre. Short connector splines (`crossroadsN` group, 11–22 m long) lead from every incoming lane to every outgoing lane.
+    - At the map edge, lanes run about 440 m past the edge, where one lane's end is the opposite lane's start (U-turn outside the map).
+    - AI splines lie in pairs on the track centre (about 0.2 m apart, reversed). They touch neither other AI splines nor traffic splines: their ends sit 3–7 m away, and 13–38 % end freely, for example at field entrances.
+    - Pedestrian splines mostly join end to end or end on another spline. mapUS uses closed loops.
+  - ❓ Approach used for a converted map (not yet tested in game):
+    - Lanes 2 m from the road centre, a 10 m junction box and Bezier connectors.
+    - At existing junctions, recognise lane ends within about 9 m as incoming or outgoing and skip existing connectors (both ends near the centre).
+    - Take spline heights from the road height profile, because on bridges the terrain lies far below the deck.
+    - For old asphalt roads without traffic: asphalt-texture mask more than 10 m from traffic splines → thinning → longest path per component (tree diameter via two Dijkstra runs). Naive tracing breaks roads into short pieces at skeleton spurs.
 - FS22 maps place trees in two ways: as ReferenceNodes and as TransformGroups with LOD0/LOD1 shapes. When you modify terrain, adjust both, otherwise the second kind floats.
 - Rasterise the asphalt weight under a new decal by pixel coverage (supersample, ≥ 50 %), not with a filled polygon plus dilation – that made the asphalt about 1–1.5 m too wide per side.
 - A build pipeline must not read inputs from the mod folder it writes to; otherwise each run feeds back into the next (here: template masks picked up the new asphalt and the edge blending changed). Read everything from a fixed backup and compare checksums of intermediate results.
