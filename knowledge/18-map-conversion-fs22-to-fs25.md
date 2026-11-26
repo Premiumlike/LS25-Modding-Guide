@@ -384,3 +384,14 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Do not force FS22 LOD tree groups (TransformGroup with LOD0/LOD1, e.g. spruceVar) to yaw-only rotation: some use the group rotation to stand the model up and end up lying in the air. Only straighten ReferenceNodes to tree files.
 - Track edges in an FS22 GIANTS map: ballast cross-section ±2.77 m; terrain within 3 m is a dirt/grass mix, grass-dirt-patchy from 2.5 m; tall grass (decoFoliage state 10) starts at 2 m and covers ~60–70 % from 2.5–3 m, hiding the ballast edge. Clearing all foliage to the ballast edge leaves a visible green terrain strip.
 
+## Decorating yards like GIANTS – measured on the base maps
+
+Measured on six base-game maps (FS25 mapEU/mapUS/mapAS and the FS22 originals mapFR/mapUS/mapAlpine from the FS22 install), only objects on or near production and selling-point sites (placeable footprint + 25 m; `preplaced_*` groups count as sites; FS25 US trigger-only placeables as 30 × 30 m):
+- Lights, floodlights, cameras, air conditioners, wall boxes, fire alarms, pipes: 0 % on the ground – only on buildings. Never place them without a matching wall.
+- Barrels: ~95 % on the ground, half directly at a wall (≤ 1.5 m), half free in the yard, usually groups of 3–4.
+- Pallets: about half stacked, large storage clusters (median 20 pieces).
+- Board/bar stacks: long side parallel to the nearest wall in 80–100 % of cases, groups of 9–17 in open storage areas.
+- Containers and garbage containers: mostly alone, at a wall or fence.
+- FS22 maps embed all props as inline shapes (no ReferenceNodes); FS22 `placeables.xml` uses `data/placeables/...` without `$`, and FS22 placeable XMLs reference their i3d relative to the XML.
+
+Placement rules that worked: copy whole original clusters (relative positions, rotations, stacks) instead of inventing random piles; industrial clusters only on industrial yards, shop clusters at shops; back of the cluster against the fence or a building wall, keep a 9 m lane; test every member's real footprint (bounding box from the shapes) against one occupancy raster; put the bottom on the lowest corner (reject > 25 cm slope); detect flat stacks (pallet on pallet only 0.15 m above ground: top of lower = bottom of upper ± 8 cm), otherwise both end up at ground level and intersect; the same composition at most once per yard. Wall-mounted parts of a 1:1 copy only where the building geometry within 0.5 m reaches the part's height; on a substitute building (different shape) drop everything hanging. Generic node names (`visual_lod`, `vis`, `glass`) need the parent name for filtering. When importing shapes from mapUS/mapAS, a few shapes have attachments the open-source reader cannot parse – skip unreadable source shapes and fail only if one of them is actually needed.
