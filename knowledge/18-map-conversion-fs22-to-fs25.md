@@ -167,7 +167,7 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - If the map has no AI road splines, AI helpers use the navigation map; add traffic splines only once the new road connects somewhere (dead ends are risky for NPC traffic).
 - 📖 How the FS25 base maps lay out splines (measured on mapEU/US/AS):
   - Everything sits under `/gameplay/splines` in three groups: `trafficSystem`/`trafficSplines`, `pedestrianSystem` and `ai`.
-  - Only the `ai` group carries the user attribute `onCreate = AISystem.onCreateAIRoadSpline`. Its children are plain spline shapes.
+  - Only the `ai` group carries the user attribute `onCreate = AISystem.onCreateAIRoadSpline`. Each child spline carries `maxSpeedScale` 1 and `speedLimit` (EU 50, US mostly 87, Asia 87/48, farm tracks 20–30). A few also set `maxWidth` (3.5–4.7), `isTeleport` true, `isAISpline` false or `vehicleTypes`.
   - Field tracks do get AI splines. The `ai` group covers the dirt tracks between fields, side roads, gravel and forest tracks and farm access roads: 22–33 km per map, of which roughly 10–20 km are unpaved.
   - AI splines do not duplicate traffic: 96–100 % of `ai` points are more than 6 m from any traffic spline, so main roads carrying traffic have no separate AI spline.
   - There is usually one spline per direction, with the same name twice or a suffix `R`. Typical point spacing is 2.7–4 m.
