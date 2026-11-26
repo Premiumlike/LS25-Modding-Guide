@@ -165,6 +165,13 @@ Status markers: ✅ confirmed in game or in the GIANTS Editor, 📖 read from th
 - Vertical alignment: low-pass the terrain along the route (σ ≈ 35 m), then clamp the grade **sequentially** forward and backward (a vectorised clamp only propagates one sample per pass), round with a small Gaussian and clamp again; ramp the allowed grade up over ~30 m when leaving the crossing. Cut/fill with a flat carriageway plus a varying shoulder and a quintic transition whose width depends on the height difference at the shoulder edge (not per pixel) and varies with noise per side.
 - Copy terrain weights and foliage beside the road pixel by pixel from straight interior road sections (reject windows with other roads, crossings, field polygons, water or paving/concrete layers); put the asphalt layer under the decal footprint and clear foliage there.
 - If the map has no AI road splines, AI helpers use the navigation map; add traffic splines only once the new road connects somewhere (dead ends are risky for NPC traffic).
+- 📖 How the FS25 base maps lay out splines (measured on mapEU/US/AS):
+  - Everything sits under `/gameplay/splines` in three groups: `trafficSystem`/`trafficSplines`, `pedestrianSystem` and `ai`.
+  - Only the `ai` group carries the user attribute `onCreate = AISystem.onCreateAIRoadSpline`. Its children are plain spline shapes.
+  - Field tracks do get AI splines. The `ai` group covers the dirt tracks between fields, side roads, gravel and forest tracks and farm access roads: 22–33 km per map, of which roughly 10–20 km are unpaved.
+  - AI splines do not duplicate traffic: 96–100 % of `ai` points are more than 6 m from any traffic spline, so main roads carrying traffic have no separate AI spline.
+  - There is usually one spline per direction, with the same name twice or a suffix `R`. Typical point spacing is 2.7–4 m.
+  - Placeables and locations add small `aiSplines` groups of their own.
 - FS22 maps place trees in two ways: as ReferenceNodes and as TransformGroups with LOD0/LOD1 shapes. When you modify terrain, adjust both, otherwise the second kind floats.
 - Rasterise the asphalt weight under a new decal by pixel coverage (supersample, ≥ 50 %), not with a filled polygon plus dilation – that made the asphalt about 1–1.5 m too wide per side.
 - A build pipeline must not read inputs from the mod folder it writes to; otherwise each run feeds back into the next (here: template masks picked up the new asphalt and the edge blending changed). Read everything from a fixed backup and compare checksums of intermediate results.
